@@ -141,7 +141,7 @@
         let hedefKisiSayisi = 0;
         let oyunAktif = false;
         let botModuAktif = false;
-        let oyunBaslamaZamani = 0; // HATA DÜZELTİCİ ZAMANLAYICI
+        let oyunBaslamaZamani = 0;
         
         let takim = "mavi"; 
         let ben = {
@@ -170,7 +170,7 @@
         function baslat(kisiSayisi, ozelOdaIsmi = null) {
             hedefKisiSayisi = kisiSayisi;
             odaAdi = ozelOdaIsmi ? ozelOdaIsmi : "arena_mp_final_" + kisiSayisi;
-            oyunBaslamaZamani = Date.now(); // ZAMANLAYICI BAŞLADI
+            oyunBaslamaZamani = Date.now();
             
             if (!botModuAktif) {
                 takim = Math.random() > 0.5 ? "mavi" : "kirmizi";
@@ -184,13 +184,11 @@
             ben.x = takim === "mavi" ? 100 + Math.random() * 100 : canvas.width - 200 + Math.random() * 100;
             ben.y = Math.random() * (canvas.height - 100);
 
-            // Önce veritabanına yaz
             db.ref(odaAdi + "/" + myId).set(ben);
             db.ref(odaAdi + "/" + myId).onDisconnect().remove();
 
             db.ref(odaAdi).on('value', snapshot => {
                 oyuncular = snapshot.val() || {};
-                // Eğer oyuncular listesi boşsa veya ben yoksam, manuel olarak kendimi listeye ekle (Çizim hatasını önlemek için)
                 if(!oyuncular[myId]) {
                     oyuncular[myId] = ben;
                 }
@@ -200,9 +198,7 @@
 
             document.getElementById('room-info').innerHTML = botModuAktif ? "Mod: BOTLARLA ANTRENMAN" : `Oda: ${hedefKisiSayisi} Kişilik (Online)`;
             
-            // Başlangıç geri sayımı
             geriSayimYap(3);
-
             oyunDongusu();
         }
 
@@ -236,14 +232,18 @@
             }
         }
 
-        // --- BOT ZEKASI ---
+        // --- BOT ZEKASI (DÜZELTİLDİ) ---
         let lastBotUpdate = 0;
         function botlariYonet() {
-            let ids = Object.keys(oyuncular).sort();
-            if (ids[0] !== myId) return; 
-
-            let mevcutSayi = ids.length;
+            // DÜZELTME: Sadece gerçek oyuncuları filtrele, sonra sırala
+            let gercekOyuncular = Object.keys(oyuncular).filter(key => !oyuncular[key].isBot).sort();
             
+            // Eğer gerçek oyuncu yoksa veya ben ilk değilsem, botları yönetme
+            if (gercekOyuncular.length === 0 || gercekOyuncular[0] !== myId) return;
+
+            let mevcutSayi = Object.keys(oyuncular).length;
+            
+            // Bot ekleme
             if (mevcutSayi < hedefKisiSayisi) {
                 let spawnChance = botModuAktif ? 0.3 : 0.02; 
                 if (Math.random() < spawnChance) { 
@@ -257,6 +257,7 @@
                 }
             }
 
+            // Bot hareketleri ve saldırıları
             if (Date.now() - lastBotUpdate > 50) { 
                 Object.keys(oyuncular).forEach(key => {
                     let p = oyuncular[key];
@@ -264,6 +265,7 @@
                         let enYakinDusman = null;
                         let minMesafe = 9999;
                         
+                        // En yakın düşmanı bul
                         Object.keys(oyuncular).forEach(targetKey => {
                             let target = oyuncular[targetKey];
                             if (target.takim !== p.takim && target.hp > 0) {
@@ -275,23 +277,34 @@
                         let updates = {};
                         if (enYakinDusman) {
                             let hiz = 3.5; 
+                            
+                            // Düşmana doğru hareket et
                             if (enYakinDusman.x > p.x + 30) { p.x += hiz; p.yon = 1; p.hareket = true; }
                             else if (enYakinDusman.x < p.x - 30) { p.x -= hiz; p.yon = -1; p.hareket = true; }
                             if (enYakinDusman.y > p.y + 10) { p.y += hiz; p.hareket = true; }
                             else if (enYakinDusman.y < p.y - 10) { p.y -= hiz; p.hareket = true; }
 
+                            // Saldırı menzilindeyse saldır
                             if (minMesafe < 90 && !p.saldiriyor) { 
                                 updates.saldiriyor = true;
                                 setTimeout(() => db.ref(odaAdi + "/" + key + "/saldiriyor").set(false), 300);
+                                
+                                // Düşmana hasar ver
                                 Object.keys(oyuncular).forEach(k => {
                                     if (oyuncular[k] === enYakinDusman) {
                                         db.ref(odaAdi + "/" + k + "/hp").transaction(h => (h || 50) - 1); 
                                     }
                                 });
                             }
-                        } else { p.hareket = false; }
+                        } else { 
+                            p.hareket = false; 
+                        }
                         
-                        updates.x = p.x; updates.y = p.y; updates.yon = p.yon; updates.hareket = p.hareket;
+                        // Bot pozisyonunu güncelle
+                        updates.x = p.x; 
+                        updates.y = p.y; 
+                        updates.yon = p.yon; 
+                        updates.hareket = p.hareket;
                         db.ref(odaAdi + "/" + key).update(updates);
                     }
                 });
@@ -427,7 +440,6 @@
         }
 
         function kazanmaKontrolu() {
-            // ÖNEMLİ DÜZELTME: İlk 4 saniye kazanma kontrolü YAPMA! (Herkesin yüklenmesi için)
             if (Date.now() - oyunBaslamaZamani < 4000) return;
 
             let m = 0, k = 0;
