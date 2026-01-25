@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>PVP Arena: Bot Modu</title>
+    <title>Mami Games: PVP Arena</title>
     <style>
         body { margin: 0; background: #222; overflow: hidden; font-family: 'Arial', sans-serif; user-select: none; }
         
@@ -17,6 +17,21 @@
             z-index: 20; pointer-events: auto;
         }
         
+        /* MAMI GAMES LOGOSU */
+        .brand-logo {
+            position: absolute;
+            top: 30px;
+            left: 40px;
+            font-size: 32px;
+            font-weight: 900;
+            color: #f39c12; /* Altın Sarısı / Turuncu */
+            text-transform: uppercase;
+            font-family: 'Verdana', sans-serif;
+            letter-spacing: 2px;
+            text-shadow: 3px 3px 0px #000;
+            z-index: 30;
+        }
+        
         h1 { color: #e74c3c; font-size: 70px; text-shadow: 0 0 20px rgba(231, 76, 60, 0.5); margin: 0 0 20px 0; letter-spacing: 5px; font-weight: 900; }
         p { color: #ccc; font-size: 18px; max-width: 600px; text-align: center; line-height: 1.5; }
         
@@ -29,7 +44,7 @@
         button:active { transform: translateY(4px); box-shadow: none; }
         button:hover { background: #5dade2; }
         
-        /* BOT BUTONU (Özel Tasarım) */
+        /* BOT BUTONU */
         .bot-btn { background: #8e44ad; box-shadow: 0 4px 0 #6c3483; width: 100%; max-width: 300px; margin-bottom: 20px; }
         .bot-btn:hover { background: #9b59b6; }
 
@@ -69,12 +84,13 @@
 <body>
 
     <div id="mainMenu" class="overlay-screen">
+        <div class="brand-logo">Mami Games</div>
+
         <h1>PVP ARENA</h1>
-        <p>İster Botlarla antrenman yap, ister arkadaşlarınla kapış!</p>
+        <p>Sol tık ile saldır. Takımını seç ve savaş!</p>
         
         <div class="btn-group" style="flex-direction: column; align-items: center;">
             <button class="bot-btn" onclick="botlaOyna()">🤖 BOTLARLA OYNA (Tek Kişilik)</button>
-            
             <div style="display: flex; gap: 10px;">
                 <button onclick="baslat(2)">⚔️ 1 vs 1 (Online)</button>
                 <button onclick="baslat(4)">⚔️ 2 vs 2 (Online)</button>
@@ -95,7 +111,6 @@
     <div id="ui-layer" style="display: none;">
         <button id="exit-btn" onclick="cikisYap()">⬅ Çıkış</button>
         <div id="room-info">Oda: Bekleniyor...</div>
-        
         <div id="health-text">50 HP</div>
         <div id="health-container">
             <div id="health-bar"></div>
@@ -133,16 +148,18 @@
         let oyunAktif = false;
         let botModuAktif = false;
         
-        let takim = Math.random() > 0.5 ? "mavi" : "kirmizi";
+        let takim = "mavi"; 
         let ben = {
             x: 100, y: 100, hp: 50, maxHp: 50, yon: 1, 
             hareket: false, saldiriyor: false, sonHasarZamani: 0, 
             takim: takim, isBot: false
         };
 
+        // --- KONTROLLER ---
         const tuslar = {};
         window.addEventListener('keydown', e => { tuslar[e.key] = true; if(e.code === "Space") saldir(); });
         window.addEventListener('keyup', e => tuslar[e.key] = false);
+        window.addEventListener('mousedown', () => saldir());
 
         function boyutlandir() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.onresize = boyutlandir;
@@ -152,31 +169,30 @@
 
         function botlaOyna() {
             botModuAktif = true;
-            // Bot modu için rastgele özel bir oda ismi oluştur (kimse giremesin diye)
-            let ozelOda = "bot_room_" + Math.floor(Math.random() * 100000);
-            baslat(4, ozelOda); // 4 kişilik bir maç ayarla
+            takim = "mavi";
+            let ozelOda = "bot_room_v3_" + Math.floor(Math.random() * 100000);
+            baslat(4, ozelOda); 
         }
 
         function baslat(kisiSayisi, ozelOdaIsmi = null) {
             hedefKisiSayisi = kisiSayisi;
+            odaAdi = ozelOdaIsmi ? ozelOdaIsmi : "arena_mp_v2_" + kisiSayisi;
             
-            // Eğer özel oda ismi gelmediyse genel oda kullan (Online mod)
-            // İSMİ DEĞİŞTİRDİM: 'arena_clean_v1' -> Eski bozuk verilerden kurtulmak için
-            odaAdi = ozelOdaIsmi ? ozelOdaIsmi : "arena_clean_v1_" + kisiSayisi;
-            
+            if (!botModuAktif) {
+                takim = Math.random() > 0.5 ? "mavi" : "kirmizi";
+            }
+
             document.getElementById('mainMenu').style.display = 'none';
             document.getElementById('ui-layer').style.display = 'block';
             oyunAktif = true;
 
-            // Başlangıç Konumu
+            ben.takim = takim;
             ben.x = takim === "mavi" ? 100 + Math.random() * 100 : canvas.width - 200 + Math.random() * 100;
             ben.y = Math.random() * (canvas.height - 100);
 
-            // Veritabanına kendini kaydet
             db.ref(odaAdi + "/" + myId).set(ben);
             db.ref(odaAdi + "/" + myId).onDisconnect().remove();
 
-            // Odayı dinlemeye başla
             db.ref(odaAdi).on('value', snapshot => {
                 oyuncular = snapshot.val() || {};
                 arayuzGuncelle();
@@ -184,7 +200,6 @@
             });
 
             document.getElementById('room-info').innerHTML = botModuAktif ? "Mod: BOTLARLA ANTRENMAN" : `Oda: ${hedefKisiSayisi} Kişilik (Online)`;
-            
             oyunDongusu();
         }
 
@@ -203,24 +218,23 @@
         // --- BOT YÖNETİMİ ---
         let lastBotUpdate = 0;
         function botlariYonet() {
-            // Sadece odanın kurucusu (veya tek başınaysan sen) botları yönetir
             let ids = Object.keys(oyuncular).sort();
             if (ids[0] !== myId) return; 
 
             let mevcutSayi = ids.length;
             
-            // Bot Ekleme Mantığı
             if (mevcutSayi < hedefKisiSayisi) {
-                // Eğer Bot Modundaysak bekleme yapma, hemen botları doldur!
-                let spawnChance = botModuAktif ? 0.2 : 0.02; // Bot modunda %20 şansla hemen ekle (çok hızlı dolar)
-                
+                let spawnChance = botModuAktif ? 0.3 : 0.02; 
                 if (Math.random() < spawnChance) { 
                     let botId = "bot_ai_" + Date.now() + Math.floor(Math.random()*100);
-                    let maviSayisi = Object.values(oyuncular).filter(p => p.takim === "mavi").length;
-                    let kirmiziSayisi = Object.values(oyuncular).filter(p => p.takim === "kirmizi").length;
-                    
-                    // Takımları dengele
-                    let botTakim = maviSayisi <= kirmiziSayisi ? "mavi" : "kirmizi";
+                    let botTakim;
+                    if (botModuAktif) {
+                        botTakim = "kirmizi";
+                    } else {
+                        let maviSayisi = Object.values(oyuncular).filter(p => p.takim === "mavi").length;
+                        let kirmiziSayisi = Object.values(oyuncular).filter(p => p.takim === "kirmizi").length;
+                        botTakim = maviSayisi <= kirmiziSayisi ? "mavi" : "kirmizi";
+                    }
 
                     db.ref(odaAdi + "/" + botId).set({
                         x: canvas.width / 2, y: canvas.height / 2, hp: 50, 
@@ -229,14 +243,13 @@
                 }
             }
 
-            // Bot Yapay Zekası
             if (Date.now() - lastBotUpdate > 50) { 
                 Object.keys(oyuncular).forEach(key => {
                     let p = oyuncular[key];
                     if (p.isBot && p.hp > 0) {
                         let enYakinDusman = null;
                         let minMesafe = 9999;
-                        // Hedef bul
+                        
                         Object.keys(oyuncular).forEach(targetKey => {
                             let target = oyuncular[targetKey];
                             if (target.takim !== p.takim && target.hp > 0) {
@@ -250,15 +263,13 @@
                             let hiz = 3.5; 
                             if (enYakinDusman.x > p.x + 40) { p.x += hiz; p.yon = 1; p.hareket = true; }
                             else if (enYakinDusman.x < p.x - 40) { p.x -= hiz; p.yon = -1; p.hareket = true; }
-                            
                             if (enYakinDusman.y > p.y + 10) { p.y += hiz; p.hareket = true; }
                             else if (enYakinDusman.y < p.y - 10) { p.y -= hiz; p.hareket = true; }
 
-                            // Saldırı
                             if (minMesafe < 70 && !p.saldiriyor) {
                                 updates.saldiriyor = true;
                                 setTimeout(() => db.ref(odaAdi + "/" + key + "/saldiriyor").set(false), 300);
-                                if (Math.random() > 0.4) { // Bot isabet oranı
+                                if (Math.random() > 0.4) { 
                                      Object.keys(oyuncular).forEach(k => {
                                         if (oyuncular[k] === enYakinDusman) {
                                             db.ref(odaAdi + "/" + k + "/hp").transaction(h => (h || 50) - 3); 
@@ -288,7 +299,7 @@
                 if (key !== myId && rakip.takim !== ben.takim && rakip.hp > 0) {
                     let d = Math.sqrt((rakip.x - ben.x)**2 + (rakip.y - ben.y)**2);
                     let yuzDonuk = (ben.yon === 1 && rakip.x > ben.x) || (ben.yon === -1 && rakip.x < ben.x);
-                    if (d < 90 && yuzDonuk) {
+                    if (d < 100 && yuzDonuk) { 
                         db.ref(odaAdi + "/" + key + "/hp").transaction(val => (val || 50) - 5);
                         db.ref(odaAdi + "/" + key + "/sonHasarZamani").set(Date.now());
                         bildirimGoster("VURDUN!");
@@ -301,7 +312,7 @@
             if (ben.hp <= 0) return;
             db.ref(odaAdi + "/" + myId).update({
                 x: ben.x, y: ben.y, yon: ben.yon, 
-                hareket: ben.hareket, saldiriyor: ben.saldiriyor
+                hareket: ben.hareket, saldiriyor: ben.saldiriyor, takim: ben.takim
             });
         }
 
@@ -309,7 +320,6 @@
             if (!oyunAktif) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Ben yaşıyorsam hareket et
             if (ben.hp > 0) {
                 let hareket = false;
                 let hiz = 5;
@@ -344,13 +354,11 @@
             ctx.save();
             ctx.translate(p.x, p.y);
             
-            // İsim
             ctx.fillStyle = "white"; ctx.font = "bold 12px Arial"; ctx.textAlign = "center";
             let isim = p.isBot ? "[BOT]" : "OYUNCU";
             if (p.id === myId) isim = "BEN";
             ctx.fillText(isim, 0, -55);
 
-            // Can Barı
             ctx.fillStyle = "red"; ctx.fillRect(-20, -45, 40, 6);
             ctx.fillStyle = "#2ecc71"; ctx.fillRect(-20, -45, (Math.max(0, p.hp) / 50) * 40, 6);
 
@@ -361,17 +369,14 @@
             let time = Date.now();
             let bacakHizi = p.hareket ? Math.sin(time / 80) * 10 : 0;
             
-            // Çizim
-            ctx.beginPath(); ctx.moveTo(0, -20); ctx.lineTo(0, 10); ctx.stroke(); // Gövde
-            ctx.beginPath(); ctx.arc(0, -30, 10, 0, Math.PI*2); ctx.stroke(); // Kafa
-            ctx.fillStyle = p.takim === "mavi" ? "cyan" : "orange"; // Gözler
+            ctx.beginPath(); ctx.moveTo(0, -20); ctx.lineTo(0, 10); ctx.stroke(); 
+            ctx.beginPath(); ctx.arc(0, -30, 10, 0, Math.PI*2); ctx.stroke(); 
+            ctx.fillStyle = p.takim === "mavi" ? "cyan" : "orange"; 
             ctx.beginPath(); ctx.arc(4, -30, 2, 0, Math.PI*2); ctx.fill();
 
-            // Bacaklar
             ctx.beginPath(); ctx.moveTo(0, 10); ctx.lineTo(-10 + bacakHizi, 35); ctx.stroke();
             ctx.beginPath(); ctx.moveTo(0, 10); ctx.lineTo(5 - bacakHizi, 35); ctx.stroke();
 
-            // Kollar
             let kolAcisi = p.saldiriyor ? -Math.PI / 1.5 : 0;
             ctx.beginPath(); ctx.moveTo(0, -15); ctx.lineTo(-10, 5); ctx.stroke();
             
@@ -379,7 +384,7 @@
             ctx.translate(0, -15);
             ctx.rotate(kolAcisi + (p.hareket ? Math.sin(time/80)*0.2 : 0));
             ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(15, 5); ctx.stroke(); 
-            ctx.strokeStyle = "#ecf0f1"; ctx.lineWidth = 4; // Kılıç
+            ctx.strokeStyle = "#ecf0f1"; ctx.lineWidth = 4; 
             ctx.beginPath(); ctx.moveTo(15, 5); ctx.lineTo(55, -5); ctx.stroke();
             ctx.restore();
             ctx.restore();
@@ -397,7 +402,6 @@
                 if (p.hp > 0) { if (p.takim === "mavi") m++; else k++; }
             });
 
-            // En az 2 kişi/bot olmadan bitirme
             let toplamCanli = m + k;
             if (toplamCanli < 2) return;
 
@@ -406,12 +410,12 @@
 
             let text = document.getElementById('winnerText');
             if (m === 0 && k > 0) {
-                text.innerText = "KIRMIZI TAKIM KAZANDI!";
-                text.style.color = "#e74c3c";
-                oyunBitti();
-            } else if (k === 0 && m > 0) {
                 text.innerText = "MAVİ TAKIM KAZANDI!";
                 text.style.color = "#3498db";
+                oyunBitti();
+            } else if (k === 0 && m > 0) {
+                text.innerText = "KIRMIZI TAKIM KAZANDI!";
+                text.style.color = "#e74c3c";
                 oyunBitti();
             }
         }
