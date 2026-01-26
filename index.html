@@ -205,14 +205,14 @@
             isimAl();
             botModuAktif = true;
             takim = "mavi"; 
-            let ozelOda = "bot_room_final_" + Math.floor(Math.random() * 100000);
+            let ozelOda = "bot_room_v6_" + Math.floor(Math.random() * 100000);
             baslat(2, ozelOda); 
         }
 
         function baslat(kisiSayisi, ozelOdaIsmi = null) {
             isimAl();
             hedefKisiSayisi = kisiSayisi;
-            odaAdi = ozelOdaIsmi ? ozelOdaIsmi : "arena_online_v5_" + kisiSayisi;
+            odaAdi = ozelOdaIsmi ? ozelOdaIsmi : "arena_online_v6_" + kisiSayisi;
             oyunBaslamaZamani = Date.now();
             girisZamani = Date.now();
 
@@ -237,6 +237,7 @@
                     if(!oyuncular[myId]) {
                         oyuncular[myId] = ben;
                     }
+                    // HP'yi Firebase'den al
                     if(oyuncular[myId] && oyuncular[myId].hp !== undefined) {
                         ben.hp = oyuncular[myId].hp;
                     }
@@ -277,6 +278,7 @@
                         oyuncular[myId] = ben;
                     }
                     
+                    // HP'yi Firebase'den al - ÖNEMLİ!
                     if(oyuncular[myId] && oyuncular[myId].hp !== undefined) {
                         ben.hp = oyuncular[myId].hp;
                     }
@@ -418,7 +420,6 @@
                                 updates.saldiriyor = true;
                                 setTimeout(() => db.ref(odaAdi + "/" + key + "/saldiriyor").set(false), 300);
                                 
-                                // BOT HASAR - DÜZELTİLDİ
                                 if (enYakinDusmanKey && oyuncular[enYakinDusmanKey]) {
                                     let hedefHp = oyuncular[enYakinDusmanKey].hp || 50;
                                     let yeniHp = Math.max(0, hedefHp - 5);
@@ -449,29 +450,36 @@
             Object.keys(oyuncular).forEach(key => {
                 let rakip = oyuncular[key];
                 if (key !== myId && rakip.hp > 0) {
-                    // Takım kontrolü: Sadece farklı takıma vur
                     if (rakip.takim === ben.takim) return;
                     
                     let d = Math.sqrt((rakip.x - ben.x)**2 + (rakip.y - ben.y)**2);
                     let yuzDonuk = (ben.yon === 1 && rakip.x > ben.x) || (ben.yon === -1 && rakip.x < ben.x);
                     if (d < 100 && yuzDonuk) { 
-                        // OYUNCU HASAR - DÜZELTİLDİ: transaction yerine set kullan
-                        let yeniHp = Math.max(0, (rakip.hp || 50) - 5);
-                        db.ref(odaAdi + "/" + key + "/hp").set(yeniHp);
+                        // Firebase'den güncel HP'yi al ve düşür
+                        db.ref(odaAdi + "/" + key + "/hp").once('value').then(snapshot => {
+                            let mevcutHp = snapshot.val();
+                            if (mevcutHp === null) mevcutHp = 50;
+                            let yeniHp = Math.max(0, mevcutHp - 5);
+                            db.ref(odaAdi + "/" + key + "/hp").set(yeniHp);
+                        });
                         bildirimGoster("VURDUN!");
                     }
                 }
             });
         }
 
+        // GÜNCELLEMİŞ: HP artık burada yazılmıyor!
         function guncelle() {
             let veri = {
-                x: ben.x, y: ben.y, yon: ben.yon, 
+                x: ben.x, 
+                y: ben.y, 
+                yon: ben.yon, 
                 hareket: ben.hp > 0 ? ben.hareket : false, 
                 saldiriyor: ben.hp > 0 ? ben.saldiriyor : false, 
-                takim: ben.takim, hp: ben.hp,
+                takim: ben.takim,
                 isim: ben.isim,
                 girisZamani: ben.girisZamani
+                // HP BURADA YOK! HP sadece hasar alındığında değişiyor
             };
             db.ref(odaAdi + "/" + myId).update(veri);
         }
@@ -492,15 +500,11 @@
                 ben.y = Math.max(50, Math.min(canvas.height - 50, ben.y));
                 ben.hareket = hareket;
                 guncelle(); 
-
-                if (ben.hp < 50 && Date.now() - ben.sonHasarZamani > 5000) {
-                    ben.hp += 0.05;
-                    if(Math.floor(ben.hp*10) % 5 === 0) db.ref(odaAdi + "/" + myId + "/hp").set(ben.hp);
-                }
             } else {
                 guncelle();
             }
 
+            // HP barını Firebase'den gelen değere göre göster
             let barW = Math.max(0, (ben.hp / 50) * 100);
             document.getElementById('health-bar').style.width = barW + "%";
             document.getElementById('health-text').innerText = Math.max(0, Math.ceil(ben.hp)) + " HP";
