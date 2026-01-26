@@ -173,7 +173,6 @@
         let oyunAktif = false;
         let botModuAktif = false;
         let oyunBaslamaZamani = 0;
-        let girisSirasi = 0; // Odaya giriş sırası
         
         let takim = "mavi"; 
         let ben = {
@@ -212,14 +211,13 @@
         function baslat(kisiSayisi, ozelOdaIsmi = null) {
             isimAl();
             hedefKisiSayisi = kisiSayisi;
-            odaAdi = ozelOdaIsmi ? ozelOdaIsmi : "arena_online_v2_" + kisiSayisi; // Yeni oda ismi
+            odaAdi = ozelOdaIsmi ? ozelOdaIsmi : "arena_online_v3_" + kisiSayisi;
             oyunBaslamaZamani = Date.now();
 
             document.getElementById('mainMenu').style.display = 'none';
             document.getElementById('ui-layer').style.display = 'block';
             oyunAktif = true;
 
-            // Önce odayı kontrol et
             db.ref(odaAdi).once('value').then(snapshot => {
                 let mevcutOyuncular = snapshot.val() || {};
                 
@@ -233,15 +231,15 @@
                     });
                 }
                 
-                // Giriş sırasını hesapla (sadece gerçek oyuncular)
-                let gercekOyuncuSayisi = Object.values(mevcutOyuncular).filter(p => !p.isBot).length;
-                girisSirasi = gercekOyuncuSayisi;
-                
                 if (botModuAktif) {
                     takim = "mavi";
                 } else {
-                    // Giriş sırasına göre takım belirle (0=mavi, 1=kırmızı, 2=mavi, 3=kırmızı...)
-                    takim = (girisSirasi % 2 === 0) ? "mavi" : "kirmizi";
+                    // Takım sayılarını hesapla
+                    let maviSayisi = Object.values(mevcutOyuncular).filter(p => !p.isBot && p.takim === "mavi").length;
+                    let kirmiziSayisi = Object.values(mevcutOyuncular).filter(p => !p.isBot && p.takim === "kirmizi").length;
+                    
+                    // Az olan takıma katıl
+                    takim = (maviSayisi <= kirmiziSayisi) ? "mavi" : "kirmizi";
                 }
 
                 ben.takim = takim;
@@ -371,7 +369,7 @@
                                 updates.saldiriyor = true;
                                 setTimeout(() => db.ref(odaAdi + "/" + key + "/saldiriyor").set(false), 300);
                                 
-                                // DÜZELTİLDİ: Bot da 5 hasar veriyor (eskiden 1'di)
+                                // Bot 5 hasar veriyor
                                 if (enYakinDusmanKey) {
                                     db.ref(odaAdi + "/" + enYakinDusmanKey + "/hp").transaction(h => (h || 50) - 5);
                                 }
