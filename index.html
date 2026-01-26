@@ -6,10 +6,8 @@
     <style>
         body { margin: 0; background: #222; overflow: hidden; font-family: 'Arial', sans-serif; user-select: none; }
         
-        /* ARAYÜZ KATMANLARI */
         #ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
         
-        /* MENÜLER */
         .overlay-screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.92);
@@ -17,7 +15,6 @@
             z-index: 20; pointer-events: auto;
         }
         
-        /* MAMI GAMES LOGOSU */
         .brand-logo {
             position: absolute; top: 30px; left: 40px;
             font-size: 32px; font-weight: 900; color: #f39c12;
@@ -61,7 +58,6 @@
             color: white; font-weight: bold; font-size: 20px; text-shadow: 1px 1px 2px black;
         }
 
-        /* GERİ SAYIM */
         #countdown {
             position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);
             font-size: 100px; color: yellow; font-weight: bold; text-shadow: 0 0 20px black;
@@ -73,6 +69,38 @@
             font-size: 40px; font-weight: bold; color: yellow; text-shadow: 0 0 10px black;
             opacity: 0; transition: opacity 0.5s;
         }
+
+        /* İSİM GİRİŞ ALANI */
+        .name-input-container {
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .name-input-container label {
+            color: #f39c12;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        #playerNameInput {
+            padding: 12px 20px;
+            font-size: 18px;
+            border: 3px solid #3498db;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            text-align: center;
+            width: 250px;
+            outline: none;
+        }
+        #playerNameInput:focus {
+            border-color: #f39c12;
+            box-shadow: 0 0 15px rgba(243, 156, 18, 0.5);
+        }
+        #playerNameInput::placeholder {
+            color: #777;
+        }
     </style>
 </head>
 <body>
@@ -81,6 +109,12 @@
         <div class="brand-logo">Mami Games</div>
         <h1>PVP ARENA</h1>
         <p>Sol tık ile saldır. Ayakta kalan son takım kazanır!</p>
+        
+        <!-- İSİM GİRİŞ ALANI -->
+        <div class="name-input-container">
+            <label for="playerNameInput">👤 Oyuncu Adın:</label>
+            <input type="text" id="playerNameInput" placeholder="İsmini gir..." maxlength="12">
+        </div>
         
         <div class="btn-group" style="flex-direction: column; align-items: center;">
             <button class="bot-btn" onclick="botlaOyna()">🤖 BOTLARLA OYNA (Tek Kişilik)</button>
@@ -136,6 +170,7 @@
         const ctx = canvas.getContext('2d');
         
         let myId = "player_" + Math.floor(Math.random() * 99999);
+        let oyuncuIsmi = "Oyuncu"; // OYUNCU İSMİ
         let odaAdi = "";
         let oyuncular = {};
         let hedefKisiSayisi = 0;
@@ -147,7 +182,7 @@
         let ben = {
             x: 100, y: 100, hp: 50, maxHp: 50, yon: 1, 
             hareket: false, saldiriyor: false, sonHasarZamani: 0, 
-            takim: takim, isBot: false
+            takim: takim, isBot: false, isim: "Oyuncu"
         };
 
         const tuslar = {};
@@ -159,8 +194,20 @@
         window.onresize = boyutlandir;
         boyutlandir();
 
+        // --- İSİM KONTROLÜ ---
+        function isimAl() {
+            let input = document.getElementById('playerNameInput').value.trim();
+            if (input.length === 0) {
+                oyuncuIsmi = "Oyuncu_" + Math.floor(Math.random() * 999);
+            } else {
+                oyuncuIsmi = input;
+            }
+            ben.isim = oyuncuIsmi;
+        }
+
         // --- BAŞLATMA ---
         function botlaOyna() {
+            isimAl(); // İsmi al
             botModuAktif = true;
             takim = "mavi"; 
             let ozelOda = "bot_room_final_" + Math.floor(Math.random() * 100000);
@@ -168,38 +215,61 @@
         }
 
         function baslat(kisiSayisi, ozelOdaIsmi = null) {
+            isimAl(); // İsmi al
             hedefKisiSayisi = kisiSayisi;
             odaAdi = ozelOdaIsmi ? ozelOdaIsmi : "arena_mp_final_" + kisiSayisi;
             oyunBaslamaZamani = Date.now();
-            
-            if (!botModuAktif) {
-                takim = Math.random() > 0.5 ? "mavi" : "kirmizi";
-            }
 
             document.getElementById('mainMenu').style.display = 'none';
             document.getElementById('ui-layer').style.display = 'block';
             oyunAktif = true;
 
-            ben.takim = takim;
-            ben.x = takim === "mavi" ? 100 + Math.random() * 100 : canvas.width - 200 + Math.random() * 100;
-            ben.y = Math.random() * (canvas.height - 100);
-
-            db.ref(odaAdi + "/" + myId).set(ben);
-            db.ref(odaAdi + "/" + myId).onDisconnect().remove();
-
-            db.ref(odaAdi).on('value', snapshot => {
-                oyuncular = snapshot.val() || {};
-                if(!oyuncular[myId]) {
-                    oyuncular[myId] = ben;
+            // Önce odadaki mevcut oyuncuları kontrol et ve takım belirle
+            db.ref(odaAdi).once('value').then(snapshot => {
+                let mevcutOyuncular = snapshot.val() || {};
+                
+                if (botModuAktif) {
+                    takim = "mavi";
+                } else {
+                    // Online modda: Takımları dengele
+                    let maviSayisi = 0;
+                    let kirmiziSayisi = 0;
+                    Object.values(mevcutOyuncular).forEach(p => {
+                        if (!p.isBot) {
+                            if (p.takim === "mavi") maviSayisi++;
+                            else kirmiziSayisi++;
+                        }
+                    });
+                    // Daha az oyuncusu olan takıma katıl
+                    takim = maviSayisi <= kirmiziSayisi ? "mavi" : "kirmizi";
                 }
-                arayuzGuncelle();
-                kazanmaKontrolu();
-            });
 
-            document.getElementById('room-info').innerHTML = botModuAktif ? "Mod: BOTLARLA ANTRENMAN" : `Oda: ${hedefKisiSayisi} Kişilik (Online)`;
-            
-            geriSayimYap(3);
-            oyunDongusu();
+                ben.takim = takim;
+                ben.isim = oyuncuIsmi;
+                ben.x = takim === "mavi" ? 100 + Math.random() * 100 : canvas.width - 200 + Math.random() * 100;
+                ben.y = 100 + Math.random() * (canvas.height - 200);
+
+                db.ref(odaAdi + "/" + myId).set(ben);
+                db.ref(odaAdi + "/" + myId).onDisconnect().remove();
+
+                db.ref(odaAdi).on('value', snapshot => {
+                    oyuncular = snapshot.val() || {};
+                    if(!oyuncular[myId]) {
+                        oyuncular[myId] = ben;
+                    }
+                    // Kendi HP'mi senkronize et
+                    if(oyuncular[myId] && oyuncular[myId].hp !== undefined) {
+                        ben.hp = oyuncular[myId].hp;
+                    }
+                    arayuzGuncelle();
+                    kazanmaKontrolu();
+                });
+
+                document.getElementById('room-info').innerHTML = botModuAktif ? "Mod: BOTLARLA ANTRENMAN" : `Oda: ${hedefKisiSayisi} Kişilik (Online)`;
+                
+                geriSayimYap(3);
+                oyunDongusu();
+            });
         }
 
         function geriSayimYap(saniye) {
@@ -226,33 +296,43 @@
         }
 
         function arayuzGuncelle() {
-            let sayi = Object.keys(oyuncular).length;
+            let sayi = Object.keys(oyuncular).filter(k => !oyuncular[k].isBot).length;
+            let botSayi = Object.keys(oyuncular).filter(k => oyuncular[k].isBot).length;
             if(!botModuAktif) {
-                document.getElementById('room-info').innerHTML = `Oda: ${hedefKisiSayisi} Kişilik<br>Aktif: ${sayi}/${hedefKisiSayisi}`;
+                document.getElementById('room-info').innerHTML = `Oda: ${hedefKisiSayisi} Kişilik<br>Oyuncular: ${sayi}/${hedefKisiSayisi}`;
+            } else {
+                document.getElementById('room-info').innerHTML = `Mod: BOTLARLA ANTRENMAN<br>Botlar: ${botSayi}`;
             }
         }
 
         // --- BOT ZEKASI (DÜZELTİLDİ) ---
         let lastBotUpdate = 0;
         function botlariYonet() {
-            // DÜZELTME: Sadece gerçek oyuncuları filtrele, sonra sırala
+            // SADECE BOT MODUNDA BOT EKLE - Online modda bot yok!
+            if (!botModuAktif) return;
+
             let gercekOyuncular = Object.keys(oyuncular).filter(key => !oyuncular[key].isBot).sort();
-            
-            // Eğer gerçek oyuncu yoksa veya ben ilk değilsem, botları yönetme
             if (gercekOyuncular.length === 0 || gercekOyuncular[0] !== myId) return;
 
             let mevcutSayi = Object.keys(oyuncular).length;
             
-            // Bot ekleme
+            // Bot ekleme (sadece bot modunda)
             if (mevcutSayi < hedefKisiSayisi) {
-                let spawnChance = botModuAktif ? 0.3 : 0.02; 
+                let spawnChance = 0.3; 
                 if (Math.random() < spawnChance) { 
                     let botId = "bot_ai_" + Date.now() + Math.floor(Math.random()*100);
-                    let botTakim = botModuAktif ? "kirmizi" : (Object.values(oyuncular).filter(p=>p.takim==="mavi").length <= Object.values(oyuncular).filter(p=>p.takim==="kirmizi").length ? "mavi" : "kirmizi");
+                    let botIsimler = ["Robo", "Terminator", "Bot", "AI", "Cyborg", "Droid", "Machine"];
+                    let rastgeleIsim = botIsimler[Math.floor(Math.random() * botIsimler.length)] + "_" + Math.floor(Math.random()*99);
 
                     db.ref(odaAdi + "/" + botId).set({
-                        x: canvas.width / 2, y: canvas.height / 2, hp: 50, 
-                        takim: botTakim, isBot: true, yon: 1, hareket: false
+                        x: canvas.width / 2 + (Math.random() - 0.5) * 200, 
+                        y: canvas.height / 2 + (Math.random() - 0.5) * 200, 
+                        hp: 50, 
+                        takim: "kirmizi", 
+                        isBot: true, 
+                        yon: 1, 
+                        hareket: false,
+                        isim: rastgeleIsim
                     });
                 }
             }
@@ -262,15 +342,20 @@
                 Object.keys(oyuncular).forEach(key => {
                     let p = oyuncular[key];
                     if (p.isBot && p.hp > 0) {
+                        let enYakinDusmanKey = null;
                         let enYakinDusman = null;
                         let minMesafe = 9999;
                         
-                        // En yakın düşmanı bul
+                        // En yakın düşmanı bul (key'i de sakla)
                         Object.keys(oyuncular).forEach(targetKey => {
                             let target = oyuncular[targetKey];
                             if (target.takim !== p.takim && target.hp > 0) {
                                 let d = Math.sqrt((p.x - target.x)**2 + (p.y - target.y)**2);
-                                if (d < minMesafe) { minMesafe = d; enYakinDusman = target; }
+                                if (d < minMesafe) { 
+                                    minMesafe = d; 
+                                    enYakinDusman = target; 
+                                    enYakinDusmanKey = targetKey; // KEY'İ SAKLA
+                                }
                             }
                         });
 
@@ -278,29 +363,25 @@
                         if (enYakinDusman) {
                             let hiz = 3.5; 
                             
-                            // Düşmana doğru hareket et
                             if (enYakinDusman.x > p.x + 30) { p.x += hiz; p.yon = 1; p.hareket = true; }
                             else if (enYakinDusman.x < p.x - 30) { p.x -= hiz; p.yon = -1; p.hareket = true; }
                             if (enYakinDusman.y > p.y + 10) { p.y += hiz; p.hareket = true; }
                             else if (enYakinDusman.y < p.y - 10) { p.y -= hiz; p.hareket = true; }
 
-                            // Saldırı menzilindeyse saldır
+                            // Saldırı - DÜZELTİLDİ: Artık key kullanıyoruz
                             if (minMesafe < 90 && !p.saldiriyor) { 
                                 updates.saldiriyor = true;
                                 setTimeout(() => db.ref(odaAdi + "/" + key + "/saldiriyor").set(false), 300);
                                 
-                                // Düşmana hasar ver
-                                Object.keys(oyuncular).forEach(k => {
-                                    if (oyuncular[k] === enYakinDusman) {
-                                        db.ref(odaAdi + "/" + k + "/hp").transaction(h => (h || 50) - 1); 
-                                    }
-                                });
+                                // Düşmana hasar ver - KEY KULLANARAK
+                                if (enYakinDusmanKey) {
+                                    db.ref(odaAdi + "/" + enYakinDusmanKey + "/hp").transaction(h => (h || 50) - 1);
+                                }
                             }
                         } else { 
                             p.hareket = false; 
                         }
                         
-                        // Bot pozisyonunu güncelle
                         updates.x = p.x; 
                         updates.y = p.y; 
                         updates.yon = p.yon; 
@@ -321,7 +402,11 @@
 
             Object.keys(oyuncular).forEach(key => {
                 let rakip = oyuncular[key];
-                if (key !== myId && rakip.takim !== ben.takim && rakip.hp > 0) {
+                // DÜZELTİLDİ: Kendim hariç herkese vurabiliyorum (takım kontrolü sadece takım modlarında)
+                if (key !== myId && rakip.hp > 0) {
+                    // Takım kontrolü: Sadece farklı takıma vur
+                    if (rakip.takim === ben.takim) return;
+                    
                     let d = Math.sqrt((rakip.x - ben.x)**2 + (rakip.y - ben.y)**2);
                     let yuzDonuk = (ben.yon === 1 && rakip.x > ben.x) || (ben.yon === -1 && rakip.x < ben.x);
                     if (d < 100 && yuzDonuk) { 
@@ -338,7 +423,8 @@
                 x: ben.x, y: ben.y, yon: ben.yon, 
                 hareket: ben.hp > 0 ? ben.hareket : false, 
                 saldiriyor: ben.hp > 0 ? ben.saldiriyor : false, 
-                takim: ben.takim, hp: ben.hp 
+                takim: ben.takim, hp: ben.hp,
+                isim: ben.isim
             };
             db.ref(odaAdi + "/" + myId).update(veri);
         }
@@ -355,8 +441,8 @@
                 if (tuslar['a'] || tuslar['ArrowLeft']) { ben.x -= hiz; ben.yon = -1; hareket = true; }
                 if (tuslar['d'] || tuslar['ArrowRight']) { ben.x += hiz; ben.yon = 1; hareket = true; }
                 
-                ben.x = Math.max(0, Math.min(canvas.width, ben.x));
-                ben.y = Math.max(0, Math.min(canvas.height, ben.y));
+                ben.x = Math.max(30, Math.min(canvas.width - 30, ben.x));
+                ben.y = Math.max(50, Math.min(canvas.height - 50, ben.y));
                 ben.hareket = hareket;
                 guncelle(); 
 
@@ -373,12 +459,15 @@
             document.getElementById('health-text').innerText = Math.max(0, Math.ceil(ben.hp)) + " HP";
 
             botlariYonet();
-            let cizimSirasi = Object.values(oyuncular).sort((a,b) => (a.hp <= 0 ? -1 : 1));
-            cizimSirasi.forEach(p => cizKarakter(p));
+            
+            // Çizim sırası: Ölüler altta, canlılar üstte
+            let cizimSirasi = Object.entries(oyuncular).sort((a,b) => (a[1].hp <= 0 ? -1 : 1));
+            cizimSirasi.forEach(([key, p]) => cizKarakter(p, key));
+            
             requestAnimationFrame(oyunDongusu);
         }
 
-        function cizKarakter(p) {
+        function cizKarakter(p, key) {
             ctx.save();
             ctx.translate(p.x, p.y);
             
@@ -387,10 +476,18 @@
                 ctx.globalAlpha = 0.6; 
             }
 
-            ctx.fillStyle = "white"; ctx.font = "bold 12px Arial"; ctx.textAlign = "center";
-            let isim = p.isBot ? "[BOT]" : "OYUNCU";
-            if (p.id === myId) isim = "BEN";
-            ctx.fillText(isim, 0, -55);
+            // İSİM GÖSTER
+            ctx.fillStyle = "white"; 
+            ctx.font = "bold 14px Arial"; 
+            ctx.textAlign = "center";
+            let gosterilenIsim = p.isim || (p.isBot ? "[BOT]" : "Oyuncu");
+            if (key === myId) gosterilenIsim = "► " + gosterilenIsim + " ◄"; // Kendimi vurgula
+            ctx.fillText(gosterilenIsim, 0, -55);
+
+            // Takım rengi göster
+            ctx.font = "10px Arial";
+            ctx.fillStyle = p.takim === "mavi" ? "#3498db" : "#e74c3c";
+            ctx.fillText(p.takim === "mavi" ? "MAVİ" : "KIRMIZI", 0, -67);
 
             if (p.hp > 0) {
                 ctx.fillStyle = "red"; ctx.fillRect(-20, -45, 40, 6);
@@ -465,11 +562,11 @@
                 if (ben.takim === kazananTakim) {
                     mainText.innerText = "YOU WIN!";
                     mainText.style.color = "#2ecc71"; 
-                    subText.innerText = "Tebrikler! Düşmanları yok ettin.";
+                    subText.innerText = "Tebrikler " + oyuncuIsmi + "! Düşmanları yok ettin.";
                 } else {
                     mainText.innerText = "GAME OVER";
                     mainText.style.color = "#e74c3c"; 
-                    subText.innerText = "Savaş alanında yenildin...";
+                    subText.innerText = oyuncuIsmi + ", savaş alanında yenildin...";
                 }
                 oyunBitti();
             }
