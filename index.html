@@ -166,7 +166,6 @@
             image-rendering: crisp-edges;
         }
 
-        /* SCANLINES EFEKT */
         .scanlines {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -181,7 +180,6 @@
             z-index: 100;
         }
 
-        /* CRT GLOW */
         .crt-glow {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -274,8 +272,15 @@
             mavi: '#29adff',
             mor: '#83769c',
             pembe: '#ff77a8',
-            krem: '#ffccaa'
+            krem: '#ffccaa',
+            arena_zemin: '#2d1b2e',
+            arena_cim: '#1a4a1a',
+            arena_kum: '#c4a35a',
+            arena_tas: '#4a4a5e'
         };
+
+        // ARENA BOYUTLARI
+        let arena = { x: 0, y: 0, w: 0, h: 0, padding: 80 };
         
         let myId = "player_" + Math.floor(Math.random() * 99999);
         let oyuncuIsmi = "PLAYER";
@@ -300,7 +305,16 @@
         window.addEventListener('keyup', e => tuslar[e.key] = false);
         window.addEventListener('mousedown', () => saldir());
 
-        function boyutlandir() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        function boyutlandir() { 
+            canvas.width = window.innerWidth; 
+            canvas.height = window.innerHeight;
+            // Arena boyutlarını güncelle
+            arena.padding = Math.min(canvas.width, canvas.height) * 0.1;
+            arena.x = arena.padding;
+            arena.y = arena.padding;
+            arena.w = canvas.width - arena.padding * 2;
+            arena.h = canvas.height - arena.padding * 2 - 40; // Alt UI için boşluk
+        }
         window.onresize = boyutlandir;
         boyutlandir();
 
@@ -318,14 +332,14 @@
             isimAl();
             botModuAktif = true;
             takim = "mavi"; 
-            let ozelOda = "bot_pixel_v1_" + Math.floor(Math.random() * 100000);
+            let ozelOda = "bot_arena_v2_" + Math.floor(Math.random() * 100000);
             baslat(2, ozelOda); 
         }
 
         function baslat(kisiSayisi, ozelOdaIsmi = null) {
             isimAl();
             hedefKisiSayisi = kisiSayisi;
-            odaAdi = ozelOdaIsmi ? ozelOdaIsmi : "arena_pixel_v1_" + kisiSayisi;
+            odaAdi = ozelOdaIsmi ? ozelOdaIsmi : "arena_pixel_v2_" + kisiSayisi;
             oyunBaslamaZamani = Date.now();
             girisZamani = Date.now();
 
@@ -339,8 +353,8 @@
                 ben.isim = oyuncuIsmi;
                 ben.girisZamani = girisZamani;
                 ben.hp = 50;
-                ben.x = 100 + Math.random() * 100;
-                ben.y = 100 + Math.random() * (canvas.height - 200);
+                ben.x = arena.x + 100;
+                ben.y = arena.y + arena.h / 2;
 
                 db.ref(odaAdi + "/" + myId).set(ben);
                 db.ref(odaAdi + "/" + myId).onDisconnect().remove();
@@ -397,8 +411,8 @@
                         if (ben.takim !== yeniTakim) {
                             ben.takim = yeniTakim;
                             takim = yeniTakim;
-                            ben.x = takim === "mavi" ? 100 + Math.random() * 100 : canvas.width - 200 + Math.random() * 100;
-                            ben.y = 100 + Math.random() * (canvas.height - 200);
+                            ben.x = takim === "mavi" ? arena.x + 100 : arena.x + arena.w - 100;
+                            ben.y = arena.y + arena.h / 2;
                             db.ref(odaAdi + "/" + myId).update({ takim: yeniTakim, x: ben.x, y: ben.y });
                         }
                     }
@@ -468,14 +482,14 @@
                     let rastgeleIsim = botIsimler[Math.floor(Math.random() * botIsimler.length)];
 
                     db.ref(odaAdi + "/" + botId).set({
-                        x: canvas.width / 2 + (Math.random() - 0.5) * 200, 
-                        y: canvas.height / 2 + (Math.random() - 0.5) * 200, 
-                        hp: 50, takim: "kirmizi", isBot: true, yon: 1, hareket: false, isim: rastgeleIsim
+                        x: arena.x + arena.w - 100, 
+                        y: arena.y + arena.h / 2 + (Math.random() - 0.5) * 100, 
+                        hp: 50, takim: "kirmizi", isBot: true, yon: -1, hareket: false, isim: rastgeleIsim
                     });
                 }
             }
 
-            if (Date.now() - lastBotUpdate > 50) { 
+            if (Date.now() - lastBotUpdate > 80) { // Daha yavaş güncelleme
                 Object.keys(oyuncular).forEach(key => {
                     let p = oyuncular[key];
                     if (p.isBot && p.hp > 0) {
@@ -491,18 +505,26 @@
 
                         let updates = {};
                         if (enYakinDusman) {
-                            let hiz = 3; 
-                            if (enYakinDusman.x > p.x + 20) { p.x += hiz; p.yon = 1; p.hareket = true; }
-                            else if (enYakinDusman.x < p.x - 20) { p.x -= hiz; p.yon = -1; p.hareket = true; }
-                            if (enYakinDusman.y > p.y + 10) { p.y += hiz; p.hareket = true; }
-                            else if (enYakinDusman.y < p.y - 10) { p.y -= hiz; p.hareket = true; }
+                            // BOT HIZI DÜŞÜRÜLDÜ: 3 -> 2
+                            let hiz = 2; 
+                            if (enYakinDusman.x > p.x + 25) { p.x += hiz; p.yon = 1; p.hareket = true; }
+                            else if (enYakinDusman.x < p.x - 25) { p.x -= hiz; p.yon = -1; p.hareket = true; }
+                            if (enYakinDusman.y > p.y + 15) { p.y += hiz; p.hareket = true; }
+                            else if (enYakinDusman.y < p.y - 15) { p.y -= hiz; p.hareket = true; }
 
-                            if (minMesafe < 60 && !p.saldiriyor) { 
+                            // Arena sınırları
+                            p.x = Math.max(arena.x + 20, Math.min(arena.x + arena.w - 20, p.x));
+                            p.y = Math.max(arena.y + 20, Math.min(arena.y + arena.h - 20, p.y));
+
+                            // BOT SALDIRI MESAFESİ ARTIRILDI: 60 -> 50 (daha yakından saldırır)
+                            // BOT SALDIRI GECİKMESİ: Rastgele bekletme
+                            if (minMesafe < 50 && !p.saldiriyor && Math.random() < 0.4) { 
                                 updates.saldiriyor = true;
-                                setTimeout(() => db.ref(odaAdi + "/" + key + "/saldiriyor").set(false), 300);
+                                setTimeout(() => db.ref(odaAdi + "/" + key + "/saldiriyor").set(false), 400);
                                 if (enYakinDusmanKey && oyuncular[enYakinDusmanKey]) {
                                     let hedefHp = oyuncular[enYakinDusmanKey].hp || 50;
-                                    db.ref(odaAdi + "/" + enYakinDusmanKey + "/hp").set(Math.max(0, hedefHp - 5));
+                                    // BOT HASARI DÜŞÜRÜLDÜ: 5 -> 3
+                                    db.ref(odaAdi + "/" + enYakinDusmanKey + "/hp").set(Math.max(0, hedefHp - 3));
                                 }
                             }
                         } else { p.hareket = false; }
@@ -529,6 +551,7 @@
                     if (d < 70 && yuzDonuk) { 
                         db.ref(odaAdi + "/" + key + "/hp").once('value').then(snapshot => {
                             let mevcutHp = snapshot.val() ?? 50;
+                            // OYUNCU HASARI: 5 (aynı)
                             db.ref(odaAdi + "/" + key + "/hp").set(Math.max(0, mevcutHp - 5));
                         });
                         bildirimGoster("HIT!");
@@ -546,22 +569,151 @@
             });
         }
 
+        // ARENA ÇİZİMİ
+        function cizArena() {
+            // Dış karanlık alan
+            ctx.fillStyle = '#0a0a15';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Seyirci tribünleri (üst)
+            for(let i = 0; i < canvas.width; i += 16) {
+                let renk = (Math.floor(i/16) % 3 === 0) ? '#3a2a4a' : '#2a1a3a';
+                ctx.fillStyle = renk;
+                ctx.fillRect(i, 0, 16, arena.y - 10);
+                
+                // Seyirciler (küçük noktalar)
+                if(Math.random() > 0.5) {
+                    ctx.fillStyle = ['#ff004d', '#29adff', '#ffec27', '#00e436'][Math.floor(Math.random()*4)];
+                    ctx.fillRect(i + 4, arena.y - 30 + Math.sin(Date.now()/500 + i)*2, 8, 8);
+                }
+            }
+            
+            // Seyirci tribünleri (alt)
+            for(let i = 0; i < canvas.width; i += 16) {
+                let renk = (Math.floor(i/16) % 3 === 0) ? '#3a2a4a' : '#2a1a3a';
+                ctx.fillStyle = renk;
+                ctx.fillRect(i, arena.y + arena.h + 10, 16, canvas.height);
+            }
+            
+            // Arena duvarları (pixel taşlar)
+            ctx.fillStyle = '#4a3a5a';
+            // Üst duvar
+            for(let x = arena.x - 16; x <= arena.x + arena.w; x += 16) {
+                ctx.fillRect(x, arena.y - 16, 16, 16);
+                ctx.fillStyle = '#3a2a4a';
+                ctx.fillRect(x + 2, arena.y - 14, 6, 6);
+                ctx.fillRect(x + 10, arena.y - 8, 4, 4);
+                ctx.fillStyle = '#4a3a5a';
+            }
+            // Alt duvar
+            for(let x = arena.x - 16; x <= arena.x + arena.w; x += 16) {
+                ctx.fillRect(x, arena.y + arena.h, 16, 16);
+                ctx.fillStyle = '#3a2a4a';
+                ctx.fillRect(x + 2, arena.y + arena.h + 2, 6, 6);
+                ctx.fillRect(x + 10, arena.y + arena.h + 8, 4, 4);
+                ctx.fillStyle = '#4a3a5a';
+            }
+            // Sol duvar
+            for(let y = arena.y; y <= arena.y + arena.h; y += 16) {
+                ctx.fillRect(arena.x - 16, y, 16, 16);
+                ctx.fillStyle = '#3a2a4a';
+                ctx.fillRect(arena.x - 14, y + 2, 6, 6);
+                ctx.fillStyle = '#4a3a5a';
+            }
+            // Sağ duvar
+            for(let y = arena.y; y <= arena.y + arena.h; y += 16) {
+                ctx.fillRect(arena.x + arena.w, y, 16, 16);
+                ctx.fillStyle = '#3a2a4a';
+                ctx.fillRect(arena.x + arena.w + 2, y + 2, 6, 6);
+                ctx.fillStyle = '#4a3a5a';
+            }
+            
+            // Arena zemini (kum/toprak)
+            ctx.fillStyle = '#3d2b1f';
+            ctx.fillRect(arena.x, arena.y, arena.w, arena.h);
+            
+            // Zemin deseni (pixel grid)
+            for(let x = arena.x; x < arena.x + arena.w; x += 32) {
+                for(let y = arena.y; y < arena.y + arena.h; y += 32) {
+                    // Kum detayları
+                    ctx.fillStyle = '#4d3b2f';
+                    ctx.fillRect(x + 8, y + 8, 4, 4);
+                    ctx.fillRect(x + 20, y + 16, 4, 4);
+                    ctx.fillRect(x + 4, y + 24, 4, 4);
+                    
+                    // Koyu noktalar
+                    ctx.fillStyle = '#2d1b0f';
+                    ctx.fillRect(x + 16, y + 4, 2, 2);
+                    ctx.fillRect(x + 28, y + 20, 2, 2);
+                }
+            }
+            
+            // Orta çizgi
+            ctx.fillStyle = '#5d4b3f';
+            ctx.fillRect(arena.x + arena.w/2 - 2, arena.y, 4, arena.h);
+            
+            // Orta daire
+            ctx.strokeStyle = '#5d4b3f';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.arc(arena.x + arena.w/2, arena.y + arena.h/2, 50, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // Köşe meşaleleri
+            cizMesale(arena.x + 20, arena.y + 20);
+            cizMesale(arena.x + arena.w - 20, arena.y + 20);
+            cizMesale(arena.x + 20, arena.y + arena.h - 20);
+            cizMesale(arena.x + arena.w - 20, arena.y + arena.h - 20);
+            
+            // ARENA yazısı
+            ctx.fillStyle = '#ffec27';
+            ctx.font = "16px 'Press Start 2P'";
+            ctx.textAlign = "center";
+            ctx.fillText("⚔ BATTLE ARENA ⚔", canvas.width/2, arena.y - 25);
+            
+            // Takım alanları
+            ctx.fillStyle = 'rgba(41, 173, 255, 0.1)';
+            ctx.fillRect(arena.x, arena.y, arena.w * 0.3, arena.h);
+            ctx.fillStyle = 'rgba(255, 0, 77, 0.1)';
+            ctx.fillRect(arena.x + arena.w * 0.7, arena.y, arena.w * 0.3, arena.h);
+            
+            // Takım etiketleri
+            ctx.font = "8px 'Press Start 2P'";
+            ctx.fillStyle = RENKLER.mavi;
+            ctx.fillText("BLUE", arena.x + 60, arena.y + 20);
+            ctx.fillStyle = RENKLER.kirmizi;
+            ctx.fillText("RED", arena.x + arena.w - 60, arena.y + 20);
+        }
+        
+        // Meşale çizimi
+        function cizMesale(x, y) {
+            // Sopa
+            ctx.fillStyle = '#5f574f';
+            ctx.fillRect(x - 2, y, 4, 16);
+            
+            // Ateş animasyonu
+            let time = Date.now();
+            let flicker = Math.sin(time / 100) * 2;
+            
+            ctx.fillStyle = '#ffa300';
+            ctx.fillRect(x - 4, y - 8 + flicker, 8, 8);
+            ctx.fillStyle = '#ffec27';
+            ctx.fillRect(x - 2, y - 10 + flicker, 4, 6);
+            ctx.fillStyle = '#ff004d';
+            ctx.fillRect(x - 3, y - 4 + flicker, 6, 4);
+            
+            // Işık efekti
+            ctx.fillStyle = 'rgba(255, 200, 100, 0.1)';
+            ctx.beginPath();
+            ctx.arc(x, y - 4, 30, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
         function oyunDongusu() {
             if (!oyunAktif) return;
             
-            // ARKA PLAN ÇİZ
-            ctx.fillStyle = RENKLER.siyah;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Pixel grid efekti
-            ctx.strokeStyle = '#1a1a2e';
-            ctx.lineWidth = 1;
-            for(let x = 0; x < canvas.width; x += 32) {
-                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
-            }
-            for(let y = 0; y < canvas.height; y += 32) {
-                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
-            }
+            // ARENA ÇİZ
+            cizArena();
 
             if (ben.hp > 0) {
                 let hareket = false;
@@ -571,8 +723,9 @@
                 if (tuslar['a'] || tuslar['ArrowLeft']) { ben.x -= hiz; ben.yon = -1; hareket = true; }
                 if (tuslar['d'] || tuslar['ArrowRight']) { ben.x += hiz; ben.yon = 1; hareket = true; }
                 
-                ben.x = Math.max(30, Math.min(canvas.width - 30, ben.x));
-                ben.y = Math.max(50, Math.min(canvas.height - 50, ben.y));
+                // Arena sınırları
+                ben.x = Math.max(arena.x + 20, Math.min(arena.x + arena.w - 20, ben.x));
+                ben.y = Math.max(arena.y + 20, Math.min(arena.y + arena.h - 20, ben.y));
                 ben.hareket = hareket;
                 guncelle(); 
             } else {
@@ -592,7 +745,6 @@
             requestAnimationFrame(oyunDongusu);
         }
 
-        // PIXEL ART KARAKTER ÇİZİMİ
         function cizPixelKarakter(p, key) {
             let x = Math.floor(p.x);
             let y = Math.floor(p.y);
@@ -605,52 +757,51 @@
                 ctx.globalAlpha = 0.5;
             }
             
-            // Yön kontrolü
             let yon = p.yon || 1;
-            
-            // Animasyon
             let time = Date.now();
             let bounce = p.hareket ? Math.sin(time / 100) * 2 : 0;
-            let saldiriOffset = p.saldiriyor ? 8 * yon : 0;
+            let saldiriOffset = p.saldiriyor ? 10 * yon : 0;
             
             // GÖLGE
-            ctx.fillStyle = 'rgba(0,0,0,0.3)';
-            ctx.fillRect(x - 10, y + 20, 20, 6);
+            ctx.fillStyle = 'rgba(0,0,0,0.4)';
+            ctx.fillRect(x - 10, y + 22, 20, 6);
             
-            // BACAKLAR (8x8 pixel bloklar)
+            // BACAKLAR
             ctx.fillStyle = renkKoyu;
             if (p.hp > 0) {
                 let bacakOffset = p.hareket ? Math.sin(time / 80) * 4 : 0;
-                ctx.fillRect(x - 6 + bacakOffset, y + 8 + bounce, 4, 12); // Sol bacak
-                ctx.fillRect(x + 2 - bacakOffset, y + 8 + bounce, 4, 12); // Sağ bacak
+                ctx.fillRect(x - 6 + bacakOffset, y + 8 + bounce, 4, 14);
+                ctx.fillRect(x + 2 - bacakOffset, y + 8 + bounce, 4, 14);
             } else {
-                ctx.fillRect(x - 6, y + 8, 4, 12);
-                ctx.fillRect(x + 2, y + 8, 4, 12);
+                ctx.fillRect(x - 6, y + 8, 4, 14);
+                ctx.fillRect(x + 2, y + 8, 4, 14);
             }
             
             // GÖVDE
             ctx.fillStyle = renk;
-            ctx.fillRect(x - 8, y - 8 + bounce, 16, 16);
+            ctx.fillRect(x - 8, y - 8 + bounce, 16, 18);
             
-            // GÖVDE DETAY
+            // ZIRH DETAYI
             ctx.fillStyle = renkKoyu;
-            ctx.fillRect(x - 6, y - 4 + bounce, 2, 8);
+            ctx.fillRect(x - 6, y - 4 + bounce, 2, 10);
+            ctx.fillRect(x + 4, y - 4 + bounce, 2, 10);
             
             // KAFA
             ctx.fillStyle = RENKLER.krem;
-            ctx.fillRect(x - 6, y - 20 + bounce, 12, 12);
+            ctx.fillRect(x - 6, y - 22 + bounce, 12, 14);
             
-            // SAÇ
-            ctx.fillStyle = p.isBot ? RENKLER.mor : RENKLER.kahve;
-            ctx.fillRect(x - 6, y - 22 + bounce, 12, 4);
+            // KASK
+            ctx.fillStyle = renkKoyu;
+            ctx.fillRect(x - 8, y - 26 + bounce, 16, 6);
+            ctx.fillStyle = renk;
+            ctx.fillRect(x - 6, y - 24 + bounce, 12, 4);
             
             // GÖZLER
             if (p.hp > 0) {
                 ctx.fillStyle = RENKLER.siyah;
-                ctx.fillRect(x - 3 + (yon > 0 ? 2 : 0), y - 16 + bounce, 2, 2);
-                ctx.fillRect(x + 3 + (yon > 0 ? 2 : 0), y - 16 + bounce, 2, 2);
+                ctx.fillRect(x - 3 + (yon > 0 ? 2 : 0), y - 16 + bounce, 2, 3);
+                ctx.fillRect(x + 3 + (yon > 0 ? 2 : 0), y - 16 + bounce, 2, 3);
             } else {
-                // Ölü gözler (X X)
                 ctx.fillStyle = RENKLER.kirmizi;
                 ctx.fillRect(x - 4, y - 16, 2, 2);
                 ctx.fillRect(x - 2, y - 14, 2, 2);
@@ -661,33 +812,66 @@
             // KOLLAR
             ctx.fillStyle = RENKLER.krem;
             if (yon > 0) {
-                ctx.fillRect(x - 12, y - 6 + bounce, 4, 10); // Sol kol
-                ctx.fillRect(x + 8 + saldiriOffset, y - 6 + bounce, 4, 10); // Sağ kol (kılıç tutan)
+                ctx.fillRect(x - 14, y - 6 + bounce, 6, 12);
+                ctx.fillRect(x + 8 + saldiriOffset, y - 6 + bounce, 6, 12);
             } else {
-                ctx.fillRect(x + 8, y - 6 + bounce, 4, 10);
-                ctx.fillRect(x - 12 + saldiriOffset, y - 6 + bounce, 4, 10);
+                ctx.fillRect(x + 8, y - 6 + bounce, 6, 12);
+                ctx.fillRect(x - 14 + saldiriOffset, y - 6 + bounce, 6, 12);
             }
             
             // KILIÇ
             if (p.hp > 0) {
+                // Kılıç kabzası
+                ctx.fillStyle = '#5f574f';
+                if (yon > 0) {
+                    ctx.fillRect(x + 14 + saldiriOffset, y + 4 + bounce, 6, 8);
+                } else {
+                    ctx.fillRect(x - 20 + saldiriOffset, y + 4 + bounce, 6, 8);
+                }
+                
+                // Kılıç bıçağı
                 ctx.fillStyle = RENKLER.acik_gri;
                 if (yon > 0) {
-                    ctx.fillRect(x + 12 + saldiriOffset, y - 8 + bounce, 4, 20); // Kılıç gövdesi
-                    ctx.fillStyle = RENKLER.sari;
-                    ctx.fillRect(x + 10 + saldiriOffset, y + 8 + bounce, 8, 4); // Kabza
+                    ctx.fillRect(x + 16 + saldiriOffset, y - 16 + bounce, 4, 24);
+                    ctx.fillStyle = RENKLER.beyaz;
+                    ctx.fillRect(x + 17 + saldiriOffset, y - 14 + bounce, 2, 20);
                 } else {
-                    ctx.fillRect(x - 16 + saldiriOffset, y - 8 + bounce, 4, 20);
-                    ctx.fillStyle = RENKLER.sari;
-                    ctx.fillRect(x - 18 + saldiriOffset, y + 8 + bounce, 8, 4);
+                    ctx.fillRect(x - 20 + saldiriOffset, y - 16 + bounce, 4, 24);
+                    ctx.fillStyle = RENKLER.beyaz;
+                    ctx.fillRect(x - 19 + saldiriOffset, y - 14 + bounce, 2, 20);
                 }
+                
+                // Saldırı efekti
+                if (p.saldiriyor) {
+                    ctx.fillStyle = 'rgba(255, 255, 200, 0.5)';
+                    if (yon > 0) {
+                        ctx.fillRect(x + 20 + saldiriOffset, y - 10 + bounce, 20, 4);
+                    } else {
+                        ctx.fillRect(x - 40 + saldiriOffset, y - 10 + bounce, 20, 4);
+                    }
+                }
+            }
+            
+            // KALKAN (sol el)
+            ctx.fillStyle = renkKoyu;
+            if (yon > 0) {
+                ctx.fillRect(x - 18, y - 4 + bounce, 6, 14);
+                ctx.fillStyle = renk;
+                ctx.fillRect(x - 17, y - 2 + bounce, 4, 10);
+            } else {
+                ctx.fillRect(x + 12, y - 4 + bounce, 6, 14);
+                ctx.fillStyle = renk;
+                ctx.fillRect(x + 13, y - 2 + bounce, 4, 10);
             }
             
             // HP BAR
             if (p.hp > 0) {
                 ctx.fillStyle = RENKLER.siyah;
-                ctx.fillRect(x - 12, y - 32, 24, 6);
+                ctx.fillRect(x - 14, y - 36, 28, 8);
                 ctx.fillStyle = p.hp > 25 ? RENKLER.yesil : RENKLER.kirmizi;
-                ctx.fillRect(x - 11, y - 31, (p.hp / 50) * 22, 4);
+                ctx.fillRect(x - 13, y - 35, (p.hp / 50) * 26, 6);
+                ctx.fillStyle = p.hp > 25 ? '#00a029' : '#aa0030';
+                ctx.fillRect(x - 13, y - 32, (p.hp / 50) * 26, 2);
             }
             
             // İSİM
@@ -696,11 +880,7 @@
             ctx.textAlign = "center";
             let isim = p.isim || (p.isBot ? "CPU" : "???");
             if (key === myId) isim = ">" + isim + "<";
-            ctx.fillText(isim, x, y - 38);
-            
-            // TAKIM ETİKETİ
-            ctx.fillStyle = renk;
-            ctx.fillText(p.takim === "mavi" ? "BLU" : "RED", x, y - 48);
+            ctx.fillText(isim, x, y - 42);
             
             ctx.restore();
         }
