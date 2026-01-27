@@ -2,11 +2,12 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Mami Games: PVP Arena</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        * { image-rendering: pixelated; }
-        body { margin: 0; background: #0f0f23; overflow: hidden; font-family: 'Press Start 2P', cursive; user-select: none; }
+        * { image-rendering: pixelated; -webkit-touch-callout: none; -webkit-user-select: none; }
+        body { margin: 0; background: #0f0f23; overflow: hidden; font-family: 'Press Start 2P', cursive; user-select: none; touch-action: none; }
         
         #ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
         
@@ -27,7 +28,7 @@
         
         h1 { 
             color: #ff004d; 
-            font-size: 32px; 
+            font-size: 24px; 
             text-shadow: 4px 4px 0px #7e0026; 
             margin: 0 0 20px 0; 
             letter-spacing: 2px;
@@ -99,6 +100,7 @@
             background: #1d2b53; 
             border: 4px solid #ff004d;
             box-shadow: 4px 4px 0px #7e0026;
+            z-index: 50;
         }
         #health-bar { 
             width: 100%; height: 100%; 
@@ -109,6 +111,7 @@
             position: absolute; bottom: 55px; left: 50%; transform: translateX(-50%); 
             color: #fff; font-size: 10px;
             text-shadow: 2px 2px 0px #000;
+            z-index: 50;
         }
 
         #countdown {
@@ -187,6 +190,94 @@
             box-shadow: inset 0 0 100px rgba(0,230,118,0.1);
             z-index: 99;
         }
+
+        /* MOBİL KONTROLLER */
+        #mobile-controls {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 180px;
+            pointer-events: none;
+            z-index: 80;
+        }
+
+        /* D-PAD (Sol taraf) */
+        #dpad {
+            position: absolute;
+            left: 20px;
+            bottom: 20px;
+            width: 140px;
+            height: 140px;
+            pointer-events: auto;
+        }
+
+        .dpad-btn {
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #fff;
+            touch-action: none;
+        }
+        .dpad-btn:active, .dpad-btn.active {
+            background: rgba(255, 236, 39, 0.6);
+            border-color: #ffec27;
+        }
+        #dpad-up { top: 0; left: 50%; transform: translateX(-50%); border-radius: 8px 8px 0 0; }
+        #dpad-down { bottom: 0; left: 50%; transform: translateX(-50%); border-radius: 0 0 8px 8px; }
+        #dpad-left { left: 0; top: 50%; transform: translateY(-50%); border-radius: 8px 0 0 8px; }
+        #dpad-right { right: 0; top: 50%; transform: translateY(-50%); border-radius: 0 8px 8px 0; }
+        #dpad-center { 
+            left: 50%; top: 50%; transform: translate(-50%, -50%); 
+            width: 40px; height: 40px;
+            background: rgba(0,0,0,0.3);
+            border: none;
+            border-radius: 4px;
+        }
+
+        /* SALDIRI BUTONU (Sağ taraf) */
+        #attack-btn {
+            position: absolute;
+            right: 30px;
+            bottom: 40px;
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 0, 77, 0.5);
+            border: 4px solid #ff004d;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #fff;
+            font-family: 'Press Start 2P', cursive;
+            pointer-events: auto;
+            touch-action: none;
+            box-shadow: 0 0 20px rgba(255, 0, 77, 0.5);
+        }
+        #attack-btn:active, #attack-btn.active {
+            background: rgba(255, 0, 77, 0.9);
+            transform: scale(0.95);
+            box-shadow: 0 0 30px rgba(255, 0, 77, 0.8);
+        }
+
+        /* Mobil cihazlarda göster */
+        @media (max-width: 1024px), (pointer: coarse) {
+            #mobile-controls { display: block; }
+            #health-container { bottom: 190px; width: 150px; }
+            #health-text { bottom: 220px; font-size: 8px; }
+            h1 { font-size: 20px; }
+            .brand-logo { font-size: 12px; top: 10px; left: 15px; }
+            #room-info { font-size: 6px; padding: 6px; top: 10px; right: 10px; }
+            #exit-btn { font-size: 6px; padding: 6px 10px; }
+        }
     </style>
 </head>
 <body>
@@ -196,7 +287,7 @@
     <div id="mainMenu" class="overlay-screen">
         <div class="brand-logo">★ MAMI GAMES ★</div>
         <h1>PVP ARENA</h1>
-        <p>SOL TIK = SALDIRI<br>WASD = HAREKET<br>SON KALAN TAKIM KAZANIR!</p>
+        <p>SOL TIK / BUTON = SALDIRI<br>WASD / D-PAD = HAREKET<br>SON KALAN TAKIM KAZANIR!</p>
         
         <div class="name-input-container">
             <label for="playerNameInput">► OYUNCU ADI ◄</label>
@@ -233,6 +324,18 @@
         <div id="notification"></div>
     </div>
 
+    <!-- MOBİL KONTROLLER -->
+    <div id="mobile-controls">
+        <div id="dpad">
+            <div id="dpad-up" class="dpad-btn">▲</div>
+            <div id="dpad-down" class="dpad-btn">▼</div>
+            <div id="dpad-left" class="dpad-btn">◄</div>
+            <div id="dpad-right" class="dpad-btn">►</div>
+            <div id="dpad-center" class="dpad-btn"></div>
+        </div>
+        <div id="attack-btn">SALDIRI</div>
+    </div>
+
     <canvas id="gameCanvas"></canvas>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -255,7 +358,6 @@
         const ctx = canvas.getContext('2d');
         ctx.imageSmoothingEnabled = false;
         
-        // PICO-8 RENK PALETİ
         const RENKLER = {
             siyah: '#0f0f23',
             koyu_mavi: '#1d2b53',
@@ -272,14 +374,9 @@
             mavi: '#29adff',
             mor: '#83769c',
             pembe: '#ff77a8',
-            krem: '#ffccaa',
-            arena_zemin: '#2d1b2e',
-            arena_cim: '#1a4a1a',
-            arena_kum: '#c4a35a',
-            arena_tas: '#4a4a5e'
+            krem: '#ffccaa'
         };
 
-        // ARENA BOYUTLARI
         let arena = { x: 0, y: 0, w: 0, h: 0, padding: 80 };
         
         let myId = "player_" + Math.floor(Math.random() * 99999);
@@ -301,19 +398,78 @@
         };
 
         const tuslar = {};
+        
+        // KLAVYE KONTROLLER
         window.addEventListener('keydown', e => { tuslar[e.key] = true; if(e.code === "Space") saldir(); });
         window.addEventListener('keyup', e => tuslar[e.key] = false);
-        window.addEventListener('mousedown', () => saldir());
+        window.addEventListener('mousedown', (e) => {
+            if(e.target.id !== 'attack-btn' && !e.target.classList.contains('dpad-btn')) {
+                saldir();
+            }
+        });
+
+        // MOBİL KONTROLLER
+        function setupMobileControls() {
+            const dpadUp = document.getElementById('dpad-up');
+            const dpadDown = document.getElementById('dpad-down');
+            const dpadLeft = document.getElementById('dpad-left');
+            const dpadRight = document.getElementById('dpad-right');
+            const attackBtn = document.getElementById('attack-btn');
+
+            // Yön tuşları
+            function handleDpad(element, key) {
+                element.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    tuslar[key] = true;
+                    element.classList.add('active');
+                }, { passive: false });
+                
+                element.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    tuslar[key] = false;
+                    element.classList.remove('active');
+                }, { passive: false });
+                
+                element.addEventListener('touchcancel', (e) => {
+                    tuslar[key] = false;
+                    element.classList.remove('active');
+                });
+            }
+
+            handleDpad(dpadUp, 'w');
+            handleDpad(dpadDown, 's');
+            handleDpad(dpadLeft, 'a');
+            handleDpad(dpadRight, 'd');
+
+            // Saldırı butonu
+            attackBtn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                attackBtn.classList.add('active');
+                saldir();
+            }, { passive: false });
+            
+            attackBtn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                attackBtn.classList.remove('active');
+            }, { passive: false });
+        }
+
+        // Sayfa yüklenince mobil kontrolleri kur
+        document.addEventListener('DOMContentLoaded', setupMobileControls);
 
         function boyutlandir() { 
             canvas.width = window.innerWidth; 
             canvas.height = window.innerHeight;
-            // Arena boyutlarını güncelle
-            arena.padding = Math.min(canvas.width, canvas.height) * 0.1;
+            
+            // Mobil için arena boyutunu ayarla
+            let isMobile = window.innerWidth <= 1024 || 'ontouchstart' in window;
+            let bottomPadding = isMobile ? 200 : 80;
+            
+            arena.padding = Math.min(canvas.width, canvas.height) * 0.08;
             arena.x = arena.padding;
-            arena.y = arena.padding;
+            arena.y = arena.padding + 20;
             arena.w = canvas.width - arena.padding * 2;
-            arena.h = canvas.height - arena.padding * 2 - 40; // Alt UI için boşluk
+            arena.h = canvas.height - arena.padding * 2 - bottomPadding;
         }
         window.onresize = boyutlandir;
         boyutlandir();
@@ -332,14 +488,14 @@
             isimAl();
             botModuAktif = true;
             takim = "mavi"; 
-            let ozelOda = "bot_arena_v2_" + Math.floor(Math.random() * 100000);
+            let ozelOda = "bot_arena_v3_" + Math.floor(Math.random() * 100000);
             baslat(2, ozelOda); 
         }
 
         function baslat(kisiSayisi, ozelOdaIsmi = null) {
             isimAl();
             hedefKisiSayisi = kisiSayisi;
-            odaAdi = ozelOdaIsmi ? ozelOdaIsmi : "arena_pixel_v2_" + kisiSayisi;
+            odaAdi = ozelOdaIsmi ? ozelOdaIsmi : "arena_pixel_v3_" + kisiSayisi;
             oyunBaslamaZamani = Date.now();
             girisZamani = Date.now();
 
@@ -489,7 +645,7 @@
                 }
             }
 
-            if (Date.now() - lastBotUpdate > 80) { // Daha yavaş güncelleme
+            if (Date.now() - lastBotUpdate > 80) {
                 Object.keys(oyuncular).forEach(key => {
                     let p = oyuncular[key];
                     if (p.isBot && p.hp > 0) {
@@ -505,25 +661,20 @@
 
                         let updates = {};
                         if (enYakinDusman) {
-                            // BOT HIZI DÜŞÜRÜLDÜ: 3 -> 2
-                            let hiz = 2; 
+                            let hiz = 2;
                             if (enYakinDusman.x > p.x + 25) { p.x += hiz; p.yon = 1; p.hareket = true; }
                             else if (enYakinDusman.x < p.x - 25) { p.x -= hiz; p.yon = -1; p.hareket = true; }
                             if (enYakinDusman.y > p.y + 15) { p.y += hiz; p.hareket = true; }
                             else if (enYakinDusman.y < p.y - 15) { p.y -= hiz; p.hareket = true; }
 
-                            // Arena sınırları
                             p.x = Math.max(arena.x + 20, Math.min(arena.x + arena.w - 20, p.x));
                             p.y = Math.max(arena.y + 20, Math.min(arena.y + arena.h - 20, p.y));
 
-                            // BOT SALDIRI MESAFESİ ARTIRILDI: 60 -> 50 (daha yakından saldırır)
-                            // BOT SALDIRI GECİKMESİ: Rastgele bekletme
                             if (minMesafe < 50 && !p.saldiriyor && Math.random() < 0.4) { 
                                 updates.saldiriyor = true;
                                 setTimeout(() => db.ref(odaAdi + "/" + key + "/saldiriyor").set(false), 400);
                                 if (enYakinDusmanKey && oyuncular[enYakinDusmanKey]) {
                                     let hedefHp = oyuncular[enYakinDusmanKey].hp || 50;
-                                    // BOT HASARI DÜŞÜRÜLDÜ: 5 -> 3
                                     db.ref(odaAdi + "/" + enYakinDusmanKey + "/hp").set(Math.max(0, hedefHp - 3));
                                 }
                             }
@@ -551,7 +702,6 @@
                     if (d < 70 && yuzDonuk) { 
                         db.ref(odaAdi + "/" + key + "/hp").once('value').then(snapshot => {
                             let mevcutHp = snapshot.val() ?? 50;
-                            // OYUNCU HASARI: 5 (aynı)
                             db.ref(odaAdi + "/" + key + "/hp").set(Math.max(0, mevcutHp - 5));
                         });
                         bildirimGoster("HIT!");
@@ -569,129 +719,92 @@
             });
         }
 
-        // ARENA ÇİZİMİ
         function cizArena() {
-            // Dış karanlık alan
             ctx.fillStyle = '#0a0a15';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            // Seyirci tribünleri (üst)
             for(let i = 0; i < canvas.width; i += 16) {
                 let renk = (Math.floor(i/16) % 3 === 0) ? '#3a2a4a' : '#2a1a3a';
                 ctx.fillStyle = renk;
                 ctx.fillRect(i, 0, 16, arena.y - 10);
                 
-                // Seyirciler (küçük noktalar)
-                if(Math.random() > 0.5) {
+                if(Math.random() > 0.7) {
                     ctx.fillStyle = ['#ff004d', '#29adff', '#ffec27', '#00e436'][Math.floor(Math.random()*4)];
-                    ctx.fillRect(i + 4, arena.y - 30 + Math.sin(Date.now()/500 + i)*2, 8, 8);
+                    ctx.fillRect(i + 4, arena.y - 25 + Math.sin(Date.now()/500 + i)*2, 6, 6);
                 }
             }
             
-            // Seyirci tribünleri (alt)
             for(let i = 0; i < canvas.width; i += 16) {
                 let renk = (Math.floor(i/16) % 3 === 0) ? '#3a2a4a' : '#2a1a3a';
                 ctx.fillStyle = renk;
                 ctx.fillRect(i, arena.y + arena.h + 10, 16, canvas.height);
             }
             
-            // Arena duvarları (pixel taşlar)
             ctx.fillStyle = '#4a3a5a';
-            // Üst duvar
             for(let x = arena.x - 16; x <= arena.x + arena.w; x += 16) {
                 ctx.fillRect(x, arena.y - 16, 16, 16);
                 ctx.fillStyle = '#3a2a4a';
                 ctx.fillRect(x + 2, arena.y - 14, 6, 6);
-                ctx.fillRect(x + 10, arena.y - 8, 4, 4);
                 ctx.fillStyle = '#4a3a5a';
             }
-            // Alt duvar
             for(let x = arena.x - 16; x <= arena.x + arena.w; x += 16) {
                 ctx.fillRect(x, arena.y + arena.h, 16, 16);
-                ctx.fillStyle = '#3a2a4a';
-                ctx.fillRect(x + 2, arena.y + arena.h + 2, 6, 6);
-                ctx.fillRect(x + 10, arena.y + arena.h + 8, 4, 4);
-                ctx.fillStyle = '#4a3a5a';
             }
-            // Sol duvar
             for(let y = arena.y; y <= arena.y + arena.h; y += 16) {
                 ctx.fillRect(arena.x - 16, y, 16, 16);
-                ctx.fillStyle = '#3a2a4a';
-                ctx.fillRect(arena.x - 14, y + 2, 6, 6);
-                ctx.fillStyle = '#4a3a5a';
             }
-            // Sağ duvar
             for(let y = arena.y; y <= arena.y + arena.h; y += 16) {
                 ctx.fillRect(arena.x + arena.w, y, 16, 16);
-                ctx.fillStyle = '#3a2a4a';
-                ctx.fillRect(arena.x + arena.w + 2, y + 2, 6, 6);
-                ctx.fillStyle = '#4a3a5a';
             }
             
-            // Arena zemini (kum/toprak)
             ctx.fillStyle = '#3d2b1f';
             ctx.fillRect(arena.x, arena.y, arena.w, arena.h);
             
-            // Zemin deseni (pixel grid)
             for(let x = arena.x; x < arena.x + arena.w; x += 32) {
                 for(let y = arena.y; y < arena.y + arena.h; y += 32) {
-                    // Kum detayları
                     ctx.fillStyle = '#4d3b2f';
                     ctx.fillRect(x + 8, y + 8, 4, 4);
                     ctx.fillRect(x + 20, y + 16, 4, 4);
-                    ctx.fillRect(x + 4, y + 24, 4, 4);
-                    
-                    // Koyu noktalar
                     ctx.fillStyle = '#2d1b0f';
                     ctx.fillRect(x + 16, y + 4, 2, 2);
-                    ctx.fillRect(x + 28, y + 20, 2, 2);
                 }
             }
             
-            // Orta çizgi
             ctx.fillStyle = '#5d4b3f';
             ctx.fillRect(arena.x + arena.w/2 - 2, arena.y, 4, arena.h);
             
-            // Orta daire
             ctx.strokeStyle = '#5d4b3f';
             ctx.lineWidth = 4;
             ctx.beginPath();
-            ctx.arc(arena.x + arena.w/2, arena.y + arena.h/2, 50, 0, Math.PI * 2);
+            ctx.arc(arena.x + arena.w/2, arena.y + arena.h/2, Math.min(arena.w, arena.h) * 0.15, 0, Math.PI * 2);
             ctx.stroke();
             
-            // Köşe meşaleleri
             cizMesale(arena.x + 20, arena.y + 20);
             cizMesale(arena.x + arena.w - 20, arena.y + 20);
             cizMesale(arena.x + 20, arena.y + arena.h - 20);
             cizMesale(arena.x + arena.w - 20, arena.y + arena.h - 20);
             
-            // ARENA yazısı
             ctx.fillStyle = '#ffec27';
-            ctx.font = "16px 'Press Start 2P'";
+            ctx.font = "12px 'Press Start 2P'";
             ctx.textAlign = "center";
             ctx.fillText("⚔ BATTLE ARENA ⚔", canvas.width/2, arena.y - 25);
             
-            // Takım alanları
             ctx.fillStyle = 'rgba(41, 173, 255, 0.1)';
             ctx.fillRect(arena.x, arena.y, arena.w * 0.3, arena.h);
             ctx.fillStyle = 'rgba(255, 0, 77, 0.1)';
             ctx.fillRect(arena.x + arena.w * 0.7, arena.y, arena.w * 0.3, arena.h);
             
-            // Takım etiketleri
             ctx.font = "8px 'Press Start 2P'";
             ctx.fillStyle = RENKLER.mavi;
-            ctx.fillText("BLUE", arena.x + 60, arena.y + 20);
+            ctx.fillText("BLUE", arena.x + 50, arena.y + 15);
             ctx.fillStyle = RENKLER.kirmizi;
-            ctx.fillText("RED", arena.x + arena.w - 60, arena.y + 20);
+            ctx.fillText("RED", arena.x + arena.w - 50, arena.y + 15);
         }
         
-        // Meşale çizimi
         function cizMesale(x, y) {
-            // Sopa
             ctx.fillStyle = '#5f574f';
             ctx.fillRect(x - 2, y, 4, 16);
             
-            // Ateş animasyonu
             let time = Date.now();
             let flicker = Math.sin(time / 100) * 2;
             
@@ -701,18 +814,11 @@
             ctx.fillRect(x - 2, y - 10 + flicker, 4, 6);
             ctx.fillStyle = '#ff004d';
             ctx.fillRect(x - 3, y - 4 + flicker, 6, 4);
-            
-            // Işık efekti
-            ctx.fillStyle = 'rgba(255, 200, 100, 0.1)';
-            ctx.beginPath();
-            ctx.arc(x, y - 4, 30, 0, Math.PI * 2);
-            ctx.fill();
         }
 
         function oyunDongusu() {
             if (!oyunAktif) return;
             
-            // ARENA ÇİZ
             cizArena();
 
             if (ben.hp > 0) {
@@ -723,7 +829,6 @@
                 if (tuslar['a'] || tuslar['ArrowLeft']) { ben.x -= hiz; ben.yon = -1; hareket = true; }
                 if (tuslar['d'] || tuslar['ArrowRight']) { ben.x += hiz; ben.yon = 1; hareket = true; }
                 
-                // Arena sınırları
                 ben.x = Math.max(arena.x + 20, Math.min(arena.x + arena.w - 20, ben.x));
                 ben.y = Math.max(arena.y + 20, Math.min(arena.y + arena.h - 20, ben.y));
                 ben.hareket = hareket;
@@ -753,20 +858,16 @@
             
             ctx.save();
             
-            if (p.hp <= 0) {
-                ctx.globalAlpha = 0.5;
-            }
+            if (p.hp <= 0) ctx.globalAlpha = 0.5;
             
             let yon = p.yon || 1;
             let time = Date.now();
             let bounce = p.hareket ? Math.sin(time / 100) * 2 : 0;
             let saldiriOffset = p.saldiriyor ? 10 * yon : 0;
             
-            // GÖLGE
             ctx.fillStyle = 'rgba(0,0,0,0.4)';
             ctx.fillRect(x - 10, y + 22, 20, 6);
             
-            // BACAKLAR
             ctx.fillStyle = renkKoyu;
             if (p.hp > 0) {
                 let bacakOffset = p.hareket ? Math.sin(time / 80) * 4 : 0;
@@ -777,26 +878,21 @@
                 ctx.fillRect(x + 2, y + 8, 4, 14);
             }
             
-            // GÖVDE
             ctx.fillStyle = renk;
             ctx.fillRect(x - 8, y - 8 + bounce, 16, 18);
             
-            // ZIRH DETAYI
             ctx.fillStyle = renkKoyu;
             ctx.fillRect(x - 6, y - 4 + bounce, 2, 10);
             ctx.fillRect(x + 4, y - 4 + bounce, 2, 10);
             
-            // KAFA
             ctx.fillStyle = RENKLER.krem;
             ctx.fillRect(x - 6, y - 22 + bounce, 12, 14);
             
-            // KASK
             ctx.fillStyle = renkKoyu;
             ctx.fillRect(x - 8, y - 26 + bounce, 16, 6);
             ctx.fillStyle = renk;
             ctx.fillRect(x - 6, y - 24 + bounce, 12, 4);
             
-            // GÖZLER
             if (p.hp > 0) {
                 ctx.fillStyle = RENKLER.siyah;
                 ctx.fillRect(x - 3 + (yon > 0 ? 2 : 0), y - 16 + bounce, 2, 3);
@@ -809,7 +905,6 @@
                 ctx.fillRect(x + 4, y - 14, 2, 2);
             }
             
-            // KOLLAR
             ctx.fillStyle = RENKLER.krem;
             if (yon > 0) {
                 ctx.fillRect(x - 14, y - 6 + bounce, 6, 12);
@@ -819,9 +914,7 @@
                 ctx.fillRect(x - 14 + saldiriOffset, y - 6 + bounce, 6, 12);
             }
             
-            // KILIÇ
             if (p.hp > 0) {
-                // Kılıç kabzası
                 ctx.fillStyle = '#5f574f';
                 if (yon > 0) {
                     ctx.fillRect(x + 14 + saldiriOffset, y + 4 + bounce, 6, 8);
@@ -829,7 +922,6 @@
                     ctx.fillRect(x - 20 + saldiriOffset, y + 4 + bounce, 6, 8);
                 }
                 
-                // Kılıç bıçağı
                 ctx.fillStyle = RENKLER.acik_gri;
                 if (yon > 0) {
                     ctx.fillRect(x + 16 + saldiriOffset, y - 16 + bounce, 4, 24);
@@ -841,7 +933,6 @@
                     ctx.fillRect(x - 19 + saldiriOffset, y - 14 + bounce, 2, 20);
                 }
                 
-                // Saldırı efekti
                 if (p.saldiriyor) {
                     ctx.fillStyle = 'rgba(255, 255, 200, 0.5)';
                     if (yon > 0) {
@@ -852,7 +943,6 @@
                 }
             }
             
-            // KALKAN (sol el)
             ctx.fillStyle = renkKoyu;
             if (yon > 0) {
                 ctx.fillRect(x - 18, y - 4 + bounce, 6, 14);
@@ -864,17 +954,13 @@
                 ctx.fillRect(x + 13, y - 2 + bounce, 4, 10);
             }
             
-            // HP BAR
             if (p.hp > 0) {
                 ctx.fillStyle = RENKLER.siyah;
                 ctx.fillRect(x - 14, y - 36, 28, 8);
                 ctx.fillStyle = p.hp > 25 ? RENKLER.yesil : RENKLER.kirmizi;
                 ctx.fillRect(x - 13, y - 35, (p.hp / 50) * 26, 6);
-                ctx.fillStyle = p.hp > 25 ? '#00a029' : '#aa0030';
-                ctx.fillRect(x - 13, y - 32, (p.hp / 50) * 26, 2);
             }
             
-            // İSİM
             ctx.fillStyle = RENKLER.beyaz;
             ctx.font = "8px 'Press Start 2P'";
             ctx.textAlign = "center";
