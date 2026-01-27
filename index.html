@@ -113,6 +113,16 @@
             text-shadow: 2px 2px 0px #000;
             z-index: 50;
         }
+        
+        /* REGEN GÖSTERGE */
+        #regen-indicator {
+            position: absolute; bottom: 85px; left: 50%; transform: translateX(-50%);
+            color: #00e436; font-size: 8px;
+            text-shadow: 2px 2px 0px #000;
+            z-index: 50;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
 
         #countdown {
             position: absolute; top: 35%; left: 50%; transform: translate(-50%, -50%);
@@ -191,7 +201,6 @@
             z-index: 99;
         }
 
-        /* MOBİL KONTROLLER */
         #mobile-controls {
             display: none;
             position: fixed;
@@ -203,7 +212,6 @@
             z-index: 80;
         }
 
-        /* D-PAD (Sol taraf) */
         #dpad {
             position: absolute;
             left: 20px;
@@ -242,7 +250,6 @@
             border-radius: 4px;
         }
 
-        /* SALDIRI BUTONU (Sağ taraf) */
         #attack-btn {
             position: absolute;
             right: 30px;
@@ -268,11 +275,11 @@
             box-shadow: 0 0 30px rgba(255, 0, 77, 0.8);
         }
 
-        /* Mobil cihazlarda göster */
         @media (max-width: 1024px), (pointer: coarse) {
             #mobile-controls { display: block; }
             #health-container { bottom: 190px; width: 150px; }
             #health-text { bottom: 220px; font-size: 8px; }
+            #regen-indicator { bottom: 250px; }
             h1 { font-size: 20px; }
             .brand-logo { font-size: 12px; top: 10px; left: 15px; }
             #room-info { font-size: 6px; padding: 6px; top: 10px; right: 10px; }
@@ -287,7 +294,7 @@
     <div id="mainMenu" class="overlay-screen">
         <div class="brand-logo">★ MAMI GAMES ★</div>
         <h1>PVP ARENA</h1>
-        <p>SOL TIK / BUTON = SALDIRI<br>WASD / D-PAD = HAREKET<br>SON KALAN TAKIM KAZANIR!</p>
+        <p>SOL TIK / BUTON = SALDIRI<br>WASD / D-PAD = HAREKET<br>30 SN VURULMAZSAN HP YENİLENİR!<br>SON KALAN TAKIM KAZANIR!</p>
         
         <div class="name-input-container">
             <label for="playerNameInput">► OYUNCU ADI ◄</label>
@@ -316,6 +323,7 @@
     <div id="ui-layer" style="display: none;">
         <button id="exit-btn" onclick="cikisYap()">◄ CIKIS</button>
         <div id="room-info">YUKLENIYOR...</div>
+        <div id="regen-indicator">♥ REGEN ♥</div>
         <div id="health-text">HP: 50</div>
         <div id="health-container">
             <div id="health-bar"></div>
@@ -324,7 +332,6 @@
         <div id="notification"></div>
     </div>
 
-    <!-- MOBİL KONTROLLER -->
     <div id="mobile-controls">
         <div id="dpad">
             <div id="dpad-up" class="dpad-btn">▲</div>
@@ -377,6 +384,17 @@
             krem: '#ffccaa'
         };
 
+        // OYUN AYARLARI
+        const AYARLAR = {
+            regenSuresi: 30000,      // 30 saniye vurulmadan geçmesi lazım
+            regenMiktari: 2,         // Saniyede 2 HP iyileşir
+            maxHp: 50,
+            oyuncuHasar: 5,
+            botHasar: 3,
+            oyuncuHiz: 4,
+            botHiz: 3.5              // Bot hızı artırıldı: 2 -> 3.5
+        };
+
         let arena = { x: 0, y: 0, w: 0, h: 0, padding: 80 };
         
         let myId = "player_" + Math.floor(Math.random() * 99999);
@@ -389,6 +407,7 @@
         let oyunBaslamaZamani = 0;
         let girisZamani = 0;
         let oyunBasladi = false;
+        let sonRegenZamani = 0;
         
         let takim = "mavi"; 
         let ben = {
@@ -399,7 +418,6 @@
 
         const tuslar = {};
         
-        // KLAVYE KONTROLLER
         window.addEventListener('keydown', e => { tuslar[e.key] = true; if(e.code === "Space") saldir(); });
         window.addEventListener('keyup', e => tuslar[e.key] = false);
         window.addEventListener('mousedown', (e) => {
@@ -408,7 +426,6 @@
             }
         });
 
-        // MOBİL KONTROLLER
         function setupMobileControls() {
             const dpadUp = document.getElementById('dpad-up');
             const dpadDown = document.getElementById('dpad-down');
@@ -416,7 +433,6 @@
             const dpadRight = document.getElementById('dpad-right');
             const attackBtn = document.getElementById('attack-btn');
 
-            // Yön tuşları
             function handleDpad(element, key) {
                 element.addEventListener('touchstart', (e) => {
                     e.preventDefault();
@@ -441,7 +457,6 @@
             handleDpad(dpadLeft, 'a');
             handleDpad(dpadRight, 'd');
 
-            // Saldırı butonu
             attackBtn.addEventListener('touchstart', (e) => {
                 e.preventDefault();
                 attackBtn.classList.add('active');
@@ -454,14 +469,12 @@
             }, { passive: false });
         }
 
-        // Sayfa yüklenince mobil kontrolleri kur
         document.addEventListener('DOMContentLoaded', setupMobileControls);
 
         function boyutlandir() { 
             canvas.width = window.innerWidth; 
             canvas.height = window.innerHeight;
             
-            // Mobil için arena boyutunu ayarla
             let isMobile = window.innerWidth <= 1024 || 'ontouchstart' in window;
             let bottomPadding = isMobile ? 200 : 80;
             
@@ -488,16 +501,17 @@
             isimAl();
             botModuAktif = true;
             takim = "mavi"; 
-            let ozelOda = "bot_arena_v3_" + Math.floor(Math.random() * 100000);
+            let ozelOda = "bot_arena_v4_" + Math.floor(Math.random() * 100000);
             baslat(2, ozelOda); 
         }
 
         function baslat(kisiSayisi, ozelOdaIsmi = null) {
             isimAl();
             hedefKisiSayisi = kisiSayisi;
-            odaAdi = ozelOdaIsmi ? ozelOdaIsmi : "arena_pixel_v3_" + kisiSayisi;
+            odaAdi = ozelOdaIsmi ? ozelOdaIsmi : "arena_pixel_v4_" + kisiSayisi;
             oyunBaslamaZamani = Date.now();
             girisZamani = Date.now();
+            ben.sonHasarZamani = Date.now(); // Başlangıçta şimdiki zaman
 
             document.getElementById('mainMenu').style.display = 'none';
             document.getElementById('ui-layer').style.display = 'block';
@@ -509,6 +523,7 @@
                 ben.isim = oyuncuIsmi;
                 ben.girisZamani = girisZamani;
                 ben.hp = 50;
+                ben.sonHasarZamani = Date.now();
                 ben.x = arena.x + 100;
                 ben.y = arena.y + arena.h / 2;
 
@@ -518,7 +533,10 @@
                 db.ref(odaAdi).on('value', snapshot => {
                     oyuncular = snapshot.val() || {};
                     if(!oyuncular[myId]) oyuncular[myId] = ben;
-                    if(oyuncular[myId] && oyuncular[myId].hp !== undefined) ben.hp = oyuncular[myId].hp;
+                    if(oyuncular[myId]) {
+                        if(oyuncular[myId].hp !== undefined) ben.hp = oyuncular[myId].hp;
+                        if(oyuncular[myId].sonHasarZamani !== undefined) ben.sonHasarZamani = oyuncular[myId].sonHasarZamani;
+                    }
                     arayuzGuncelle();
                     kazanmaKontrolu();
                 });
@@ -533,6 +551,7 @@
             ben.girisZamani = girisZamani;
             ben.takim = "bekliyor";
             ben.hp = 50;
+            ben.sonHasarZamani = Date.now();
             ben.x = canvas.width / 2;
             ben.y = canvas.height / 2;
 
@@ -550,7 +569,10 @@
                 db.ref(odaAdi).on('value', snapshot => {
                     oyuncular = snapshot.val() || {};
                     if(!oyuncular[myId]) oyuncular[myId] = ben;
-                    if(oyuncular[myId] && oyuncular[myId].hp !== undefined) ben.hp = oyuncular[myId].hp;
+                    if(oyuncular[myId]) {
+                        if(oyuncular[myId].hp !== undefined) ben.hp = oyuncular[myId].hp;
+                        if(oyuncular[myId].sonHasarZamani !== undefined) ben.sonHasarZamani = oyuncular[myId].sonHasarZamani;
+                    }
 
                     let gercekOyuncular = Object.entries(oyuncular)
                         .filter(([k, p]) => !p.isBot)
@@ -622,6 +644,32 @@
             }
         }
 
+        // HP REGEN SİSTEMİ
+        function hpRegenKontrol() {
+            if (ben.hp <= 0 || ben.hp >= AYARLAR.maxHp) {
+                document.getElementById('regen-indicator').style.opacity = '0';
+                return;
+            }
+            
+            let simdi = Date.now();
+            let sonHasardanGecenSure = simdi - ben.sonHasarZamani;
+            
+            // 30 saniye vurulmadıysa HP regen başla
+            if (sonHasardanGecenSure >= AYARLAR.regenSuresi) {
+                document.getElementById('regen-indicator').style.opacity = '1';
+                
+                // Her saniye regen yap
+                if (simdi - sonRegenZamani >= 1000) {
+                    ben.hp = Math.min(AYARLAR.maxHp, ben.hp + AYARLAR.regenMiktari);
+                    db.ref(odaAdi + "/" + myId + "/hp").set(ben.hp);
+                    sonRegenZamani = simdi;
+                    bildirimGoster("+HP");
+                }
+            } else {
+                document.getElementById('regen-indicator').style.opacity = '0';
+            }
+        }
+
         let lastBotUpdate = 0;
         function botlariYonet() {
             if (!botModuAktif) return;
@@ -640,12 +688,13 @@
                     db.ref(odaAdi + "/" + botId).set({
                         x: arena.x + arena.w - 100, 
                         y: arena.y + arena.h / 2 + (Math.random() - 0.5) * 100, 
-                        hp: 50, takim: "kirmizi", isBot: true, yon: -1, hareket: false, isim: rastgeleIsim
+                        hp: 50, takim: "kirmizi", isBot: true, yon: -1, hareket: false, isim: rastgeleIsim,
+                        sonHasarZamani: Date.now()
                     });
                 }
             }
 
-            if (Date.now() - lastBotUpdate > 80) {
+            if (Date.now() - lastBotUpdate > 60) { // Daha sık güncelleme
                 Object.keys(oyuncular).forEach(key => {
                     let p = oyuncular[key];
                     if (p.isBot && p.hp > 0) {
@@ -660,22 +709,32 @@
                         });
 
                         let updates = {};
+                        
+                        // BOT HP REGEN
+                        let botSonHasar = p.sonHasarZamani || Date.now();
+                        if (Date.now() - botSonHasar >= AYARLAR.regenSuresi && p.hp < AYARLAR.maxHp) {
+                            updates.hp = Math.min(AYARLAR.maxHp, p.hp + 0.1); // Botlar daha yavaş regen
+                        }
+                        
                         if (enYakinDusman) {
-                            let hiz = 2;
-                            if (enYakinDusman.x > p.x + 25) { p.x += hiz; p.yon = 1; p.hareket = true; }
-                            else if (enYakinDusman.x < p.x - 25) { p.x -= hiz; p.yon = -1; p.hareket = true; }
-                            if (enYakinDusman.y > p.y + 15) { p.y += hiz; p.hareket = true; }
-                            else if (enYakinDusman.y < p.y - 15) { p.y -= hiz; p.hareket = true; }
+                            // BOT HIZI ARTIRILDI
+                            let hiz = AYARLAR.botHiz;
+                            if (enYakinDusman.x > p.x + 20) { p.x += hiz; p.yon = 1; p.hareket = true; }
+                            else if (enYakinDusman.x < p.x - 20) { p.x -= hiz; p.yon = -1; p.hareket = true; }
+                            if (enYakinDusman.y > p.y + 10) { p.y += hiz; p.hareket = true; }
+                            else if (enYakinDusman.y < p.y - 10) { p.y -= hiz; p.hareket = true; }
 
                             p.x = Math.max(arena.x + 20, Math.min(arena.x + arena.w - 20, p.x));
                             p.y = Math.max(arena.y + 20, Math.min(arena.y + arena.h - 20, p.y));
 
-                            if (minMesafe < 50 && !p.saldiriyor && Math.random() < 0.4) { 
+                            if (minMesafe < 55 && !p.saldiriyor && Math.random() < 0.5) { 
                                 updates.saldiriyor = true;
-                                setTimeout(() => db.ref(odaAdi + "/" + key + "/saldiriyor").set(false), 400);
+                                setTimeout(() => db.ref(odaAdi + "/" + key + "/saldiriyor").set(false), 350);
                                 if (enYakinDusmanKey && oyuncular[enYakinDusmanKey]) {
                                     let hedefHp = oyuncular[enYakinDusmanKey].hp || 50;
-                                    db.ref(odaAdi + "/" + enYakinDusmanKey + "/hp").set(Math.max(0, hedefHp - 3));
+                                    db.ref(odaAdi + "/" + enYakinDusmanKey + "/hp").set(Math.max(0, hedefHp - AYARLAR.botHasar));
+                                    // Hedefin sonHasarZamani güncelle
+                                    db.ref(odaAdi + "/" + enYakinDusmanKey + "/sonHasarZamani").set(Date.now());
                                 }
                             }
                         } else { p.hareket = false; }
@@ -702,7 +761,9 @@
                     if (d < 70 && yuzDonuk) { 
                         db.ref(odaAdi + "/" + key + "/hp").once('value').then(snapshot => {
                             let mevcutHp = snapshot.val() ?? 50;
-                            db.ref(odaAdi + "/" + key + "/hp").set(Math.max(0, mevcutHp - 5));
+                            db.ref(odaAdi + "/" + key + "/hp").set(Math.max(0, mevcutHp - AYARLAR.oyuncuHasar));
+                            // Rakibin sonHasarZamani güncelle (regen resetle)
+                            db.ref(odaAdi + "/" + key + "/sonHasarZamani").set(Date.now());
                         });
                         bildirimGoster("HIT!");
                     }
@@ -715,7 +776,8 @@
                 x: ben.x, y: ben.y, yon: ben.yon, 
                 hareket: ben.hp > 0 ? ben.hareket : false, 
                 saldiriyor: ben.hp > 0 ? ben.saldiriyor : false, 
-                takim: ben.takim, isim: ben.isim, girisZamani: ben.girisZamani
+                takim: ben.takim, isim: ben.isim, girisZamani: ben.girisZamani,
+                sonHasarZamani: ben.sonHasarZamani
             });
         }
 
@@ -823,7 +885,7 @@
 
             if (ben.hp > 0) {
                 let hareket = false;
-                let hiz = 4;
+                let hiz = AYARLAR.oyuncuHiz;
                 if (tuslar['w'] || tuslar['ArrowUp']) { ben.y -= hiz; hareket = true; }
                 if (tuslar['s'] || tuslar['ArrowDown']) { ben.y += hiz; hareket = true; }
                 if (tuslar['a'] || tuslar['ArrowLeft']) { ben.x -= hiz; ben.yon = -1; hareket = true; }
@@ -833,11 +895,14 @@
                 ben.y = Math.max(arena.y + 20, Math.min(arena.y + arena.h - 20, ben.y));
                 ben.hareket = hareket;
                 guncelle(); 
+                
+                // HP REGEN KONTROL
+                hpRegenKontrol();
             } else {
                 guncelle();
             }
 
-            let barW = Math.max(0, (ben.hp / 50) * 100);
+            let barW = Math.max(0, (ben.hp / AYARLAR.maxHp) * 100);
             document.getElementById('health-bar').style.width = barW + "%";
             document.getElementById('health-bar').style.background = ben.hp > 25 ? RENKLER.yesil : RENKLER.kirmizi;
             document.getElementById('health-text').innerText = "HP: " + Math.max(0, Math.ceil(ben.hp));
@@ -958,7 +1023,14 @@
                 ctx.fillStyle = RENKLER.siyah;
                 ctx.fillRect(x - 14, y - 36, 28, 8);
                 ctx.fillStyle = p.hp > 25 ? RENKLER.yesil : RENKLER.kirmizi;
-                ctx.fillRect(x - 13, y - 35, (p.hp / 50) * 26, 6);
+                ctx.fillRect(x - 13, y - 35, (p.hp / AYARLAR.maxHp) * 26, 6);
+                
+                // REGEN EFEKT (HP yenileniyorsa parla)
+                let sonHasar = p.sonHasarZamani || 0;
+                if (Date.now() - sonHasar >= AYARLAR.regenSuresi && p.hp < AYARLAR.maxHp) {
+                    ctx.fillStyle = `rgba(0, 228, 54, ${0.3 + Math.sin(Date.now() / 200) * 0.3})`;
+                    ctx.fillRect(x - 14, y - 36, 28, 8);
+                }
             }
             
             ctx.fillStyle = RENKLER.beyaz;
