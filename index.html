@@ -174,6 +174,7 @@
         let botModuAktif = false;
         let oyunBaslamaZamani = 0;
         let girisZamani = 0;
+        let oyunBasladi = false;
         
         let takim = "mavi"; 
         let ben = {
@@ -205,14 +206,14 @@
             isimAl();
             botModuAktif = true;
             takim = "mavi"; 
-            let ozelOda = "bot_room_v6_" + Math.floor(Math.random() * 100000);
+            let ozelOda = "bot_room_v7_" + Math.floor(Math.random() * 100000);
             baslat(2, ozelOda); 
         }
 
         function baslat(kisiSayisi, ozelOdaIsmi = null) {
             isimAl();
             hedefKisiSayisi = kisiSayisi;
-            odaAdi = ozelOdaIsmi ? ozelOdaIsmi : "arena_online_v6_" + kisiSayisi;
+            odaAdi = ozelOdaIsmi ? ozelOdaIsmi : "arena_online_v7_" + kisiSayisi;
             oyunBaslamaZamani = Date.now();
             girisZamani = Date.now();
 
@@ -237,7 +238,6 @@
                     if(!oyuncular[myId]) {
                         oyuncular[myId] = ben;
                     }
-                    // HP'yi Firebase'den al
                     if(oyuncular[myId] && oyuncular[myId].hp !== undefined) {
                         ben.hp = oyuncular[myId].hp;
                     }
@@ -278,7 +278,6 @@
                         oyuncular[myId] = ben;
                     }
                     
-                    // HP'yi Firebase'den al - ÖNEMLİ!
                     if(oyuncular[myId] && oyuncular[myId].hp !== undefined) {
                         ben.hp = oyuncular[myId].hp;
                     }
@@ -332,6 +331,7 @@
                     sayac--;
                 } else {
                     cd.innerText = "SAVAŞ!";
+                    oyunBasladi = true; // Oyun başladı!
                     setTimeout(() => cd.style.opacity = 0, 1000);
                     clearInterval(interval);
                 }
@@ -455,7 +455,6 @@
                     let d = Math.sqrt((rakip.x - ben.x)**2 + (rakip.y - ben.y)**2);
                     let yuzDonuk = (ben.yon === 1 && rakip.x > ben.x) || (ben.yon === -1 && rakip.x < ben.x);
                     if (d < 100 && yuzDonuk) { 
-                        // Firebase'den güncel HP'yi al ve düşür
                         db.ref(odaAdi + "/" + key + "/hp").once('value').then(snapshot => {
                             let mevcutHp = snapshot.val();
                             if (mevcutHp === null) mevcutHp = 50;
@@ -468,7 +467,6 @@
             });
         }
 
-        // GÜNCELLEMİŞ: HP artık burada yazılmıyor!
         function guncelle() {
             let veri = {
                 x: ben.x, 
@@ -479,7 +477,6 @@
                 takim: ben.takim,
                 isim: ben.isim,
                 girisZamani: ben.girisZamani
-                // HP BURADA YOK! HP sadece hasar alındığında değişiyor
             };
             db.ref(odaAdi + "/" + myId).update(veri);
         }
@@ -504,7 +501,6 @@
                 guncelle();
             }
 
-            // HP barını Firebase'den gelen değere göre göster
             let barW = Math.max(0, (ben.hp / 50) * 100);
             document.getElementById('health-bar').style.width = barW + "%";
             document.getElementById('health-text').innerText = Math.max(0, Math.ceil(ben.hp)) + " HP";
@@ -585,18 +581,20 @@
             setTimeout(() => n.style.opacity = 0, 1000);
         }
 
+        // DÜZELTİLMİŞ KAZANMA KONTROLÜ
         function kazanmaKontrolu() {
-            if (Date.now() - oyunBaslamaZamani < 4000) return;
+            // Oyun başlamadan kontrol yapma
+            if (!oyunBasladi) return;
 
             let m = 0, k = 0;
             Object.values(oyuncular).forEach(p => {
-                if (p.hp > 0) { if (p.takim === "mavi") m++; else if (p.takim === "kirmizi") k++; }
+                if (p.hp > 0) { 
+                    if (p.takim === "mavi") m++; 
+                    else if (p.takim === "kirmizi") k++; 
+                }
             });
 
-            let toplamCanli = m + k;
-            if (!botModuAktif && toplamCanli < 2) return;
-            if (botModuAktif && toplamCanli === 0) return; 
-
+            // Ekran zaten gösteriliyorsa tekrar gösterme
             let ekran = document.getElementById('gameOverScreen');
             if (ekran.style.display !== 'none') return; 
 
