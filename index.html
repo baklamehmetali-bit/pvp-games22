@@ -3,140 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <title>Mami Games: PVP Arena</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; background: #222; overflow: hidden; font-family: 'Arial', sans-serif; user-select: none; }
+        * { image-rendering: pixelated; }
+        body { margin: 0; background: #0f0f23; overflow: hidden; font-family: 'Press Start 2P', cursive; user-select: none; }
         
         #ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
         
         .overlay-screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.92);
+            background: #0f0f23;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             z-index: 20; pointer-events: auto;
+            border: 8px solid #3a3a5c;
+            box-sizing: border-box;
         }
         
         .brand-logo {
-            position: absolute; top: 30px; left: 40px;
-            font-size: 32px; font-weight: 900; color: #f39c12;
-            text-transform: uppercase; font-family: 'Verdana', sans-serif;
-            letter-spacing: 2px; text-shadow: 3px 3px 0px #000; z-index: 30;
+            position: absolute; top: 20px; left: 30px;
+            font-size: 16px; color: #ffcc00;
+            text-shadow: 4px 4px 0px #aa8800; z-index: 30;
         }
         
-        h1 { color: #e74c3c; font-size: 70px; text-shadow: 0 0 20px rgba(231, 76, 60, 0.5); margin: 0 0 20px 0; letter-spacing: 5px; font-weight: 900; }
-        p { color: #ccc; font-size: 18px; max-width: 600px; text-align: center; line-height: 1.5; }
+        h1 { 
+            color: #ff004d; 
+            font-size: 32px; 
+            text-shadow: 4px 4px 0px #7e0026; 
+            margin: 0 0 20px 0; 
+            letter-spacing: 2px;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
         
-        .btn-group { display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap; justify-content: center; }
+        p { color: #c2c3c7; font-size: 8px; max-width: 500px; text-align: center; line-height: 2; }
+        
+        .btn-group { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; justify-content: center; }
         button {
-            background: #3498db; color: white; border: none; padding: 15px 30px;
-            font-size: 18px; border-radius: 8px; cursor: pointer; font-weight: bold;
-            box-shadow: 0 4px 0 #2980b9; transition: transform 0.1s;
+            background: #29adff; 
+            color: #0f0f23; 
+            border: 4px solid #1d6fa5;
+            padding: 12px 20px;
+            font-size: 10px; 
+            font-family: 'Press Start 2P', cursive;
+            cursor: pointer;
+            box-shadow: 4px 4px 0px #1d6fa5;
+            transition: all 0.1s;
         }
-        button:active { transform: translateY(4px); box-shadow: none; }
-        button:hover { background: #5dade2; }
+        button:hover { 
+            background: #5fcde4; 
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #1d6fa5;
+        }
+        button:active { 
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #1d6fa5;
+        }
         
-        .bot-btn { background: #8e44ad; box-shadow: 0 4px 0 #6c3483; width: 100%; max-width: 300px; margin-bottom: 20px; }
-        .bot-btn:hover { background: #9b59b6; }
-        button.red { background: #e74c3c; box-shadow: 0 4px 0 #c0392b; }
-        button.red:hover { background: #ec7063; }
+        .bot-btn { 
+            background: #8b5cf6; 
+            border-color: #5b3a9e;
+            box-shadow: 4px 4px 0px #5b3a9e;
+            width: 100%; 
+            max-width: 280px; 
+            margin-bottom: 15px; 
+        }
+        .bot-btn:hover { background: #a78bfa; }
+        
+        button.red { 
+            background: #ff004d; 
+            border-color: #7e0026;
+            box-shadow: 4px 4px 0px #7e0026;
+        }
+        button.red:hover { background: #ff5577; }
 
         #exit-btn {
-            pointer-events: auto; position: absolute; top: 20px; left: 20px;
-            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2);
-            padding: 10px 20px; font-size: 14px; color: white; border-radius: 5px; cursor: pointer;
+            pointer-events: auto; position: absolute; top: 15px; left: 15px;
+            background: #1d2b53; border: 3px solid #3a3a5c;
+            padding: 8px 15px; font-size: 8px; color: #fff;
+            box-shadow: 3px 3px 0px #3a3a5c;
         }
-        #exit-btn:hover { background: rgba(255, 0, 0, 0.3); border-color: red; }
 
-        #room-info { position: absolute; top: 20px; right: 20px; color: rgba(255,255,255,0.5); font-size: 14px; text-align: right; }
+        #room-info { 
+            position: absolute; top: 15px; right: 15px; 
+            color: #c2c3c7; font-size: 7px; text-align: right;
+            background: #1d2b53; padding: 10px; border: 3px solid #3a3a5c;
+            line-height: 2;
+        }
 
         #health-container {
-            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-            width: 300px; height: 20px; background: #111; border: 2px solid #555; border-radius: 10px; overflow: hidden;
+            position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%);
+            width: 200px; height: 20px; 
+            background: #1d2b53; 
+            border: 4px solid #ff004d;
+            box-shadow: 4px 4px 0px #7e0026;
         }
-        #health-bar { width: 100%; height: 100%; background: linear-gradient(90deg, #2ecc71, #27ae60); transition: width 0.2s; }
+        #health-bar { 
+            width: 100%; height: 100%; 
+            background: #00e436;
+            transition: width 0.1s steps(10);
+        }
         #health-text { 
             position: absolute; bottom: 55px; left: 50%; transform: translateX(-50%); 
-            color: white; font-weight: bold; font-size: 20px; text-shadow: 1px 1px 2px black;
+            color: #fff; font-size: 10px;
+            text-shadow: 2px 2px 0px #000;
         }
 
         #countdown {
-            position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);
-            font-size: 100px; color: yellow; font-weight: bold; text-shadow: 0 0 20px black;
-            pointer-events: none; opacity: 0; transition: opacity 0.5s;
+            position: absolute; top: 35%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 48px; color: #ffec27; 
+            text-shadow: 4px 4px 0px #aa8800;
+            pointer-events: none; opacity: 0;
+            animation: pulse 0.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
         }
 
         #notification {
             position: absolute; top: 20%; left: 50%; transform: translateX(-50%);
-            font-size: 40px; font-weight: bold; color: yellow; text-shadow: 0 0 10px black;
-            opacity: 0; transition: opacity 0.5s;
+            font-size: 16px; color: #ffec27;
+            text-shadow: 3px 3px 0px #000;
+            opacity: 0;
         }
 
         .name-input-container {
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 10px;
         }
         .name-input-container label {
-            color: #f39c12;
-            font-size: 16px;
-            font-weight: bold;
+            color: #ffcc00;
+            font-size: 8px;
         }
         #playerNameInput {
-            padding: 12px 20px;
-            font-size: 18px;
-            border: 3px solid #3498db;
-            border-radius: 8px;
-            background: rgba(0,0,0,0.5);
-            color: white;
+            padding: 10px 15px;
+            font-size: 12px;
+            font-family: 'Press Start 2P', cursive;
+            border: 4px solid #ffcc00;
+            background: #1d2b53;
+            color: #fff;
             text-align: center;
-            width: 250px;
+            width: 200px;
             outline: none;
+            box-shadow: 4px 4px 0px #aa8800;
         }
         #playerNameInput:focus {
-            border-color: #f39c12;
-            box-shadow: 0 0 15px rgba(243, 156, 18, 0.5);
+            border-color: #00e436;
+            box-shadow: 4px 4px 0px #00a029;
         }
         #playerNameInput::placeholder {
-            color: #777;
+            color: #5f5f7a;
+        }
+
+        canvas {
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        /* SCANLINES EFEKT */
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0,0,0,0.1),
+                rgba(0,0,0,0.1) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            z-index: 100;
+        }
+
+        /* CRT GLOW */
+        .crt-glow {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            box-shadow: inset 0 0 100px rgba(0,230,118,0.1);
+            z-index: 99;
         }
     </style>
 </head>
 <body>
+    <div class="scanlines"></div>
+    <div class="crt-glow"></div>
 
     <div id="mainMenu" class="overlay-screen">
-        <div class="brand-logo">Mami Games</div>
+        <div class="brand-logo">★ MAMI GAMES ★</div>
         <h1>PVP ARENA</h1>
-        <p>Sol tık ile saldır. Ayakta kalan son takım kazanır!</p>
+        <p>SOL TIK = SALDIRI<br>WASD = HAREKET<br>SON KALAN TAKIM KAZANIR!</p>
         
         <div class="name-input-container">
-            <label for="playerNameInput">👤 Oyuncu Adın:</label>
-            <input type="text" id="playerNameInput" placeholder="İsmini gir..." maxlength="12">
+            <label for="playerNameInput">► OYUNCU ADI ◄</label>
+            <input type="text" id="playerNameInput" placeholder="ISIM..." maxlength="8">
         </div>
         
         <div class="btn-group" style="flex-direction: column; align-items: center;">
-            <button class="bot-btn" onclick="botlaOyna()">🤖 BOTLARLA OYNA (Tek Kişilik)</button>
+            <button class="bot-btn" onclick="botlaOyna()">★ BOTLARLA OYNA ★</button>
             <div style="display: flex; gap: 10px;">
-                <button onclick="baslat(2)">⚔️ 1 vs 1 (Online)</button>
-                <button onclick="baslat(4)">⚔️ 2 vs 2 (Online)</button>
-                <button onclick="baslat(8)">⚔️ 4 vs 4 (Online)</button>
+                <button onclick="baslat(2)">1 VS 1</button>
+                <button onclick="baslat(4)">2 VS 2</button>
+                <button onclick="baslat(8)">4 VS 4</button>
             </div>
         </div>
     </div>
 
     <div id="gameOverScreen" class="overlay-screen" style="display: none;">
-        <h1 id="winnerText">OYUN BİTTİ</h1>
-        <p id="subWinner">Sonuçlar...</p>
+        <h1 id="winnerText">GAME OVER</h1>
+        <p id="subWinner">...</p>
         <div class="btn-group">
-            <button onclick="location.reload()">🔄 Tekrar Oyna</button>
-            <button class="red" onclick="cikisYap()">🏠 Ana Menü</button>
+            <button onclick="location.reload()">► TEKRAR ◄</button>
+            <button class="red" onclick="cikisYap()">► CIKIS ◄</button>
         </div>
     </div>
 
     <div id="ui-layer" style="display: none;">
-        <button id="exit-btn" onclick="cikisYap()">⬅ Çıkış</button>
-        <div id="room-info">Oda: Bekleniyor...</div>
-        <div id="health-text">50 HP</div>
+        <button id="exit-btn" onclick="cikisYap()">◄ CIKIS</button>
+        <div id="room-info">YUKLENIYOR...</div>
+        <div id="health-text">HP: 50</div>
         <div id="health-container">
             <div id="health-bar"></div>
         </div>
@@ -164,9 +255,30 @@
 
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
+        
+        // PICO-8 RENK PALETİ
+        const RENKLER = {
+            siyah: '#0f0f23',
+            koyu_mavi: '#1d2b53',
+            koyu_mor: '#7e2553',
+            koyu_yesil: '#008751',
+            kahve: '#ab5236',
+            koyu_gri: '#5f574f',
+            acik_gri: '#c2c3c7',
+            beyaz: '#fff1e8',
+            kirmizi: '#ff004d',
+            turuncu: '#ffa300',
+            sari: '#ffec27',
+            yesil: '#00e436',
+            mavi: '#29adff',
+            mor: '#83769c',
+            pembe: '#ff77a8',
+            krem: '#ffccaa'
+        };
         
         let myId = "player_" + Math.floor(Math.random() * 99999);
-        let oyuncuIsmi = "Oyuncu";
+        let oyuncuIsmi = "PLAYER";
         let odaAdi = "";
         let oyuncular = {};
         let hedefKisiSayisi = 0;
@@ -180,7 +292,7 @@
         let ben = {
             x: 100, y: 100, hp: 50, maxHp: 50, yon: 1, 
             hareket: false, saldiriyor: false, sonHasarZamani: 0, 
-            takim: takim, isBot: false, isim: "Oyuncu", girisZamani: 0
+            takim: takim, isBot: false, isim: "PLAYER", girisZamani: 0
         };
 
         const tuslar = {};
@@ -193,9 +305,9 @@
         boyutlandir();
 
         function isimAl() {
-            let input = document.getElementById('playerNameInput').value.trim();
+            let input = document.getElementById('playerNameInput').value.trim().toUpperCase();
             if (input.length === 0) {
-                oyuncuIsmi = "Oyuncu_" + Math.floor(Math.random() * 999);
+                oyuncuIsmi = "P" + Math.floor(Math.random() * 999);
             } else {
                 oyuncuIsmi = input;
             }
@@ -206,14 +318,14 @@
             isimAl();
             botModuAktif = true;
             takim = "mavi"; 
-            let ozelOda = "bot_room_v7_" + Math.floor(Math.random() * 100000);
+            let ozelOda = "bot_pixel_v1_" + Math.floor(Math.random() * 100000);
             baslat(2, ozelOda); 
         }
 
         function baslat(kisiSayisi, ozelOdaIsmi = null) {
             isimAl();
             hedefKisiSayisi = kisiSayisi;
-            odaAdi = ozelOdaIsmi ? ozelOdaIsmi : "arena_online_v7_" + kisiSayisi;
+            odaAdi = ozelOdaIsmi ? ozelOdaIsmi : "arena_pixel_v1_" + kisiSayisi;
             oyunBaslamaZamani = Date.now();
             girisZamani = Date.now();
 
@@ -235,17 +347,13 @@
 
                 db.ref(odaAdi).on('value', snapshot => {
                     oyuncular = snapshot.val() || {};
-                    if(!oyuncular[myId]) {
-                        oyuncular[myId] = ben;
-                    }
-                    if(oyuncular[myId] && oyuncular[myId].hp !== undefined) {
-                        ben.hp = oyuncular[myId].hp;
-                    }
+                    if(!oyuncular[myId]) oyuncular[myId] = ben;
+                    if(oyuncular[myId] && oyuncular[myId].hp !== undefined) ben.hp = oyuncular[myId].hp;
                     arayuzGuncelle();
                     kazanmaKontrolu();
                 });
 
-                document.getElementById('room-info').innerHTML = "Mod: BOTLARLA ANTRENMAN";
+                document.getElementById('room-info').innerHTML = "MODE: BOT";
                 geriSayimYap(3);
                 oyunDongusu();
                 return;
@@ -262,9 +370,7 @@
                 let mevcutOyuncular = snapshot.val() || {};
                 
                 Object.keys(mevcutOyuncular).forEach(key => {
-                    if (mevcutOyuncular[key].isBot) {
-                        db.ref(odaAdi + "/" + key).remove();
-                    }
+                    if (mevcutOyuncular[key].isBot) db.ref(odaAdi + "/" + key).remove();
                 });
 
                 return db.ref(odaAdi + "/" + myId).set(ben);
@@ -273,14 +379,8 @@
 
                 db.ref(odaAdi).on('value', snapshot => {
                     oyuncular = snapshot.val() || {};
-                    
-                    if(!oyuncular[myId]) {
-                        oyuncular[myId] = ben;
-                    }
-                    
-                    if(oyuncular[myId] && oyuncular[myId].hp !== undefined) {
-                        ben.hp = oyuncular[myId].hp;
-                    }
+                    if(!oyuncular[myId]) oyuncular[myId] = ben;
+                    if(oyuncular[myId] && oyuncular[myId].hp !== undefined) ben.hp = oyuncular[myId].hp;
 
                     let gercekOyuncular = Object.entries(oyuncular)
                         .filter(([k, p]) => !p.isBot)
@@ -297,15 +397,9 @@
                         if (ben.takim !== yeniTakim) {
                             ben.takim = yeniTakim;
                             takim = yeniTakim;
-                            
                             ben.x = takim === "mavi" ? 100 + Math.random() * 100 : canvas.width - 200 + Math.random() * 100;
                             ben.y = 100 + Math.random() * (canvas.height - 200);
-                            
-                            db.ref(odaAdi + "/" + myId).update({ 
-                                takim: yeniTakim,
-                                x: ben.x,
-                                y: ben.y
-                            });
+                            db.ref(odaAdi + "/" + myId).update({ takim: yeniTakim, x: ben.x, y: ben.y });
                         }
                     }
 
@@ -313,7 +407,7 @@
                     kazanmaKontrolu();
                 });
 
-                document.getElementById('room-info').innerHTML = `Oda: ${hedefKisiSayisi} Kişilik (Online)`;
+                document.getElementById('room-info').innerHTML = "ROOM: " + kisiSayisi + "P";
                 geriSayimYap(3);
                 oyunDongusu();
             });
@@ -322,7 +416,7 @@
         function geriSayimYap(saniye) {
             let cd = document.getElementById('countdown');
             cd.style.opacity = 1;
-            cd.innerText = "HAZIR OL!";
+            cd.innerText = "READY!";
             
             let sayac = saniye;
             let interval = setInterval(() => {
@@ -330,8 +424,8 @@
                     cd.innerText = sayac;
                     sayac--;
                 } else {
-                    cd.innerText = "SAVAŞ!";
-                    oyunBasladi = true; // Oyun başladı!
+                    cd.innerText = "FIGHT!";
+                    oyunBasladi = true;
                     setTimeout(() => cd.style.opacity = 0, 1000);
                     clearInterval(interval);
                 }
@@ -345,16 +439,16 @@
 
         function arayuzGuncelle() {
             let gercekOyuncular = Object.values(oyuncular).filter(p => !p.isBot);
-            let maviTakim = gercekOyuncular.filter(p => p.takim === "mavi").map(p => p.isim || "?").join(", ");
-            let kirmiziTakim = gercekOyuncular.filter(p => p.takim === "kirmizi").map(p => p.isim || "?").join(", ");
+            let maviTakim = gercekOyuncular.filter(p => p.takim === "mavi").map(p => p.isim || "?").join(",");
+            let kirmiziTakim = gercekOyuncular.filter(p => p.takim === "kirmizi").map(p => p.isim || "?").join(",");
             
             if(botModuAktif) {
                 let botSayi = Object.values(oyuncular).filter(p => p.isBot).length;
-                document.getElementById('room-info').innerHTML = `Mod: BOTLARLA ANTRENMAN<br>Botlar: ${botSayi}`;
+                document.getElementById('room-info').innerHTML = `MODE: BOT<br>ENEMY: ${botSayi}`;
             } else {
                 document.getElementById('room-info').innerHTML = 
-                    `<span style="color:#3498db">MAVİ: ${maviTakim || "bekleniyor..."}</span><br>` +
-                    `<span style="color:#e74c3c">KIRMIZI: ${kirmiziTakim || "bekleniyor..."}</span>`;
+                    `<span style="color:${RENKLER.mavi}">BLU: ${maviTakim || "..."}</span><br>` +
+                    `<span style="color:${RENKLER.kirmizi}">RED: ${kirmiziTakim || "..."}</span>`;
             }
         }
 
@@ -368,21 +462,15 @@
             let mevcutSayi = Object.keys(oyuncular).length;
             
             if (mevcutSayi < hedefKisiSayisi) {
-                let spawnChance = 0.3; 
-                if (Math.random() < spawnChance) { 
-                    let botId = "bot_ai_" + Date.now() + Math.floor(Math.random()*100);
-                    let botIsimler = ["Robo", "Terminator", "Bot", "AI", "Cyborg", "Droid", "Machine"];
-                    let rastgeleIsim = botIsimler[Math.floor(Math.random() * botIsimler.length)] + "_" + Math.floor(Math.random()*99);
+                if (Math.random() < 0.3) { 
+                    let botId = "bot_" + Date.now() + Math.floor(Math.random()*100);
+                    let botIsimler = ["CPU1", "CPU2", "BOT", "NPC", "AI01", "ROBO"];
+                    let rastgeleIsim = botIsimler[Math.floor(Math.random() * botIsimler.length)];
 
                     db.ref(odaAdi + "/" + botId).set({
                         x: canvas.width / 2 + (Math.random() - 0.5) * 200, 
                         y: canvas.height / 2 + (Math.random() - 0.5) * 200, 
-                        hp: 50, 
-                        takim: "kirmizi", 
-                        isBot: true, 
-                        yon: 1, 
-                        hareket: false,
-                        isim: rastgeleIsim
+                        hp: 50, takim: "kirmizi", isBot: true, yon: 1, hareket: false, isim: rastgeleIsim
                     });
                 }
             }
@@ -391,49 +479,35 @@
                 Object.keys(oyuncular).forEach(key => {
                     let p = oyuncular[key];
                     if (p.isBot && p.hp > 0) {
-                        let enYakinDusmanKey = null;
-                        let enYakinDusman = null;
-                        let minMesafe = 9999;
+                        let enYakinDusmanKey = null, enYakinDusman = null, minMesafe = 9999;
                         
                         Object.keys(oyuncular).forEach(targetKey => {
                             let target = oyuncular[targetKey];
                             if (target.takim !== p.takim && target.hp > 0) {
                                 let d = Math.sqrt((p.x - target.x)**2 + (p.y - target.y)**2);
-                                if (d < minMesafe) { 
-                                    minMesafe = d; 
-                                    enYakinDusman = target; 
-                                    enYakinDusmanKey = targetKey;
-                                }
+                                if (d < minMesafe) { minMesafe = d; enYakinDusman = target; enYakinDusmanKey = targetKey; }
                             }
                         });
 
                         let updates = {};
                         if (enYakinDusman) {
-                            let hiz = 3.5; 
-                            
-                            if (enYakinDusman.x > p.x + 30) { p.x += hiz; p.yon = 1; p.hareket = true; }
-                            else if (enYakinDusman.x < p.x - 30) { p.x -= hiz; p.yon = -1; p.hareket = true; }
+                            let hiz = 3; 
+                            if (enYakinDusman.x > p.x + 20) { p.x += hiz; p.yon = 1; p.hareket = true; }
+                            else if (enYakinDusman.x < p.x - 20) { p.x -= hiz; p.yon = -1; p.hareket = true; }
                             if (enYakinDusman.y > p.y + 10) { p.y += hiz; p.hareket = true; }
                             else if (enYakinDusman.y < p.y - 10) { p.y -= hiz; p.hareket = true; }
 
-                            if (minMesafe < 90 && !p.saldiriyor) { 
+                            if (minMesafe < 60 && !p.saldiriyor) { 
                                 updates.saldiriyor = true;
                                 setTimeout(() => db.ref(odaAdi + "/" + key + "/saldiriyor").set(false), 300);
-                                
                                 if (enYakinDusmanKey && oyuncular[enYakinDusmanKey]) {
                                     let hedefHp = oyuncular[enYakinDusmanKey].hp || 50;
-                                    let yeniHp = Math.max(0, hedefHp - 5);
-                                    db.ref(odaAdi + "/" + enYakinDusmanKey + "/hp").set(yeniHp);
+                                    db.ref(odaAdi + "/" + enYakinDusmanKey + "/hp").set(Math.max(0, hedefHp - 5));
                                 }
                             }
-                        } else { 
-                            p.hareket = false; 
-                        }
+                        } else { p.hareket = false; }
                         
-                        updates.x = p.x; 
-                        updates.y = p.y; 
-                        updates.yon = p.yon; 
-                        updates.hareket = p.hareket;
+                        updates.x = p.x; updates.y = p.y; updates.yon = p.yon; updates.hareket = p.hareket;
                         db.ref(odaAdi + "/" + key).update(updates);
                     }
                 });
@@ -449,45 +523,49 @@
 
             Object.keys(oyuncular).forEach(key => {
                 let rakip = oyuncular[key];
-                if (key !== myId && rakip.hp > 0) {
-                    if (rakip.takim === ben.takim) return;
-                    
+                if (key !== myId && rakip.hp > 0 && rakip.takim !== ben.takim) {
                     let d = Math.sqrt((rakip.x - ben.x)**2 + (rakip.y - ben.y)**2);
                     let yuzDonuk = (ben.yon === 1 && rakip.x > ben.x) || (ben.yon === -1 && rakip.x < ben.x);
-                    if (d < 100 && yuzDonuk) { 
+                    if (d < 70 && yuzDonuk) { 
                         db.ref(odaAdi + "/" + key + "/hp").once('value').then(snapshot => {
-                            let mevcutHp = snapshot.val();
-                            if (mevcutHp === null) mevcutHp = 50;
-                            let yeniHp = Math.max(0, mevcutHp - 5);
-                            db.ref(odaAdi + "/" + key + "/hp").set(yeniHp);
+                            let mevcutHp = snapshot.val() ?? 50;
+                            db.ref(odaAdi + "/" + key + "/hp").set(Math.max(0, mevcutHp - 5));
                         });
-                        bildirimGoster("VURDUN!");
+                        bildirimGoster("HIT!");
                     }
                 }
             });
         }
 
         function guncelle() {
-            let veri = {
-                x: ben.x, 
-                y: ben.y, 
-                yon: ben.yon, 
+            db.ref(odaAdi + "/" + myId).update({
+                x: ben.x, y: ben.y, yon: ben.yon, 
                 hareket: ben.hp > 0 ? ben.hareket : false, 
                 saldiriyor: ben.hp > 0 ? ben.saldiriyor : false, 
-                takim: ben.takim,
-                isim: ben.isim,
-                girisZamani: ben.girisZamani
-            };
-            db.ref(odaAdi + "/" + myId).update(veri);
+                takim: ben.takim, isim: ben.isim, girisZamani: ben.girisZamani
+            });
         }
 
         function oyunDongusu() {
             if (!oyunAktif) return;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // ARKA PLAN ÇİZ
+            ctx.fillStyle = RENKLER.siyah;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Pixel grid efekti
+            ctx.strokeStyle = '#1a1a2e';
+            ctx.lineWidth = 1;
+            for(let x = 0; x < canvas.width; x += 32) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+            }
+            for(let y = 0; y < canvas.height; y += 32) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+            }
 
             if (ben.hp > 0) {
                 let hareket = false;
-                let hiz = 5;
+                let hiz = 4;
                 if (tuslar['w'] || tuslar['ArrowUp']) { ben.y -= hiz; hareket = true; }
                 if (tuslar['s'] || tuslar['ArrowDown']) { ben.y += hiz; hareket = true; }
                 if (tuslar['a'] || tuslar['ArrowLeft']) { ben.x -= hiz; ben.yon = -1; hareket = true; }
@@ -503,87 +581,137 @@
 
             let barW = Math.max(0, (ben.hp / 50) * 100);
             document.getElementById('health-bar').style.width = barW + "%";
-            document.getElementById('health-text').innerText = Math.max(0, Math.ceil(ben.hp)) + " HP";
+            document.getElementById('health-bar').style.background = ben.hp > 25 ? RENKLER.yesil : RENKLER.kirmizi;
+            document.getElementById('health-text').innerText = "HP: " + Math.max(0, Math.ceil(ben.hp));
 
             botlariYonet();
             
             let cizimSirasi = Object.entries(oyuncular).sort((a,b) => (a[1].hp <= 0 ? -1 : 1));
-            cizimSirasi.forEach(([key, p]) => cizKarakter(p, key));
+            cizimSirasi.forEach(([key, p]) => cizPixelKarakter(p, key));
             
             requestAnimationFrame(oyunDongusu);
         }
 
-        function cizKarakter(p, key) {
+        // PIXEL ART KARAKTER ÇİZİMİ
+        function cizPixelKarakter(p, key) {
+            let x = Math.floor(p.x);
+            let y = Math.floor(p.y);
+            let renk = p.takim === "mavi" ? RENKLER.mavi : RENKLER.kirmizi;
+            let renkKoyu = p.takim === "mavi" ? '#1d6fa5' : '#7e0026';
+            
             ctx.save();
-            ctx.translate(p.x, p.y);
             
             if (p.hp <= 0) {
-                ctx.rotate(-Math.PI / 2); 
-                ctx.globalAlpha = 0.6; 
+                ctx.globalAlpha = 0.5;
             }
-
-            ctx.fillStyle = "white"; 
-            ctx.font = "bold 14px Arial"; 
-            ctx.textAlign = "center";
-            let gosterilenIsim = p.isim || (p.isBot ? "[BOT]" : "Oyuncu");
-            if (key === myId) gosterilenIsim = "► " + gosterilenIsim + " ◄";
-            ctx.fillText(gosterilenIsim, 0, -55);
-
-            ctx.font = "10px Arial";
-            ctx.fillStyle = p.takim === "mavi" ? "#3498db" : "#e74c3c";
-            let takimYazi = p.takim === "mavi" ? "MAVİ" : (p.takim === "kirmizi" ? "KIRMIZI" : "...");
-            ctx.fillText(takimYazi, 0, -67);
-
-            if (p.hp > 0) {
-                ctx.fillStyle = "red"; ctx.fillRect(-20, -45, 40, 6);
-                ctx.fillStyle = "#2ecc71"; ctx.fillRect(-20, -45, (Math.max(0, p.hp) / 50) * 40, 6);
-            }
-
-            ctx.scale(p.yon, 1);
-            ctx.strokeStyle = p.takim === "mavi" ? "#3498db" : "#e74c3c";
-            ctx.lineWidth = 3; ctx.lineCap = "round"; ctx.lineJoin = "round";
-
+            
+            // Yön kontrolü
+            let yon = p.yon || 1;
+            
+            // Animasyon
             let time = Date.now();
-            let bacakHizi = p.hareket ? Math.sin(time / 80) * 10 : 0;
+            let bounce = p.hareket ? Math.sin(time / 100) * 2 : 0;
+            let saldiriOffset = p.saldiriyor ? 8 * yon : 0;
             
-            ctx.beginPath(); ctx.moveTo(0, -20); ctx.lineTo(0, 10); ctx.stroke(); 
-            ctx.beginPath(); ctx.arc(0, -30, 10, 0, Math.PI*2); ctx.stroke(); 
+            // GÖLGE
+            ctx.fillStyle = 'rgba(0,0,0,0.3)';
+            ctx.fillRect(x - 10, y + 20, 20, 6);
             
-            if (p.hp <= 0) {
-                 ctx.strokeStyle = "white"; ctx.lineWidth = 1;
-                 ctx.beginPath(); ctx.moveTo(2, -32); ctx.lineTo(6, -28); ctx.stroke();
-                 ctx.beginPath(); ctx.moveTo(6, -32); ctx.lineTo(2, -28); ctx.stroke();
-                 ctx.lineWidth = 3; ctx.strokeStyle = p.takim === "mavi" ? "#3498db" : "#e74c3c"; 
+            // BACAKLAR (8x8 pixel bloklar)
+            ctx.fillStyle = renkKoyu;
+            if (p.hp > 0) {
+                let bacakOffset = p.hareket ? Math.sin(time / 80) * 4 : 0;
+                ctx.fillRect(x - 6 + bacakOffset, y + 8 + bounce, 4, 12); // Sol bacak
+                ctx.fillRect(x + 2 - bacakOffset, y + 8 + bounce, 4, 12); // Sağ bacak
             } else {
-                ctx.fillStyle = p.takim === "mavi" ? "cyan" : "orange"; 
-                ctx.beginPath(); ctx.arc(4, -30, 2, 0, Math.PI*2); ctx.fill();
+                ctx.fillRect(x - 6, y + 8, 4, 12);
+                ctx.fillRect(x + 2, y + 8, 4, 12);
             }
-
-            ctx.beginPath(); ctx.moveTo(0, 10); ctx.lineTo(-10 + bacakHizi, 35); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(0, 10); ctx.lineTo(5 - bacakHizi, 35); ctx.stroke();
-
-            let kolAcisi = p.saldiriyor ? -Math.PI / 1.5 : 0;
-            ctx.beginPath(); ctx.moveTo(0, -15); ctx.lineTo(-10, 5); ctx.stroke();
             
-            ctx.save();
-            ctx.translate(0, -15);
-            ctx.rotate(kolAcisi + (p.hareket ? Math.sin(time/80)*0.2 : 0));
-            ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(15, 5); ctx.stroke(); 
-            ctx.strokeStyle = "#ecf0f1"; ctx.lineWidth = 4; 
-            ctx.beginPath(); ctx.moveTo(15, 5); ctx.lineTo(55, -5); ctx.stroke();
-            ctx.restore();
+            // GÖVDE
+            ctx.fillStyle = renk;
+            ctx.fillRect(x - 8, y - 8 + bounce, 16, 16);
+            
+            // GÖVDE DETAY
+            ctx.fillStyle = renkKoyu;
+            ctx.fillRect(x - 6, y - 4 + bounce, 2, 8);
+            
+            // KAFA
+            ctx.fillStyle = RENKLER.krem;
+            ctx.fillRect(x - 6, y - 20 + bounce, 12, 12);
+            
+            // SAÇ
+            ctx.fillStyle = p.isBot ? RENKLER.mor : RENKLER.kahve;
+            ctx.fillRect(x - 6, y - 22 + bounce, 12, 4);
+            
+            // GÖZLER
+            if (p.hp > 0) {
+                ctx.fillStyle = RENKLER.siyah;
+                ctx.fillRect(x - 3 + (yon > 0 ? 2 : 0), y - 16 + bounce, 2, 2);
+                ctx.fillRect(x + 3 + (yon > 0 ? 2 : 0), y - 16 + bounce, 2, 2);
+            } else {
+                // Ölü gözler (X X)
+                ctx.fillStyle = RENKLER.kirmizi;
+                ctx.fillRect(x - 4, y - 16, 2, 2);
+                ctx.fillRect(x - 2, y - 14, 2, 2);
+                ctx.fillRect(x + 2, y - 16, 2, 2);
+                ctx.fillRect(x + 4, y - 14, 2, 2);
+            }
+            
+            // KOLLAR
+            ctx.fillStyle = RENKLER.krem;
+            if (yon > 0) {
+                ctx.fillRect(x - 12, y - 6 + bounce, 4, 10); // Sol kol
+                ctx.fillRect(x + 8 + saldiriOffset, y - 6 + bounce, 4, 10); // Sağ kol (kılıç tutan)
+            } else {
+                ctx.fillRect(x + 8, y - 6 + bounce, 4, 10);
+                ctx.fillRect(x - 12 + saldiriOffset, y - 6 + bounce, 4, 10);
+            }
+            
+            // KILIÇ
+            if (p.hp > 0) {
+                ctx.fillStyle = RENKLER.acik_gri;
+                if (yon > 0) {
+                    ctx.fillRect(x + 12 + saldiriOffset, y - 8 + bounce, 4, 20); // Kılıç gövdesi
+                    ctx.fillStyle = RENKLER.sari;
+                    ctx.fillRect(x + 10 + saldiriOffset, y + 8 + bounce, 8, 4); // Kabza
+                } else {
+                    ctx.fillRect(x - 16 + saldiriOffset, y - 8 + bounce, 4, 20);
+                    ctx.fillStyle = RENKLER.sari;
+                    ctx.fillRect(x - 18 + saldiriOffset, y + 8 + bounce, 8, 4);
+                }
+            }
+            
+            // HP BAR
+            if (p.hp > 0) {
+                ctx.fillStyle = RENKLER.siyah;
+                ctx.fillRect(x - 12, y - 32, 24, 6);
+                ctx.fillStyle = p.hp > 25 ? RENKLER.yesil : RENKLER.kirmizi;
+                ctx.fillRect(x - 11, y - 31, (p.hp / 50) * 22, 4);
+            }
+            
+            // İSİM
+            ctx.fillStyle = RENKLER.beyaz;
+            ctx.font = "8px 'Press Start 2P'";
+            ctx.textAlign = "center";
+            let isim = p.isim || (p.isBot ? "CPU" : "???");
+            if (key === myId) isim = ">" + isim + "<";
+            ctx.fillText(isim, x, y - 38);
+            
+            // TAKIM ETİKETİ
+            ctx.fillStyle = renk;
+            ctx.fillText(p.takim === "mavi" ? "BLU" : "RED", x, y - 48);
+            
             ctx.restore();
         }
 
         function bildirimGoster(mesaj) {
             let n = document.getElementById('notification');
             n.innerText = mesaj; n.style.opacity = 1;
-            setTimeout(() => n.style.opacity = 0, 1000);
+            setTimeout(() => n.style.opacity = 0, 500);
         }
 
-        // DÜZELTİLMİŞ KAZANMA KONTROLÜ
         function kazanmaKontrolu() {
-            // Oyun başlamadan kontrol yapma
             if (!oyunBasladi) return;
 
             let m = 0, k = 0;
@@ -594,7 +722,6 @@
                 }
             });
 
-            // Ekran zaten gösteriliyorsa tekrar gösterme
             let ekran = document.getElementById('gameOverScreen');
             if (ekran.style.display !== 'none') return; 
 
@@ -607,13 +734,13 @@
             
             if (kazananTakim !== "") {
                 if (ben.takim === kazananTakim) {
-                    mainText.innerText = "YOU WIN!";
-                    mainText.style.color = "#2ecc71"; 
-                    subText.innerText = "Tebrikler " + oyuncuIsmi + "! Düşmanları yok ettin.";
+                    mainText.innerText = "VICTORY!";
+                    mainText.style.color = RENKLER.yesil; 
+                    subText.innerText = oyuncuIsmi + " WINS!";
                 } else {
-                    mainText.innerText = "GAME OVER";
-                    mainText.style.color = "#e74c3c"; 
-                    subText.innerText = oyuncuIsmi + ", savaş alanında yenildin...";
+                    mainText.innerText = "DEFEAT";
+                    mainText.style.color = RENKLER.kirmizi; 
+                    subText.innerText = "GAME OVER...";
                 }
                 oyunBitti();
             }
