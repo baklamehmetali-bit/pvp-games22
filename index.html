@@ -6,7 +6,7 @@
     <title>Mami Games: PVP Arena</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        * { image-rendering: pixelated; -webkit-touch-callout: none; -webkit-user-select: none; }
+        * { image-rendering: pixelated; -webkit-touch-callout: none; -webkit-user-select: none; box-sizing: border-box; }
         body { margin: 0; background: #0f0f23; overflow: hidden; font-family: 'Press Start 2P', cursive; user-select: none; touch-action: none; }
         
         #ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
@@ -17,20 +17,20 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             z-index: 20; pointer-events: auto;
             border: 8px solid #3a3a5c;
-            box-sizing: border-box;
+            overflow-y: auto;
+            padding: 20px;
         }
         
         .brand-logo {
             position: absolute; top: 20px; left: 30px;
             font-size: 16px; color: #ffcc00;
-            text-shadow: 4px 4px 0px #aa8800; z-index: 30;
+            z-index: 30;
         }
         
         h1 { 
             color: #ff004d; 
             font-size: 24px; 
-            text-shadow: 4px 4px 0px #7e0026; 
-            margin: 0 0 20px 0; 
+            margin: 0 0 15px 0; 
             letter-spacing: 2px;
             animation: blink 1s infinite;
         }
@@ -39,9 +39,9 @@
             50% { opacity: 0.7; }
         }
         
-        p { color: #c2c3c7; font-size: 8px; max-width: 500px; text-align: center; line-height: 2; }
+        p { color: #c2c3c7; font-size: 8px; max-width: 500px; text-align: center; line-height: 2; margin: 5px 0; }
         
-        .btn-group { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; justify-content: center; }
+        .btn-group { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; justify-content: center; }
         button {
             background: #29adff; 
             color: #0f0f23; 
@@ -53,32 +53,24 @@
             box-shadow: 4px 4px 0px #1d6fa5;
             transition: all 0.1s;
         }
-        button:hover { 
-            background: #5fcde4; 
-            transform: translate(-2px, -2px);
-            box-shadow: 6px 6px 0px #1d6fa5;
-        }
-        button:active { 
-            transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0px #1d6fa5;
-        }
+        button:hover { background: #5fcde4; }
+        button:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px #1d6fa5; }
         
         .bot-btn { 
-            background: #8b5cf6; 
-            border-color: #5b3a9e;
+            background: #8b5cf6; border-color: #5b3a9e;
             box-shadow: 4px 4px 0px #5b3a9e;
-            width: 100%; 
-            max-width: 280px; 
-            margin-bottom: 15px; 
+            width: 100%; max-width: 280px; margin-bottom: 10px; 
         }
         .bot-btn:hover { background: #a78bfa; }
         
-        button.red { 
-            background: #ff004d; 
-            border-color: #7e0026;
-            box-shadow: 4px 4px 0px #7e0026;
-        }
+        button.red { background: #ff004d; border-color: #7e0026; box-shadow: 4px 4px 0px #7e0026; }
         button.red:hover { background: #ff5577; }
+        
+        button.green { background: #00e436; border-color: #00a029; box-shadow: 4px 4px 0px #00a029; }
+        button.green:hover { background: #5fcf7a; }
+        
+        button.orange { background: #ffa300; border-color: #aa6b00; box-shadow: 4px 4px 0px #aa6b00; }
+        button.orange:hover { background: #ffbf4d; }
 
         #exit-btn {
             pointer-events: auto; position: absolute; top: 15px; left: 15px;
@@ -97,193 +89,150 @@
         #health-container {
             position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%);
             width: 200px; height: 20px; 
-            background: #1d2b53; 
-            border: 4px solid #ff004d;
-            box-shadow: 4px 4px 0px #7e0026;
-            z-index: 50;
+            background: #1d2b53; border: 4px solid #ff004d;
+            box-shadow: 4px 4px 0px #7e0026; z-index: 50;
         }
-        #health-bar { 
-            width: 100%; height: 100%; 
-            background: #00e436;
-            transition: width 0.1s steps(10);
-        }
+        #health-bar { width: 100%; height: 100%; background: #00e436; transition: width 0.1s steps(10); }
         #health-text { 
             position: absolute; bottom: 55px; left: 50%; transform: translateX(-50%); 
-            color: #fff; font-size: 10px;
-            text-shadow: 2px 2px 0px #000;
-            z-index: 50;
+            color: #fff; font-size: 10px; text-shadow: 2px 2px 0px #000; z-index: 50;
         }
         
-        /* REGEN GÖSTERGE */
         #regen-indicator {
             position: absolute; bottom: 85px; left: 50%; transform: translateX(-50%);
-            color: #00e436; font-size: 8px;
-            text-shadow: 2px 2px 0px #000;
-            z-index: 50;
-            opacity: 0;
-            transition: opacity 0.3s;
+            color: #00e436; font-size: 8px; text-shadow: 2px 2px 0px #000;
+            z-index: 50; opacity: 0; transition: opacity 0.3s;
         }
 
         #countdown {
             position: absolute; top: 35%; left: 50%; transform: translate(-50%, -50%);
-            font-size: 48px; color: #ffec27; 
-            text-shadow: 4px 4px 0px #aa8800;
+            font-size: 48px; color: #ffec27; text-shadow: 4px 4px 0px #aa8800;
             pointer-events: none; opacity: 0;
-            animation: pulse 0.5s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.1); }
         }
 
         #notification {
             position: absolute; top: 20%; left: 50%; transform: translateX(-50%);
-            font-size: 16px; color: #ffec27;
-            text-shadow: 3px 3px 0px #000;
-            opacity: 0;
+            font-size: 16px; color: #ffec27; text-shadow: 3px 3px 0px #000; opacity: 0;
         }
 
-        .name-input-container {
-            margin-bottom: 25px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
+        /* AUTH EKRANI */
+        #authScreen { z-index: 25; }
+        .auth-container { 
+            background: #1d2b53; padding: 30px; border: 4px solid #3a3a5c;
+            display: flex; flex-direction: column; gap: 15px; align-items: center;
+            max-width: 320px; width: 90%;
         }
-        .name-input-container label {
-            color: #ffcc00;
-            font-size: 8px;
+        .auth-container input {
+            padding: 10px 15px; font-size: 10px; font-family: 'Press Start 2P', cursive;
+            border: 3px solid #3a3a5c; background: #0f0f23; color: #fff;
+            width: 100%; outline: none;
         }
-        #playerNameInput {
-            padding: 10px 15px;
-            font-size: 12px;
-            font-family: 'Press Start 2P', cursive;
-            border: 4px solid #ffcc00;
-            background: #1d2b53;
-            color: #fff;
-            text-align: center;
-            width: 200px;
-            outline: none;
-            box-shadow: 4px 4px 0px #aa8800;
+        .auth-container input:focus { border-color: #ffcc00; }
+        .auth-tabs { display: flex; gap: 10px; margin-bottom: 10px; }
+        .auth-tab { 
+            padding: 10px 20px; background: #3a3a5c; color: #fff; 
+            border: none; cursor: pointer; font-family: 'Press Start 2P', cursive; font-size: 8px;
         }
-        #playerNameInput:focus {
-            border-color: #00e436;
-            box-shadow: 4px 4px 0px #00a029;
+        .auth-tab.active { background: #ffcc00; color: #0f0f23; }
+        #authError { color: #ff004d; font-size: 8px; text-align: center; min-height: 20px; }
+
+        /* PROFIL BÖLÜMÜ */
+        .profile-bar {
+            position: absolute; top: 60px; left: 30px;
+            background: #1d2b53; padding: 10px 15px; border: 3px solid #3a3a5c;
+            font-size: 8px; color: #fff; z-index: 30;
         }
-        #playerNameInput::placeholder {
-            color: #5f5f7a;
+        .profile-bar span { color: #ffcc00; }
+
+        /* MAĞAZA */
+        #shopScreen { z-index: 22; display: none; }
+        .shop-container {
+            background: #1d2b53; padding: 20px; border: 4px solid #ffcc00;
+            max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto;
+        }
+        .shop-item {
+            display: flex; align-items: center; justify-content: space-between;
+            background: #0f0f23; padding: 15px; margin: 10px 0; border: 2px solid #3a3a5c;
+        }
+        .shop-item.owned { border-color: #00e436; }
+        .shop-item.equipped { border-color: #ffcc00; background: #2d1b53; }
+        .shop-item-info { display: flex; align-items: center; gap: 15px; }
+        .shop-item-icon { width: 40px; height: 40px; background: #3a3a5c; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .shop-item-details { font-size: 8px; }
+        .shop-item-name { color: #fff; margin-bottom: 5px; }
+        .shop-item-desc { color: #c2c3c7; }
+        .shop-item-price { color: #ffcc00; font-size: 10px; }
+        .shop-item button { padding: 8px 12px; font-size: 8px; }
+
+        /* JOYSTICK */
+        #joystick-container {
+            position: fixed; left: 30px; bottom: 30px;
+            width: 120px; height: 120px; display: none; z-index: 80;
+            pointer-events: auto; touch-action: none;
+        }
+        #joystick-base {
+            width: 120px; height: 120px; background: rgba(255,255,255,0.15);
+            border: 4px solid rgba(255,255,255,0.3); border-radius: 50%;
+            position: relative;
+        }
+        #joystick-thumb {
+            width: 50px; height: 50px; background: rgba(255,236,39,0.7);
+            border: 3px solid #ffcc00; border-radius: 50%;
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            transition: none;
         }
 
-        canvas {
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
+        #attack-btn {
+            position: fixed; right: 30px; bottom: 50px;
+            width: 80px; height: 80px;
+            background: rgba(255, 0, 77, 0.5); border: 4px solid #ff004d;
+            border-radius: 50%; display: none; align-items: center; justify-content: center;
+            font-size: 10px; color: #fff; font-family: 'Press Start 2P', cursive;
+            z-index: 80; pointer-events: auto; touch-action: none;
+            box-shadow: 0 0 20px rgba(255, 0, 77, 0.5);
+        }
+        #attack-btn:active, #attack-btn.active {
+            background: rgba(255, 0, 77, 0.9); transform: scale(0.95);
         }
 
         .scanlines {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(0,0,0,0.1),
-                rgba(0,0,0,0.1) 1px,
-                transparent 1px,
-                transparent 2px
-            );
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1) 1px, transparent 1px, transparent 2px);
             z-index: 100;
         }
 
         .crt-glow {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            box-shadow: inset 0 0 100px rgba(0,230,118,0.1);
-            z-index: 99;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; box-shadow: inset 0 0 100px rgba(0,230,118,0.1); z-index: 99;
         }
 
-        #mobile-controls {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 180px;
-            pointer-events: none;
-            z-index: 80;
-        }
+        canvas { image-rendering: pixelated; image-rendering: crisp-edges; }
 
-        #dpad {
-            position: absolute;
-            left: 20px;
-            bottom: 20px;
-            width: 140px;
-            height: 140px;
-            pointer-events: auto;
-        }
-
-        .dpad-btn {
-            position: absolute;
-            width: 44px;
-            height: 44px;
-            background: rgba(255, 255, 255, 0.2);
-            border: 3px solid rgba(255, 255, 255, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            color: #fff;
-            touch-action: none;
-        }
-        .dpad-btn:active, .dpad-btn.active {
-            background: rgba(255, 236, 39, 0.6);
-            border-color: #ffec27;
-        }
-        #dpad-up { top: 0; left: 50%; transform: translateX(-50%); border-radius: 8px 8px 0 0; }
-        #dpad-down { bottom: 0; left: 50%; transform: translateX(-50%); border-radius: 0 0 8px 8px; }
-        #dpad-left { left: 0; top: 50%; transform: translateY(-50%); border-radius: 8px 0 0 8px; }
-        #dpad-right { right: 0; top: 50%; transform: translateY(-50%); border-radius: 0 8px 8px 0; }
-        #dpad-center { 
-            left: 50%; top: 50%; transform: translate(-50%, -50%); 
-            width: 40px; height: 40px;
-            background: rgba(0,0,0,0.3);
-            border: none;
-            border-radius: 4px;
-        }
-
-        #attack-btn {
-            position: absolute;
-            right: 30px;
-            bottom: 40px;
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 0, 77, 0.5);
-            border: 4px solid #ff004d;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            color: #fff;
-            font-family: 'Press Start 2P', cursive;
-            pointer-events: auto;
-            touch-action: none;
-            box-shadow: 0 0 20px rgba(255, 0, 77, 0.5);
-        }
-        #attack-btn:active, #attack-btn.active {
-            background: rgba(255, 0, 77, 0.9);
-            transform: scale(0.95);
-            box-shadow: 0 0 30px rgba(255, 0, 77, 0.8);
-        }
-
+        /* MOBİL RESPONSIVE */
         @media (max-width: 1024px), (pointer: coarse) {
-            #mobile-controls { display: block; }
-            #health-container { bottom: 190px; width: 150px; }
-            #health-text { bottom: 220px; font-size: 8px; }
-            #regen-indicator { bottom: 250px; }
-            h1 { font-size: 20px; }
+            #health-container { bottom: 160px; width: 150px; }
+            #health-text { bottom: 190px; font-size: 8px; }
+            #regen-indicator { bottom: 220px; }
+            h1 { font-size: 18px; }
             .brand-logo { font-size: 12px; top: 10px; left: 15px; }
             #room-info { font-size: 6px; padding: 6px; top: 10px; right: 10px; }
             #exit-btn { font-size: 6px; padding: 6px 10px; }
+            .profile-bar { top: 45px; left: 10px; font-size: 6px; padding: 6px 10px; }
+        }
+
+        /* LANDSCAPE MODE FIX */
+        @media (max-height: 500px) and (orientation: landscape) {
+            #joystick-container { left: 20px; bottom: 20px; width: 100px; height: 100px; }
+            #joystick-base { width: 100px; height: 100px; }
+            #joystick-thumb { width: 40px; height: 40px; }
+            #attack-btn { right: 20px; bottom: 20px; width: 70px; height: 70px; font-size: 8px; }
+            #health-container { bottom: 10px; width: 120px; height: 15px; }
+            #health-text { bottom: 30px; font-size: 7px; }
+            #regen-indicator { bottom: 50px; font-size: 6px; }
+            #room-info { font-size: 5px; padding: 4px; }
+            #exit-btn { font-size: 5px; padding: 4px 8px; top: 5px; left: 5px; }
         }
     </style>
 </head>
@@ -291,37 +240,69 @@
     <div class="scanlines"></div>
     <div class="crt-glow"></div>
 
-    <div id="mainMenu" class="overlay-screen">
+    <!-- AUTH EKRANI -->
+    <div id="authScreen" class="overlay-screen">
         <div class="brand-logo">★ MAMI GAMES ★</div>
         <h1>PVP ARENA</h1>
-        <p>SOL TIK / BUTON = SALDIRI<br>WASD / D-PAD = HAREKET<br>30 SN VURULMAZSAN HP YENİLENİR!<br>SON KALAN TAKIM KAZANIR!</p>
-        
-        <div class="name-input-container">
-            <label for="playerNameInput">► OYUNCU ADI ◄</label>
-            <input type="text" id="playerNameInput" placeholder="ISIM..." maxlength="8">
+        <div class="auth-container">
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="showAuthTab('login')">GİRİŞ</button>
+                <button class="auth-tab" onclick="showAuthTab('register')">KAYIT</button>
+            </div>
+            <input type="email" id="authEmail" placeholder="E-POSTA...">
+            <input type="password" id="authPassword" placeholder="ŞİFRE...">
+            <div id="authError"></div>
+            <button id="authBtn" class="green" onclick="handleAuth()">GİRİŞ YAP</button>
+            <button onclick="playAsGuest()" style="background: #5f574f; border-color: #3a3a3a;">MİSAFİR OYNA</button>
         </div>
+    </div>
+
+    <!-- ANA MENÜ -->
+    <div id="mainMenu" class="overlay-screen" style="display: none;">
+        <div class="brand-logo">★ MAMI GAMES ★</div>
+        <div class="profile-bar" id="profileBar">
+            OYUNCU: <span id="profileName">-</span><br>
+            PUAN: <span id="profileScore">0</span> ⭐
+        </div>
+        <h1>PVP ARENA</h1>
+        <p>30 SN VURULMAZSAN HP YENİLENİR!<br>SON KALAN TAKIM KAZANIR!</p>
         
         <div class="btn-group" style="flex-direction: column; align-items: center;">
             <button class="bot-btn" onclick="botlaOyna()">★ BOTLARLA OYNA ★</button>
-            <div style="display: flex; gap: 10px;">
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
                 <button onclick="baslat(2)">1 VS 1</button>
                 <button onclick="baslat(4)">2 VS 2</button>
                 <button onclick="baslat(8)">4 VS 4</button>
             </div>
+            <button class="orange" onclick="openShop()" style="margin-top: 15px;">🛒 MAĞAZA</button>
+            <button class="red" onclick="logout()" style="margin-top: 10px; font-size: 8px; padding: 8px 15px;">ÇIKIŞ YAP</button>
         </div>
     </div>
 
+    <!-- MAĞAZA -->
+    <div id="shopScreen" class="overlay-screen">
+        <div class="shop-container">
+            <h1 style="font-size: 16px; text-align: center;">🛒 MAĞAZA</h1>
+            <p>Puan kazanarak ödüller aç! Her galibiyet +5 puan.</p>
+            <div id="shopItems"></div>
+            <button class="red" onclick="closeShop()" style="width: 100%; margin-top: 15px;">KAPAT</button>
+        </div>
+    </div>
+
+    <!-- OYUN BİTTİ EKRANI -->
     <div id="gameOverScreen" class="overlay-screen" style="display: none;">
         <h1 id="winnerText">GAME OVER</h1>
         <p id="subWinner">...</p>
+        <p id="scoreGain" style="color: #ffcc00;"></p>
         <div class="btn-group">
             <button onclick="location.reload()">► TEKRAR ◄</button>
-            <button class="red" onclick="cikisYap()">► CIKIS ◄</button>
+            <button class="red" onclick="cikisYap()">► MENÜ ◄</button>
         </div>
     </div>
 
+    <!-- OYUN UI -->
     <div id="ui-layer" style="display: none;">
-        <button id="exit-btn" onclick="cikisYap()">◄ CIKIS</button>
+        <button id="exit-btn" onclick="cikisYap()">◄ ÇIKIŞ</button>
         <div id="room-info">YUKLENIYOR...</div>
         <div id="regen-indicator">♥ REGEN ♥</div>
         <div id="health-text">HP: 50</div>
@@ -332,21 +313,19 @@
         <div id="notification"></div>
     </div>
 
-    <div id="mobile-controls">
-        <div id="dpad">
-            <div id="dpad-up" class="dpad-btn">▲</div>
-            <div id="dpad-down" class="dpad-btn">▼</div>
-            <div id="dpad-left" class="dpad-btn">◄</div>
-            <div id="dpad-right" class="dpad-btn">►</div>
-            <div id="dpad-center" class="dpad-btn"></div>
+    <!-- MOBİL KONTROLLER -->
+    <div id="joystick-container">
+        <div id="joystick-base">
+            <div id="joystick-thumb"></div>
         </div>
-        <div id="attack-btn">SALDIRI</div>
     </div>
+    <div id="attack-btn">SALDIRI</div>
 
     <canvas id="gameCanvas"></canvas>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 
     <script>
         const firebaseConfig = {
@@ -360,43 +339,37 @@
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+        const auth = firebase.auth();
 
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         ctx.imageSmoothingEnabled = false;
         
         const RENKLER = {
-            siyah: '#0f0f23',
-            koyu_mavi: '#1d2b53',
-            koyu_mor: '#7e2553',
-            koyu_yesil: '#008751',
-            kahve: '#ab5236',
-            koyu_gri: '#5f574f',
-            acik_gri: '#c2c3c7',
-            beyaz: '#fff1e8',
-            kirmizi: '#ff004d',
-            turuncu: '#ffa300',
-            sari: '#ffec27',
-            yesil: '#00e436',
-            mavi: '#29adff',
-            mor: '#83769c',
-            pembe: '#ff77a8',
-            krem: '#ffccaa'
+            siyah: '#0f0f23', koyu_mavi: '#1d2b53', koyu_mor: '#7e2553',
+            koyu_yesil: '#008751', kahve: '#ab5236', koyu_gri: '#5f574f',
+            acik_gri: '#c2c3c7', beyaz: '#fff1e8', kirmizi: '#ff004d',
+            turuncu: '#ffa300', sari: '#ffec27', yesil: '#00e436',
+            mavi: '#29adff', mor: '#83769c', pembe: '#ff77a8', krem: '#ffccaa'
         };
 
-        // OYUN AYARLARI
         const AYARLAR = {
-            regenSuresi: 30000,      // 30 saniye vurulmadan geçmesi lazım
-            regenMiktari: 2,         // Saniyede 2 HP iyileşir
-            maxHp: 50,
-            oyuncuHasar: 5,
-            botHasar: 3,
-            oyuncuHiz: 4,
-            botHiz: 3.5              // Bot hızı artırıldı: 2 -> 3.5
+            regenSuresi: 30000, regenMiktari: 2, maxHp: 50,
+            oyuncuHasar: 5, botHasar: 3, oyuncuHiz: 4, botHiz: 3.5,
+            galibiyetPuani: 5
         };
+
+        // MAĞAZA ÖĞELERİ
+        const MAGAZA = [
+            { id: 'sword2', name: 'ÇİFT KILIÇ', desc: '+2 Hasar', icon: '⚔️', puan: 50, tip: 'silah', bonus: { hasar: 2 } },
+            { id: 'armor1', name: 'DEMİR ZIRH', desc: '+10 HP', icon: '🛡️', puan: 100, tip: 'zirh', bonus: { hp: 10 } },
+            { id: 'boots1', name: 'HIZ BOTLARI', desc: '+1 Hız', icon: '👢', puan: 75, tip: 'bot', bonus: { hiz: 1 } },
+            { id: 'helmet1', name: 'ALTIN KASK', desc: '+5 HP', icon: '⛑️', puan: 60, tip: 'kask', bonus: { hp: 5 } },
+            { id: 'sword3', name: 'ATEŞ KILICI', desc: '+4 Hasar', icon: '🔥', puan: 150, tip: 'silah', bonus: { hasar: 4 } },
+            { id: 'armor2', name: 'ELMAS ZIRH', desc: '+20 HP', icon: '💎', puan: 200, tip: 'zirh', bonus: { hp: 20 } },
+        ];
 
         let arena = { x: 0, y: 0, w: 0, h: 0, padding: 80 };
-        
         let myId = "player_" + Math.floor(Math.random() * 99999);
         let oyuncuIsmi = "PLAYER";
         let odaAdi = "";
@@ -408,6 +381,10 @@
         let girisZamani = 0;
         let oyunBasladi = false;
         let sonRegenZamani = 0;
+        let authMode = 'login';
+        let currentUser = null;
+        let userProfile = { puan: 0, sahipOlunanlar: [], equiped: {} };
+        let isMobile = false;
         
         let takim = "mavi"; 
         let ben = {
@@ -417,46 +394,227 @@
         };
 
         const tuslar = {};
-        
+        let joystickActive = false;
+        let joystickData = { x: 0, y: 0 };
+
+        // AUTH FONKSİYONLARI
+        function showAuthTab(tab) {
+            authMode = tab;
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('authBtn').innerText = tab === 'login' ? 'GİRİŞ YAP' : 'KAYIT OL';
+            document.getElementById('authError').innerText = '';
+        }
+
+        function handleAuth() {
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+            const errorEl = document.getElementById('authError');
+            
+            if (!email || !password) {
+                errorEl.innerText = 'Tüm alanları doldurun!';
+                return;
+            }
+
+            if (authMode === 'login') {
+                auth.signInWithEmailAndPassword(email, password)
+                    .then(userCredential => onAuthSuccess(userCredential.user))
+                    .catch(err => errorEl.innerText = 'Hatalı giriş!');
+            } else {
+                auth.createUserWithEmailAndPassword(email, password)
+                    .then(userCredential => {
+                        // Yeni kullanıcı profili oluştur
+                        db.ref('users/' + userCredential.user.uid).set({
+                            email: email,
+                            puan: 0,
+                            sahipOlunanlar: [],
+                            equiped: {},
+                            olusturulma: Date.now()
+                        });
+                        onAuthSuccess(userCredential.user);
+                    })
+                    .catch(err => errorEl.innerText = 'Kayıt başarısız!');
+            }
+        }
+
+        function playAsGuest() {
+            currentUser = null;
+            oyuncuIsmi = "MISAFIR_" + Math.floor(Math.random() * 999);
+            userProfile = { puan: 0, sahipOlunanlar: [], equiped: {} };
+            document.getElementById('authScreen').style.display = 'none';
+            document.getElementById('mainMenu').style.display = 'flex';
+            updateProfileUI();
+        }
+
+        function onAuthSuccess(user) {
+            currentUser = user;
+            db.ref('users/' + user.uid).once('value').then(snapshot => {
+                if (snapshot.exists()) {
+                    userProfile = snapshot.val();
+                } else {
+                    userProfile = { puan: 0, sahipOlunanlar: [], equiped: {} };
+                }
+                oyuncuIsmi = user.email.split('@')[0].toUpperCase().substring(0, 8);
+                document.getElementById('authScreen').style.display = 'none';
+                document.getElementById('mainMenu').style.display = 'flex';
+                updateProfileUI();
+            });
+        }
+
+        function logout() {
+            auth.signOut().then(() => location.reload());
+        }
+
+        function updateProfileUI() {
+            document.getElementById('profileName').innerText = oyuncuIsmi;
+            document.getElementById('profileScore').innerText = userProfile.puan || 0;
+        }
+
+        function saveUserProfile() {
+            if (currentUser) {
+                db.ref('users/' + currentUser.uid).update(userProfile);
+            }
+        }
+
+        // MAĞAZA FONKSİYONLARI
+        function openShop() {
+            document.getElementById('shopScreen').style.display = 'flex';
+            renderShopItems();
+        }
+
+        function closeShop() {
+            document.getElementById('shopScreen').style.display = 'none';
+        }
+
+        function renderShopItems() {
+            const container = document.getElementById('shopItems');
+            container.innerHTML = '';
+            
+            MAGAZA.forEach(item => {
+                const owned = userProfile.sahipOlunanlar?.includes(item.id);
+                const equipped = userProfile.equiped?.[item.tip] === item.id;
+                
+                const div = document.createElement('div');
+                div.className = 'shop-item' + (owned ? ' owned' : '') + (equipped ? ' equipped' : '');
+                
+                let btnHtml = '';
+                if (owned) {
+                    if (equipped) {
+                        btnHtml = `<button disabled style="background:#5f574f">TAKILDI</button>`;
+                    } else {
+                        btnHtml = `<button class="green" onclick="equipItem('${item.id}', '${item.tip}')">TAK</button>`;
+                    }
+                } else {
+                    const canBuy = (userProfile.puan || 0) >= item.puan;
+                    btnHtml = `<button ${canBuy ? '' : 'disabled'} onclick="buyItem('${item.id}')">${item.puan} ⭐</button>`;
+                }
+                
+                div.innerHTML = `
+                    <div class="shop-item-info">
+                        <div class="shop-item-icon">${item.icon}</div>
+                        <div class="shop-item-details">
+                            <div class="shop-item-name">${item.name}</div>
+                            <div class="shop-item-desc">${item.desc}</div>
+                        </div>
+                    </div>
+                    ${btnHtml}
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function buyItem(itemId) {
+            const item = MAGAZA.find(i => i.id === itemId);
+            if (!item || (userProfile.puan || 0) < item.puan) return;
+            
+            userProfile.puan -= item.puan;
+            if (!userProfile.sahipOlunanlar) userProfile.sahipOlunanlar = [];
+            userProfile.sahipOlunanlar.push(itemId);
+            
+            saveUserProfile();
+            updateProfileUI();
+            renderShopItems();
+            alert(item.name + ' satın alındı!');
+        }
+
+        function equipItem(itemId, tip) {
+            if (!userProfile.equiped) userProfile.equiped = {};
+            userProfile.equiped[tip] = itemId;
+            saveUserProfile();
+            renderShopItems();
+        }
+
+        function getPlayerBonuses() {
+            let bonuses = { hasar: 0, hp: 0, hiz: 0 };
+            if (userProfile.equiped) {
+                Object.values(userProfile.equiped).forEach(itemId => {
+                    const item = MAGAZA.find(i => i.id === itemId);
+                    if (item && item.bonus) {
+                        if (item.bonus.hasar) bonuses.hasar += item.bonus.hasar;
+                        if (item.bonus.hp) bonuses.hp += item.bonus.hp;
+                        if (item.bonus.hiz) bonuses.hiz += item.bonus.hiz;
+                    }
+                });
+            }
+            return bonuses;
+        }
+
+        // KLAVYE KONTROLLER
         window.addEventListener('keydown', e => { tuslar[e.key] = true; if(e.code === "Space") saldir(); });
         window.addEventListener('keyup', e => tuslar[e.key] = false);
         window.addEventListener('mousedown', (e) => {
-            if(e.target.id !== 'attack-btn' && !e.target.classList.contains('dpad-btn')) {
-                saldir();
+            if(e.target.id !== 'attack-btn' && e.target.id !== 'joystick-base' && e.target.id !== 'joystick-thumb') {
+                if (oyunAktif) saldir();
             }
         });
 
-        function setupMobileControls() {
-            const dpadUp = document.getElementById('dpad-up');
-            const dpadDown = document.getElementById('dpad-down');
-            const dpadLeft = document.getElementById('dpad-left');
-            const dpadRight = document.getElementById('dpad-right');
-            const attackBtn = document.getElementById('attack-btn');
-
-            function handleDpad(element, key) {
-                element.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    tuslar[key] = true;
-                    element.classList.add('active');
-                }, { passive: false });
+        // JOYSTICK KONTROLLER
+        function setupJoystick() {
+            const container = document.getElementById('joystick-container');
+            const base = document.getElementById('joystick-base');
+            const thumb = document.getElementById('joystick-thumb');
+            
+            function handleJoystick(e) {
+                e.preventDefault();
+                const touch = e.touches ? e.touches[0] : e;
+                const rect = base.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
                 
-                element.addEventListener('touchend', (e) => {
-                    e.preventDefault();
-                    tuslar[key] = false;
-                    element.classList.remove('active');
-                }, { passive: false });
+                let deltaX = touch.clientX - centerX;
+                let deltaY = touch.clientY - centerY;
                 
-                element.addEventListener('touchcancel', (e) => {
-                    tuslar[key] = false;
-                    element.classList.remove('active');
-                });
+                const maxDist = rect.width / 2 - 25;
+                const dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                
+                if (dist > maxDist) {
+                    deltaX = (deltaX / dist) * maxDist;
+                    deltaY = (deltaY / dist) * maxDist;
+                }
+                
+                thumb.style.transform = `translate(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px))`;
+                
+                joystickData.x = deltaX / maxDist;
+                joystickData.y = deltaY / maxDist;
+                joystickActive = true;
             }
+            
+            function resetJoystick() {
+                thumb.style.transform = 'translate(-50%, -50%)';
+                joystickData.x = 0;
+                joystickData.y = 0;
+                joystickActive = false;
+            }
+            
+            container.addEventListener('touchstart', handleJoystick, { passive: false });
+            container.addEventListener('touchmove', handleJoystick, { passive: false });
+            container.addEventListener('touchend', resetJoystick);
+            container.addEventListener('touchcancel', resetJoystick);
+        }
 
-            handleDpad(dpadUp, 'w');
-            handleDpad(dpadDown, 's');
-            handleDpad(dpadLeft, 'a');
-            handleDpad(dpadRight, 'd');
-
+        function setupAttackButton() {
+            const attackBtn = document.getElementById('attack-btn');
+            
             attackBtn.addEventListener('touchstart', (e) => {
                 e.preventDefault();
                 attackBtn.classList.add('active');
@@ -469,14 +627,43 @@
             }, { passive: false });
         }
 
-        document.addEventListener('DOMContentLoaded', setupMobileControls);
+        function showMobileControls(show) {
+            const joystick = document.getElementById('joystick-container');
+            const attackBtn = document.getElementById('attack-btn');
+            
+            if (isMobile && show) {
+                joystick.style.display = 'block';
+                attackBtn.style.display = 'flex';
+            } else {
+                joystick.style.display = 'none';
+                attackBtn.style.display = 'none';
+            }
+        }
+
+        function checkMobile() {
+            isMobile = window.innerWidth <= 1024 || 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkMobile();
+            setupJoystick();
+            setupAttackButton();
+            
+            // Auth state listener
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    onAuthSuccess(user);
+                }
+            });
+        });
 
         function boyutlandir() { 
             canvas.width = window.innerWidth; 
             canvas.height = window.innerHeight;
+            checkMobile();
             
-            let isMobile = window.innerWidth <= 1024 || 'ontouchstart' in window;
-            let bottomPadding = isMobile ? 200 : 80;
+            let bottomPadding = isMobile ? 180 : 80;
+            if (window.innerHeight < 500) bottomPadding = 120; // Landscape
             
             arena.padding = Math.min(canvas.width, canvas.height) * 0.08;
             arena.x = arena.padding;
@@ -487,34 +674,48 @@
         window.onresize = boyutlandir;
         boyutlandir();
 
-        function isimAl() {
-            let input = document.getElementById('playerNameInput').value.trim().toUpperCase();
-            if (input.length === 0) {
-                oyuncuIsmi = "P" + Math.floor(Math.random() * 999);
-            } else {
-                oyuncuIsmi = input;
-            }
-            ben.isim = oyuncuIsmi;
-        }
-
         function botlaOyna() {
-            isimAl();
             botModuAktif = true;
             takim = "mavi"; 
-            let ozelOda = "bot_arena_v4_" + Math.floor(Math.random() * 100000);
+            let ozelOda = "bot_arena_v5_" + Math.floor(Math.random() * 100000);
             baslat(2, ozelOda); 
         }
 
         function baslat(kisiSayisi, ozelOdaIsmi = null) {
-            isimAl();
+            ben.isim = oyuncuIsmi;
             hedefKisiSayisi = kisiSayisi;
-            odaAdi = ozelOdaIsmi ? ozelOdaIsmi : "arena_pixel_v4_" + kisiSayisi;
+            odaAdi = ozelOdaIsmi ? ozelOdaIsmi : "arena_pixel_v5_" + kisiSayisi;
+            
+            // Oda doluluğu kontrolü (bot modu hariç)
+            if (!ozelOdaIsmi) {
+                db.ref(odaAdi).once('value').then(snapshot => {
+                    let mevcutOyuncular = snapshot.val() || {};
+                    let gercekOyuncuSayisi = Object.values(mevcutOyuncular).filter(p => !p.isBot).length;
+                    
+                    if (gercekOyuncuSayisi >= kisiSayisi) {
+                        alert('Bu oda dolu! Başka oda deneyin veya bekleyin.');
+                        return;
+                    }
+                    
+                    oyunuBaslat(kisiSayisi, odaAdi);
+                });
+            } else {
+                oyunuBaslat(kisiSayisi, odaAdi);
+            }
+        }
+
+        function oyunuBaslat(kisiSayisi, odaAdi) {
             oyunBaslamaZamani = Date.now();
             girisZamani = Date.now();
-            ben.sonHasarZamani = Date.now(); // Başlangıçta şimdiki zaman
+            
+            const bonuses = getPlayerBonuses();
+            ben.maxHp = AYARLAR.maxHp + bonuses.hp;
+            ben.hp = ben.maxHp;
+            ben.sonHasarZamani = Date.now();
 
             document.getElementById('mainMenu').style.display = 'none';
             document.getElementById('ui-layer').style.display = 'block';
+            showMobileControls(true);
             oyunAktif = true;
 
             if (botModuAktif) {
@@ -522,10 +723,9 @@
                 ben.takim = takim;
                 ben.isim = oyuncuIsmi;
                 ben.girisZamani = girisZamani;
-                ben.hp = 50;
-                ben.sonHasarZamani = Date.now();
                 ben.x = arena.x + 100;
                 ben.y = arena.y + arena.h / 2;
+                ben.equiped = userProfile.equiped || {};
 
                 db.ref(odaAdi + "/" + myId).set(ben);
                 db.ref(odaAdi + "/" + myId).onDisconnect().remove();
@@ -550,10 +750,9 @@
             ben.isim = oyuncuIsmi;
             ben.girisZamani = girisZamani;
             ben.takim = "bekliyor";
-            ben.hp = 50;
-            ben.sonHasarZamani = Date.now();
             ben.x = canvas.width / 2;
             ben.y = canvas.height / 2;
+            ben.equiped = userProfile.equiped || {};
 
             db.ref(odaAdi).once('value').then(snapshot => {
                 let mevcutOyuncular = snapshot.val() || {};
@@ -599,7 +798,7 @@
                     kazanmaKontrolu();
                 });
 
-                document.getElementById('room-info').innerHTML = "ROOM: " + kisiSayisi + "P";
+                document.getElementById('room-info').innerHTML = "ROOM: " + hedefKisiSayisi + "P";
                 geriSayimYap(3);
                 oyunDongusu();
             });
@@ -644,9 +843,8 @@
             }
         }
 
-        // HP REGEN SİSTEMİ
         function hpRegenKontrol() {
-            if (ben.hp <= 0 || ben.hp >= AYARLAR.maxHp) {
+            if (ben.hp <= 0 || ben.hp >= ben.maxHp) {
                 document.getElementById('regen-indicator').style.opacity = '0';
                 return;
             }
@@ -654,13 +852,11 @@
             let simdi = Date.now();
             let sonHasardanGecenSure = simdi - ben.sonHasarZamani;
             
-            // 30 saniye vurulmadıysa HP regen başla
             if (sonHasardanGecenSure >= AYARLAR.regenSuresi) {
                 document.getElementById('regen-indicator').style.opacity = '1';
                 
-                // Her saniye regen yap
                 if (simdi - sonRegenZamani >= 1000) {
-                    ben.hp = Math.min(AYARLAR.maxHp, ben.hp + AYARLAR.regenMiktari);
+                    ben.hp = Math.min(ben.maxHp, ben.hp + AYARLAR.regenMiktari);
                     db.ref(odaAdi + "/" + myId + "/hp").set(ben.hp);
                     sonRegenZamani = simdi;
                     bildirimGoster("+HP");
@@ -688,13 +884,13 @@
                     db.ref(odaAdi + "/" + botId).set({
                         x: arena.x + arena.w - 100, 
                         y: arena.y + arena.h / 2 + (Math.random() - 0.5) * 100, 
-                        hp: 50, takim: "kirmizi", isBot: true, yon: -1, hareket: false, isim: rastgeleIsim,
+                        hp: 50, maxHp: 50, takim: "kirmizi", isBot: true, yon: -1, hareket: false, isim: rastgeleIsim,
                         sonHasarZamani: Date.now()
                     });
                 }
             }
 
-            if (Date.now() - lastBotUpdate > 60) { // Daha sık güncelleme
+            if (Date.now() - lastBotUpdate > 60) {
                 Object.keys(oyuncular).forEach(key => {
                     let p = oyuncular[key];
                     if (p.isBot && p.hp > 0) {
@@ -710,14 +906,12 @@
 
                         let updates = {};
                         
-                        // BOT HP REGEN
                         let botSonHasar = p.sonHasarZamani || Date.now();
-                        if (Date.now() - botSonHasar >= AYARLAR.regenSuresi && p.hp < AYARLAR.maxHp) {
-                            updates.hp = Math.min(AYARLAR.maxHp, p.hp + 0.1); // Botlar daha yavaş regen
+                        if (Date.now() - botSonHasar >= AYARLAR.regenSuresi && p.hp < (p.maxHp || 50)) {
+                            updates.hp = Math.min(p.maxHp || 50, p.hp + 0.1);
                         }
                         
                         if (enYakinDusman) {
-                            // BOT HIZI ARTIRILDI
                             let hiz = AYARLAR.botHiz;
                             if (enYakinDusman.x > p.x + 20) { p.x += hiz; p.yon = 1; p.hareket = true; }
                             else if (enYakinDusman.x < p.x - 20) { p.x -= hiz; p.yon = -1; p.hareket = true; }
@@ -733,7 +927,6 @@
                                 if (enYakinDusmanKey && oyuncular[enYakinDusmanKey]) {
                                     let hedefHp = oyuncular[enYakinDusmanKey].hp || 50;
                                     db.ref(odaAdi + "/" + enYakinDusmanKey + "/hp").set(Math.max(0, hedefHp - AYARLAR.botHasar));
-                                    // Hedefin sonHasarZamani güncelle
                                     db.ref(odaAdi + "/" + enYakinDusmanKey + "/sonHasarZamani").set(Date.now());
                                 }
                             }
@@ -753,6 +946,9 @@
             guncelle();
             setTimeout(() => { ben.saldiriyor = false; guncelle(); }, 300);
 
+            const bonuses = getPlayerBonuses();
+            const toplamHasar = AYARLAR.oyuncuHasar + bonuses.hasar;
+
             Object.keys(oyuncular).forEach(key => {
                 let rakip = oyuncular[key];
                 if (key !== myId && rakip.hp > 0 && rakip.takim !== ben.takim) {
@@ -761,11 +957,10 @@
                     if (d < 70 && yuzDonuk) { 
                         db.ref(odaAdi + "/" + key + "/hp").once('value').then(snapshot => {
                             let mevcutHp = snapshot.val() ?? 50;
-                            db.ref(odaAdi + "/" + key + "/hp").set(Math.max(0, mevcutHp - AYARLAR.oyuncuHasar));
-                            // Rakibin sonHasarZamani güncelle (regen resetle)
+                            db.ref(odaAdi + "/" + key + "/hp").set(Math.max(0, mevcutHp - toplamHasar));
                             db.ref(odaAdi + "/" + key + "/sonHasarZamani").set(Date.now());
                         });
-                        bildirimGoster("HIT!");
+                        bildirimGoster("HIT! -" + toplamHasar);
                     }
                 }
             });
@@ -777,7 +972,8 @@
                 hareket: ben.hp > 0 ? ben.hareket : false, 
                 saldiriyor: ben.hp > 0 ? ben.saldiriyor : false, 
                 takim: ben.takim, isim: ben.isim, girisZamani: ben.girisZamani,
-                sonHasarZamani: ben.sonHasarZamani
+                sonHasarZamani: ben.sonHasarZamani, maxHp: ben.maxHp,
+                equiped: userProfile.equiped || {}
             });
         }
 
@@ -805,9 +1001,6 @@
             ctx.fillStyle = '#4a3a5a';
             for(let x = arena.x - 16; x <= arena.x + arena.w; x += 16) {
                 ctx.fillRect(x, arena.y - 16, 16, 16);
-                ctx.fillStyle = '#3a2a4a';
-                ctx.fillRect(x + 2, arena.y - 14, 6, 6);
-                ctx.fillStyle = '#4a3a5a';
             }
             for(let x = arena.x - 16; x <= arena.x + arena.w; x += 16) {
                 ctx.fillRect(x, arena.y + arena.h, 16, 16);
@@ -827,8 +1020,6 @@
                     ctx.fillStyle = '#4d3b2f';
                     ctx.fillRect(x + 8, y + 8, 4, 4);
                     ctx.fillRect(x + 20, y + 16, 4, 4);
-                    ctx.fillStyle = '#2d1b0f';
-                    ctx.fillRect(x + 16, y + 4, 2, 2);
                 }
             }
             
@@ -847,7 +1038,7 @@
             cizMesale(arena.x + arena.w - 20, arena.y + arena.h - 20);
             
             ctx.fillStyle = '#ffec27';
-            ctx.font = "12px 'Press Start 2P'";
+            ctx.font = "10px 'Press Start 2P'";
             ctx.textAlign = "center";
             ctx.fillText("⚔ BATTLE ARENA ⚔", canvas.width/2, arena.y - 25);
             
@@ -855,27 +1046,17 @@
             ctx.fillRect(arena.x, arena.y, arena.w * 0.3, arena.h);
             ctx.fillStyle = 'rgba(255, 0, 77, 0.1)';
             ctx.fillRect(arena.x + arena.w * 0.7, arena.y, arena.w * 0.3, arena.h);
-            
-            ctx.font = "8px 'Press Start 2P'";
-            ctx.fillStyle = RENKLER.mavi;
-            ctx.fillText("BLUE", arena.x + 50, arena.y + 15);
-            ctx.fillStyle = RENKLER.kirmizi;
-            ctx.fillText("RED", arena.x + arena.w - 50, arena.y + 15);
         }
         
         function cizMesale(x, y) {
             ctx.fillStyle = '#5f574f';
             ctx.fillRect(x - 2, y, 4, 16);
-            
             let time = Date.now();
             let flicker = Math.sin(time / 100) * 2;
-            
             ctx.fillStyle = '#ffa300';
             ctx.fillRect(x - 4, y - 8 + flicker, 8, 8);
             ctx.fillStyle = '#ffec27';
             ctx.fillRect(x - 2, y - 10 + flicker, 4, 6);
-            ctx.fillStyle = '#ff004d';
-            ctx.fillRect(x - 3, y - 4 + flicker, 6, 4);
         }
 
         function oyunDongusu() {
@@ -885,7 +1066,23 @@
 
             if (ben.hp > 0) {
                 let hareket = false;
-                let hiz = AYARLAR.oyuncuHiz;
+                const bonuses = getPlayerBonuses();
+                let hiz = AYARLAR.oyuncuHiz + bonuses.hiz;
+                
+                // Joystick kontrolü
+                if (joystickActive) {
+                    if (Math.abs(joystickData.x) > 0.2) {
+                        ben.x += joystickData.x * hiz;
+                        ben.yon = joystickData.x > 0 ? 1 : -1;
+                        hareket = true;
+                    }
+                    if (Math.abs(joystickData.y) > 0.2) {
+                        ben.y += joystickData.y * hiz;
+                        hareket = true;
+                    }
+                }
+                
+                // Klavye kontrolü
                 if (tuslar['w'] || tuslar['ArrowUp']) { ben.y -= hiz; hareket = true; }
                 if (tuslar['s'] || tuslar['ArrowDown']) { ben.y += hiz; hareket = true; }
                 if (tuslar['a'] || tuslar['ArrowLeft']) { ben.x -= hiz; ben.yon = -1; hareket = true; }
@@ -895,17 +1092,15 @@
                 ben.y = Math.max(arena.y + 20, Math.min(arena.y + arena.h - 20, ben.y));
                 ben.hareket = hareket;
                 guncelle(); 
-                
-                // HP REGEN KONTROL
                 hpRegenKontrol();
             } else {
                 guncelle();
             }
 
-            let barW = Math.max(0, (ben.hp / AYARLAR.maxHp) * 100);
+            let barW = Math.max(0, (ben.hp / ben.maxHp) * 100);
             document.getElementById('health-bar').style.width = barW + "%";
-            document.getElementById('health-bar').style.background = ben.hp > 25 ? RENKLER.yesil : RENKLER.kirmizi;
-            document.getElementById('health-text').innerText = "HP: " + Math.max(0, Math.ceil(ben.hp));
+            document.getElementById('health-bar').style.background = ben.hp > ben.maxHp * 0.5 ? RENKLER.yesil : RENKLER.kirmizi;
+            document.getElementById('health-text').innerText = "HP: " + Math.max(0, Math.ceil(ben.hp)) + "/" + ben.maxHp;
 
             botlariYonet();
             
@@ -922,7 +1117,6 @@
             let renkKoyu = p.takim === "mavi" ? '#1d6fa5' : '#7e0026';
             
             ctx.save();
-            
             if (p.hp <= 0) ctx.globalAlpha = 0.5;
             
             let yon = p.yon || 1;
@@ -930,10 +1124,19 @@
             let bounce = p.hareket ? Math.sin(time / 100) * 2 : 0;
             let saldiriOffset = p.saldiriyor ? 10 * yon : 0;
             
+            // Ekipman kontrolü
+            let equiped = p.equiped || {};
+            let hasArmor = equiped.zirh;
+            let hasHelmet = equiped.kask;
+            let hasSword = equiped.silah;
+            let hasBoots = equiped.bot;
+            
+            // GÖLGE
             ctx.fillStyle = 'rgba(0,0,0,0.4)';
             ctx.fillRect(x - 10, y + 22, 20, 6);
             
-            ctx.fillStyle = renkKoyu;
+            // BACAKLAR
+            ctx.fillStyle = hasBoots ? '#ffa300' : renkKoyu;
             if (p.hp > 0) {
                 let bacakOffset = p.hareket ? Math.sin(time / 80) * 4 : 0;
                 ctx.fillRect(x - 6 + bacakOffset, y + 8 + bounce, 4, 14);
@@ -943,21 +1146,27 @@
                 ctx.fillRect(x + 2, y + 8, 4, 14);
             }
             
-            ctx.fillStyle = renk;
+            // GÖVDE (Zırh varsa farklı renk)
+            ctx.fillStyle = hasArmor ? '#c2c3c7' : renk;
             ctx.fillRect(x - 8, y - 8 + bounce, 16, 18);
             
-            ctx.fillStyle = renkKoyu;
-            ctx.fillRect(x - 6, y - 4 + bounce, 2, 10);
-            ctx.fillRect(x + 4, y - 4 + bounce, 2, 10);
+            if (hasArmor) {
+                ctx.fillStyle = '#83769c';
+                ctx.fillRect(x - 6, y - 4 + bounce, 12, 2);
+                ctx.fillRect(x - 6, y + 2 + bounce, 12, 2);
+            }
             
+            // KAFA
             ctx.fillStyle = RENKLER.krem;
             ctx.fillRect(x - 6, y - 22 + bounce, 12, 14);
             
-            ctx.fillStyle = renkKoyu;
+            // KASK (varsa altın rengi)
+            ctx.fillStyle = hasHelmet ? '#ffcc00' : renkKoyu;
             ctx.fillRect(x - 8, y - 26 + bounce, 16, 6);
-            ctx.fillStyle = renk;
+            ctx.fillStyle = hasHelmet ? '#ffa300' : renk;
             ctx.fillRect(x - 6, y - 24 + bounce, 12, 4);
             
+            // GÖZLER
             if (p.hp > 0) {
                 ctx.fillStyle = RENKLER.siyah;
                 ctx.fillRect(x - 3 + (yon > 0 ? 2 : 0), y - 16 + bounce, 2, 3);
@@ -970,6 +1179,7 @@
                 ctx.fillRect(x + 4, y - 14, 2, 2);
             }
             
+            // KOLLAR
             ctx.fillStyle = RENKLER.krem;
             if (yon > 0) {
                 ctx.fillRect(x - 14, y - 6 + bounce, 6, 12);
@@ -979,7 +1189,11 @@
                 ctx.fillRect(x - 14 + saldiriOffset, y - 6 + bounce, 6, 12);
             }
             
+            // KILIÇ (Özel kılıç varsa farklı renk/boyut)
             if (p.hp > 0) {
+                let swordColor = hasSword ? (hasSword === 'sword3' ? '#ff004d' : '#ffcc00') : RENKLER.acik_gri;
+                let swordLength = hasSword ? 28 : 24;
+                
                 ctx.fillStyle = '#5f574f';
                 if (yon > 0) {
                     ctx.fillRect(x + 14 + saldiriOffset, y + 4 + bounce, 6, 8);
@@ -987,27 +1201,38 @@
                     ctx.fillRect(x - 20 + saldiriOffset, y + 4 + bounce, 6, 8);
                 }
                 
-                ctx.fillStyle = RENKLER.acik_gri;
+                ctx.fillStyle = swordColor;
                 if (yon > 0) {
-                    ctx.fillRect(x + 16 + saldiriOffset, y - 16 + bounce, 4, 24);
+                    ctx.fillRect(x + 16 + saldiriOffset, y - 16 + bounce, 4, swordLength);
                     ctx.fillStyle = RENKLER.beyaz;
-                    ctx.fillRect(x + 17 + saldiriOffset, y - 14 + bounce, 2, 20);
+                    ctx.fillRect(x + 17 + saldiriOffset, y - 14 + bounce, 2, swordLength - 4);
                 } else {
-                    ctx.fillRect(x - 20 + saldiriOffset, y - 16 + bounce, 4, 24);
+                    ctx.fillRect(x - 20 + saldiriOffset, y - 16 + bounce, 4, swordLength);
                     ctx.fillStyle = RENKLER.beyaz;
-                    ctx.fillRect(x - 19 + saldiriOffset, y - 14 + bounce, 2, 20);
+                    ctx.fillRect(x - 19 + saldiriOffset, y - 14 + bounce, 2, swordLength - 4);
+                }
+                
+                // Çift kılıç efekti
+                if (hasSword === 'sword2' || hasSword === 'sword3') {
+                    ctx.fillStyle = swordColor;
+                    if (yon > 0) {
+                        ctx.fillRect(x - 20, y - 12 + bounce, 4, 20);
+                    } else {
+                        ctx.fillRect(x + 16, y - 12 + bounce, 4, 20);
+                    }
                 }
                 
                 if (p.saldiriyor) {
-                    ctx.fillStyle = 'rgba(255, 255, 200, 0.5)';
+                    ctx.fillStyle = hasSword === 'sword3' ? 'rgba(255, 100, 50, 0.6)' : 'rgba(255, 255, 200, 0.5)';
                     if (yon > 0) {
-                        ctx.fillRect(x + 20 + saldiriOffset, y - 10 + bounce, 20, 4);
+                        ctx.fillRect(x + 20 + saldiriOffset, y - 10 + bounce, 25, 4);
                     } else {
-                        ctx.fillRect(x - 40 + saldiriOffset, y - 10 + bounce, 20, 4);
+                        ctx.fillRect(x - 45 + saldiriOffset, y - 10 + bounce, 25, 4);
                     }
                 }
             }
             
+            // KALKAN
             ctx.fillStyle = renkKoyu;
             if (yon > 0) {
                 ctx.fillRect(x - 18, y - 4 + bounce, 6, 14);
@@ -1019,20 +1244,22 @@
                 ctx.fillRect(x + 13, y - 2 + bounce, 4, 10);
             }
             
+            // HP BAR
+            let maxHp = p.maxHp || 50;
             if (p.hp > 0) {
                 ctx.fillStyle = RENKLER.siyah;
                 ctx.fillRect(x - 14, y - 36, 28, 8);
-                ctx.fillStyle = p.hp > 25 ? RENKLER.yesil : RENKLER.kirmizi;
-                ctx.fillRect(x - 13, y - 35, (p.hp / AYARLAR.maxHp) * 26, 6);
+                ctx.fillStyle = p.hp > maxHp * 0.5 ? RENKLER.yesil : RENKLER.kirmizi;
+                ctx.fillRect(x - 13, y - 35, (p.hp / maxHp) * 26, 6);
                 
-                // REGEN EFEKT (HP yenileniyorsa parla)
                 let sonHasar = p.sonHasarZamani || 0;
-                if (Date.now() - sonHasar >= AYARLAR.regenSuresi && p.hp < AYARLAR.maxHp) {
+                if (Date.now() - sonHasar >= AYARLAR.regenSuresi && p.hp < maxHp) {
                     ctx.fillStyle = `rgba(0, 228, 54, ${0.3 + Math.sin(Date.now() / 200) * 0.3})`;
                     ctx.fillRect(x - 14, y - 36, 28, 8);
                 }
             }
             
+            // İSİM
             ctx.fillStyle = RENKLER.beyaz;
             ctx.font = "8px 'Press Start 2P'";
             ctx.textAlign = "center";
@@ -1065,6 +1292,7 @@
 
             let mainText = document.getElementById('winnerText');
             let subText = document.getElementById('subWinner');
+            let scoreGain = document.getElementById('scoreGain');
             
             let kazananTakim = "";
             if (m === 0 && k > 0) kazananTakim = "kirmizi";
@@ -1074,18 +1302,44 @@
                 if (ben.takim === kazananTakim) {
                     mainText.innerText = "VICTORY!";
                     mainText.style.color = RENKLER.yesil; 
-                    subText.innerText = oyuncuIsmi + " WINS!";
+                    subText.innerText = oyuncuIsmi + " KAZANDI!";
+                    
+                    // PUAN EKLE
+                    userProfile.puan = (userProfile.puan || 0) + AYARLAR.galibiyetPuani;
+                    saveUserProfile();
+                    scoreGain.innerText = "+" + AYARLAR.galibiyetPuani + " PUAN! (Toplam: " + userProfile.puan + ")";
+                    
+                    // Ödül kontrolü
+                    checkRewards();
                 } else {
                     mainText.innerText = "DEFEAT";
                     mainText.style.color = RENKLER.kirmizi; 
-                    subText.innerText = "GAME OVER...";
+                    subText.innerText = "YENİLDİN...";
+                    scoreGain.innerText = "";
                 }
                 oyunBitti();
             }
         }
 
+        function checkRewards() {
+            // Otomatik ödül açma (50 ve 100 puan)
+            if (userProfile.puan >= 50 && !userProfile.sahipOlunanlar?.includes('sword2')) {
+                if (!userProfile.sahipOlunanlar) userProfile.sahipOlunanlar = [];
+                userProfile.sahipOlunanlar.push('sword2');
+                saveUserProfile();
+                setTimeout(() => alert('🎉 50 PUAN ÖDÜLÜ: ÇİFT KILIÇ AÇILDI!'), 500);
+            }
+            if (userProfile.puan >= 100 && !userProfile.sahipOlunanlar?.includes('armor1')) {
+                if (!userProfile.sahipOlunanlar) userProfile.sahipOlunanlar = [];
+                userProfile.sahipOlunanlar.push('armor1');
+                saveUserProfile();
+                setTimeout(() => alert('🎉 100 PUAN ÖDÜLÜ: DEMİR ZIRH AÇILDI!'), 1000);
+            }
+        }
+
         function oyunBitti() {
             oyunAktif = false;
+            showMobileControls(false);
             setTimeout(() => {
                 document.getElementById('gameOverScreen').style.display = 'flex';
                 document.getElementById('ui-layer').style.display = 'none';
