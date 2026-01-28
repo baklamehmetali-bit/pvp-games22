@@ -125,7 +125,6 @@
             font-size: 16px; color: #ffec27; text-shadow: 3px 3px 0px #000; opacity: 0;
         }
 
-        /* AUTH EKRANI */
         #authScreen { z-index: 25; }
         .auth-container { 
             background: #1d2b53; padding: 30px; border: 4px solid #3a3a5c;
@@ -147,15 +146,10 @@
         #authError { color: #ff004d; font-size: 8px; text-align: center; min-height: 20px; }
         
         .privacy-note {
-            font-size: 6px;
-            color: #666;
-            margin-top: 15px;
-            line-height: 1.8;
-            max-width: 250px;
-            text-align: center;
+            font-size: 6px; color: #666; margin-top: 15px; line-height: 1.8;
+            max-width: 250px; text-align: center;
         }
 
-        /* PROFIL BÖLÜMÜ */
         .profile-bar {
             position: absolute; top: 60px; left: 30px;
             background: #1d2b53; padding: 10px 15px; border: 3px solid #3a3a5c;
@@ -164,7 +158,6 @@
         .profile-bar span { color: #ffcc00; }
         .daily-limit { color: #ff77a8; font-size: 6px; }
 
-        /* MAĞAZA */
         #shopScreen { z-index: 22; display: none; }
         .shop-container {
             background: #1d2b53; padding: 20px; border: 4px solid #ffcc00;
@@ -189,7 +182,6 @@
         .shop-item-desc { color: #c2c3c7; }
         .shop-item button { padding: 6px 10px; font-size: 7px; }
 
-        /* BOT ZORLUK SEÇİMİ */
         #botDifficultyScreen { z-index: 23; display: none; }
         .difficulty-container {
             background: #1d2b53; padding: 25px; border: 4px solid #8b5cf6;
@@ -206,40 +198,32 @@
         .diff-normal { background: #ffa300; border-color: #aa6b00; box-shadow: 4px 4px 0px #aa6b00; }
         .diff-hard { background: #ff004d; border-color: #7e0026; box-shadow: 4px 4px 0px #7e0026; }
 
-        /* HARİTA SEÇİMİ */
         #mapSelectScreen { z-index: 22; display: none; }
         .map-container {
             background: #1d2b53; padding: 20px; border: 4px solid #29adff;
             max-width: 450px; width: 90%; text-align: center;
         }
         .map-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .map-btn {
-            padding: 15px 10px; text-align: center; font-size: 8px;
-        }
+        .map-btn { padding: 15px 10px; text-align: center; font-size: 8px; }
         .map-icon { font-size: 24px; display: block; margin-bottom: 8px; }
         .map-sand { background: #ab5236; border-color: #7a3a26; box-shadow: 4px 4px 0px #7a3a26; }
         .map-ice { background: #29adff; border-color: #1d6fa5; box-shadow: 4px 4px 0px #1d6fa5; }
         .map-lava { background: #ff004d; border-color: #7e0026; box-shadow: 4px 4px 0px #7e0026; }
         .map-forest { background: #00e436; border-color: #00a029; box-shadow: 4px 4px 0px #00a029; }
 
-        /* BEKLEME EKRANI */
+        /* BOT OYUNCU SAYISI SEÇİMİ */
+        #botPlayerCountScreen { z-index: 22; display: none; }
+        .player-count-container {
+            background: #1d2b53; padding: 25px; border: 4px solid #8b5cf6;
+            max-width: 350px; width: 90%; text-align: center;
+        }
+
         #waitingScreen { z-index: 24; display: none; }
         .waiting-container {
             background: #1d2b53; padding: 30px; border: 4px solid #29adff;
             max-width: 400px; width: 90%; text-align: center;
         }
-        .waiting-dots {
-            font-size: 24px;
-            animation: dots 1.5s infinite;
-        }
-        @keyframes dots {
-            0%, 20% { content: '.'; }
-            40% { content: '..'; }
-            60%, 100% { content: '...'; }
-        }
-        .player-count {
-            font-size: 32px; color: #ffcc00; margin: 20px 0;
-        }
+        .player-count { font-size: 32px; color: #ffcc00; margin: 20px 0; }
         .player-list {
             background: #0f0f23; padding: 15px; margin: 15px 0;
             font-size: 8px; text-align: left; max-height: 150px; overflow-y: auto;
@@ -249,7 +233,6 @@
         .player-list-item.red { color: #ff004d; }
         .waiting-timer { color: #ff77a8; font-size: 10px; margin-top: 10px; }
 
-        /* JOYSTICK */
         #joystick-container {
             position: fixed; left: 30px; bottom: 30px;
             width: 120px; height: 120px; display: none; z-index: 80;
@@ -324,7 +307,6 @@
     <div class="scanlines"></div>
     <div class="crt-glow"></div>
 
-    <!-- AUTH EKRANI -->
     <div id="authScreen" class="overlay-screen">
         <div class="brand-logo">★ MAMI GAMES ★</div>
         <h1>PVP ARENA</h1>
@@ -346,7 +328,6 @@
         </div>
     </div>
 
-    <!-- ANA MENÜ -->
     <div id="mainMenu" class="overlay-screen" style="display: none;">
         <div class="brand-logo">★ MAMI GAMES ★</div>
         <div class="profile-bar" id="profileBar">
@@ -365,20 +346,19 @@
         </div>
     </div>
 
-    <!-- BOT ZORLUK SEÇİMİ -->
     <div id="botDifficultyScreen" class="overlay-screen">
         <div class="difficulty-container">
             <h2>🤖 BOT ZORLUĞU</h2>
             <p>Günlük bot limiti: <span id="diffDailyLimit">0</span>/10 puan</p>
-            <button class="difficulty-btn diff-easy" onclick="showMapSelect('bot', 'easy')">
+            <button class="difficulty-btn diff-easy" onclick="showBotPlayerCount('easy')">
                 <span class="diff-info"><span class="diff-name">KOLAY</span><span class="diff-reward">+1 Puan</span></span>
                 <span>😊</span>
             </button>
-            <button class="difficulty-btn diff-normal" onclick="showMapSelect('bot', 'normal')">
+            <button class="difficulty-btn diff-normal" onclick="showBotPlayerCount('normal')">
                 <span class="diff-info"><span class="diff-name">NORMAL</span><span class="diff-reward">+2 Puan</span></span>
                 <span>😐</span>
             </button>
-            <button class="difficulty-btn diff-hard" onclick="showMapSelect('bot', 'hard')">
+            <button class="difficulty-btn diff-hard" onclick="showBotPlayerCount('hard')">
                 <span class="diff-info"><span class="diff-name">ZOR</span><span class="diff-reward">+3 Puan</span></span>
                 <span>😈</span>
             </button>
@@ -386,7 +366,26 @@
         </div>
     </div>
 
-    <!-- HARİTA SEÇİMİ -->
+    <div id="botPlayerCountScreen" class="overlay-screen">
+        <div class="player-count-container">
+            <h2>👥 OYUNCU SAYISI</h2>
+            <p>Kaç kişilik maç?</p>
+            <button class="difficulty-btn" onclick="showMapSelect('bot', botZorluk, 2)" style="background: #29adff; border-color: #1d6fa5; box-shadow: 4px 4px 0px #1d6fa5;">
+                <span class="diff-info"><span class="diff-name">1 VS 1</span><span class="diff-reward">Sen + 1 Bot</span></span>
+                <span>⚔️</span>
+            </button>
+            <button class="difficulty-btn" onclick="showMapSelect('bot', botZorluk, 4)" style="background: #ffa300; border-color: #aa6b00; box-shadow: 4px 4px 0px #aa6b00;">
+                <span class="diff-info"><span class="diff-name">2 VS 2</span><span class="diff-reward">Sen + 3 Bot</span></span>
+                <span>⚔️</span>
+            </button>
+            <button class="difficulty-btn" onclick="showMapSelect('bot', botZorluk, 8)" style="background: #ff004d; border-color: #7e0026; box-shadow: 4px 4px 0px #7e0026;">
+                <span class="diff-info"><span class="diff-name">4 VS 4</span><span class="diff-reward">Sen + 7 Bot</span></span>
+                <span>⚔️</span>
+            </button>
+            <button class="red" onclick="closeBotPlayerCount()" style="width: 100%; margin-top: 15px;">GERİ</button>
+        </div>
+    </div>
+
     <div id="mapSelectScreen" class="overlay-screen">
         <div class="map-container">
             <h2>🗺️ HARİTA SEÇ</h2>
@@ -416,18 +415,15 @@
         </div>
     </div>
 
-    <!-- BEKLEME EKRANI -->
     <div id="waitingScreen" class="overlay-screen">
         <div class="waiting-container">
             <h2>⏳ OYUNCU BEKLENİYOR</h2>
             <div class="player-count">
                 <span id="currentPlayers">1</span> / <span id="targetPlayers">2</span>
             </div>
-            <div class="player-list" id="playerList">
-                <!-- Oyuncular burada listelenecek -->
-            </div>
+            <div class="player-list" id="playerList"></div>
             <div class="waiting-timer">
-                Kalan süre: <span id="waitTimer">30</span> sn
+                Kalan süre: <span id="waitTimer">10</span> sn
             </div>
             <p id="waitingHint">Rakip bekleniyor...</p>
             <button id="fillWithBotsBtn" class="orange" onclick="fillWithBots()" style="display: none; width: 100%; margin-top: 10px;">
@@ -437,7 +433,6 @@
         </div>
     </div>
 
-    <!-- MAĞAZA -->
     <div id="shopScreen" class="overlay-screen">
         <div class="shop-container">
             <h2 style="text-align: center;">🛒 MAĞAZA</h2>
@@ -454,7 +449,6 @@
         </div>
     </div>
 
-    <!-- OYUN BİTTİ EKRANI -->
     <div id="gameOverScreen" class="overlay-screen" style="display: none;">
         <h1 id="winnerText">GAME OVER</h1>
         <p id="subWinner">...</p>
@@ -465,13 +459,12 @@
         </div>
     </div>
 
-    <!-- OYUN UI -->
     <div id="ui-layer" style="display: none;">
         <button id="exit-btn" onclick="exitGame()">◄ ÇIKIŞ</button>
         <button id="sound-btn" onclick="toggleSound()">🔊</button>
         <div id="room-info">YUKLENIYOR...</div>
         <div id="regen-indicator">♥ REGEN ♥</div>
-        <div id="health-text">HP: 50</div>
+        <div id="health-text">HP: 100</div>
         <div id="health-container">
             <div id="health-bar"></div>
         </div>
@@ -479,7 +472,6 @@
         <div id="notification"></div>
     </div>
 
-    <!-- MOBİL KONTROLLER -->
     <div id="joystick-container">
         <div id="joystick-base">
             <div id="joystick-thumb"></div>
@@ -511,14 +503,11 @@
         const ctx = canvas.getContext('2d');
         ctx.imageSmoothingEnabled = false;
         
-        // SES SİSTEMİ
         let audioCtx = null;
         let soundEnabled = true;
         
         function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
         
         function playSound(type) {
@@ -575,7 +564,6 @@
             document.getElementById('sound-btn').innerText = soundEnabled ? '🔊' : '🔇';
         }
         
-        // HARİTA SİSTEMİ
         const HARITALAR = {
             sand: { name: 'KUM ARENA', zemin: '#3d2b1f', detay: '#4d3b2f', duvar: '#4a3a5a', cizgi: '#5d4b3f', arka: '#2a1a3a' },
             ice: { name: 'BUZ ARENA', zemin: '#a0d8ef', detay: '#c5e8f7', duvar: '#5b8a9a', cizgi: '#ffffff', arka: '#1a3a4a' },
@@ -583,25 +571,24 @@
             forest: { name: 'ORMAN ARENA', zemin: '#2d4a2d', detay: '#3d5a3d', duvar: '#5a7a5a', cizgi: '#7a9a7a', arka: '#1a2a1a' }
         };
         
-        // MAĞAZA SİSTEMİ
         const MAGAZA = {
             silah: [
-                { id: 'sword1', name: 'DEMİR KILIÇ', desc: '+1 Hasar', icon: '🗡️', puan: 30, bonus: { hasar: 1 } },
-                { id: 'sword2', name: 'ÇELİK KILIÇ', desc: '+2 Hasar', icon: '⚔️', puan: 60, bonus: { hasar: 2 } },
-                { id: 'axe1', name: 'SAVAŞ BALTASI', desc: '+3 Hasar', icon: '🪓', puan: 100, bonus: { hasar: 3 } },
-                { id: 'sword3', name: 'ATEŞ KILICI', desc: '+4 Hasar', icon: '🔥', puan: 150, bonus: { hasar: 4 } },
-                { id: 'sword4', name: 'EJDERHA KILICI', desc: '+6 Hasar', icon: '🐉', puan: 250, bonus: { hasar: 6 } },
+                { id: 'sword1', name: 'DEMİR KILIÇ', desc: '+2 Hasar', icon: '🗡️', puan: 30, bonus: { hasar: 2 } },
+                { id: 'sword2', name: 'ÇELİK KILIÇ', desc: '+4 Hasar', icon: '⚔️', puan: 60, bonus: { hasar: 4 } },
+                { id: 'axe1', name: 'SAVAŞ BALTASI', desc: '+6 Hasar', icon: '🪓', puan: 100, bonus: { hasar: 6 } },
+                { id: 'sword3', name: 'ATEŞ KILICI', desc: '+8 Hasar', icon: '🔥', puan: 150, bonus: { hasar: 8 } },
+                { id: 'sword4', name: 'EJDERHA KILICI', desc: '+12 Hasar', icon: '🐉', puan: 250, bonus: { hasar: 12 } },
             ],
             zirh: [
-                { id: 'armor1', name: 'DERİ ZIRH', desc: '+5 HP', icon: '🦺', puan: 40, bonus: { hp: 5 } },
-                { id: 'armor2', name: 'DEMİR ZIRH', desc: '+10 HP', icon: '🛡️', puan: 80, bonus: { hp: 10 } },
-                { id: 'armor3', name: 'ÇELİK ZIRH', desc: '+15 HP', icon: '⚙️', puan: 130, bonus: { hp: 15 } },
-                { id: 'armor4', name: 'ELMAS ZIRH', desc: '+25 HP', icon: '💎', puan: 220, bonus: { hp: 25 } },
+                { id: 'armor1', name: 'DERİ ZIRH', desc: '+10 HP', icon: '🦺', puan: 40, bonus: { hp: 10 } },
+                { id: 'armor2', name: 'DEMİR ZIRH', desc: '+20 HP', icon: '🛡️', puan: 80, bonus: { hp: 20 } },
+                { id: 'armor3', name: 'ÇELİK ZIRH', desc: '+30 HP', icon: '⚙️', puan: 130, bonus: { hp: 30 } },
+                { id: 'armor4', name: 'ELMAS ZIRH', desc: '+50 HP', icon: '💎', puan: 220, bonus: { hp: 50 } },
             ],
             kask: [
-                { id: 'helmet1', name: 'DERİ KASK', desc: '+3 HP', icon: '🎩', puan: 25, bonus: { hp: 3 } },
-                { id: 'helmet2', name: 'DEMİR KASK', desc: '+5 HP', icon: '⛑️', puan: 50, bonus: { hp: 5 } },
-                { id: 'helmet3', name: 'ALTIN KASK', desc: '+8 HP', icon: '👑', puan: 90, bonus: { hp: 8 } },
+                { id: 'helmet1', name: 'DERİ KASK', desc: '+5 HP', icon: '🎩', puan: 25, bonus: { hp: 5 } },
+                { id: 'helmet2', name: 'DEMİR KASK', desc: '+10 HP', icon: '⛑️', puan: 50, bonus: { hp: 10 } },
+                { id: 'helmet3', name: 'ALTIN KASK', desc: '+15 HP', icon: '👑', puan: 90, bonus: { hp: 15 } },
             ],
             bot: [
                 { id: 'boots1', name: 'DERİ BOT', desc: '+0.5 Hız', icon: '👞', puan: 35, bonus: { hiz: 0.5 } },
@@ -609,8 +596,8 @@
                 { id: 'boots3', name: 'RÜZGAR BOTLARI', desc: '+1.5 Hız', icon: '💨', puan: 140, bonus: { hiz: 1.5 } },
             ],
             ozel: [
-                { id: 'special1', name: 'VAMPİR KILICI', desc: 'Hasar ile +2 can çal', icon: '🧛', puan: 300, bonus: { vampir: true, hasar: 2 } },
-                { id: 'special2', name: 'TİTAN ZIRHI', desc: '+30 HP, -0.5 Hız', icon: '🗿', puan: 280, bonus: { hp: 30, hiz: -0.5 } },
+                { id: 'special1', name: 'VAMPİR KILICI', desc: '+4 Hasar, +3 Can çal', icon: '🧛', puan: 300, bonus: { vampir: 3, hasar: 4 } },
+                { id: 'special2', name: 'TİTAN ZIRHI', desc: '+60 HP, -0.5 Hız', icon: '🗿', puan: 280, bonus: { hp: 60, hiz: -0.5 } },
                 { id: 'special3', name: 'HAYALET PELERİN', desc: 'Yarı saydam ol', icon: '👻', puan: 200, bonus: { ghost: true } },
             ]
         };
@@ -624,14 +611,18 @@
         };
 
         const AYARLAR = {
-            regenSuresi: 30000, regenMiktari: 2, maxHp: 50,
-            oyuncuHasar: 5, botHasar: 3, oyuncuHiz: 4,
+            regenSuresi: 30000, 
+            regenMiktari: 4, 
+            maxHp: 100,  // 50 -> 100
+            oyuncuHasar: 10, 
+            botHasar: 6, 
+            oyuncuHiz: 4,
             gunlukBotLimit: 10,
-            beklemeTimeout: 30,
+            onlinePuan: 10,  // 5 -> 10
             botZorluk: {
-                easy: { hiz: 2, hasar: 2, puan: 1, saldirisans: 0.3 },
-                normal: { hiz: 3, hasar: 3, puan: 2, saldirisans: 0.5 },
-                hard: { hiz: 4.5, hasar: 5, puan: 3, saldirisans: 0.7 }
+                easy: { hiz: 2, hasar: 4, hp: 80, puan: 1, saldirisans: 0.25 },
+                normal: { hiz: 3, hasar: 6, hp: 100, puan: 2, saldirisans: 0.4 },
+                hard: { hiz: 4.5, hasar: 10, hp: 120, puan: 3, saldirisans: 0.6 }
             }
         };
 
@@ -661,7 +652,7 @@
         
         let takim = "mavi"; 
         let ben = {
-            x: 100, y: 100, hp: 50, maxHp: 50, yon: 1, 
+            x: 100, y: 100, hp: 100, maxHp: 100, yon: 1, 
             hareket: false, saldiriyor: false, sonHasarZamani: 0, 
             takim: takim, isBot: false, isim: "PLAYER", girisZamani: 0
         };
@@ -670,7 +661,6 @@
         let joystickActive = false;
         let joystickData = { x: 0, y: 0 };
 
-        // AUTH FONKSİYONLARI
         function showAuthTab(tab) {
             authMode = tab;
             document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
@@ -761,7 +751,6 @@
             }
         }
 
-        // BOT ZORLUK SEÇİMİ
         function showBotDifficulty() {
             checkDailyReset();
             document.getElementById('diffDailyLimit').innerText = userProfile.botPuanBugun || 0;
@@ -774,11 +763,25 @@
             document.getElementById('mainMenu').style.display = 'flex';
         }
 
-        // HARİTA SEÇİMİ
-        function showMapSelect(mode, difficulty = 'normal') {
-            gameMode = mode;
+        function showBotPlayerCount(difficulty) {
             botZorluk = difficulty;
             document.getElementById('botDifficultyScreen').style.display = 'none';
+            document.getElementById('botPlayerCountScreen').style.display = 'flex';
+        }
+
+        function closeBotPlayerCount() {
+            document.getElementById('botPlayerCountScreen').style.display = 'none';
+            document.getElementById('botDifficultyScreen').style.display = 'flex';
+        }
+
+        function showMapSelect(mode, difficulty = 'normal', playerCount = 2) {
+            gameMode = mode;
+            if (mode === 'bot') {
+                botZorluk = difficulty;
+                hedefKisiSayisi = playerCount;
+            }
+            document.getElementById('botDifficultyScreen').style.display = 'none';
+            document.getElementById('botPlayerCountScreen').style.display = 'none';
             document.getElementById('mainMenu').style.display = 'none';
             document.getElementById('mapSelectScreen').style.display = 'flex';
             document.getElementById('onlineModeSelect').style.display = mode === 'online' ? 'block' : 'none';
@@ -787,7 +790,7 @@
         function closeMapSelect() {
             document.getElementById('mapSelectScreen').style.display = 'none';
             if (gameMode === 'bot') {
-                document.getElementById('botDifficultyScreen').style.display = 'flex';
+                document.getElementById('botPlayerCountScreen').style.display = 'flex';
             } else {
                 document.getElementById('mainMenu').style.display = 'flex';
             }
@@ -798,18 +801,16 @@
             if (gameMode === 'bot') {
                 botModuAktif = true;
                 document.getElementById('mapSelectScreen').style.display = 'none';
-                hedefKisiSayisi = 2;
-                odaAdi = "bot_arena_v7_" + Math.floor(Math.random() * 100000);
+                odaAdi = "bot_arena_v8_" + Math.floor(Math.random() * 100000);
                 oyunuBaslat();
             }
         }
 
-        // ONLİNE BEKLEME SİSTEMİ
         function startOnlineGame(kisiSayisi) {
             initAudio();
             hedefKisiSayisi = kisiSayisi;
             botModuAktif = false;
-            odaAdi = "arena_v7_" + seciliHarita + "_" + kisiSayisi;
+            odaAdi = "arena_v8_" + seciliHarita + "_" + kisiSayisi;
             
             document.getElementById('mapSelectScreen').style.display = 'none';
             document.getElementById('waitingScreen').style.display = 'flex';
@@ -817,28 +818,26 @@
             document.getElementById('fillWithBotsBtn').style.display = 'none';
             document.getElementById('waitingHint').innerText = 'Rakip bekleniyor...';
             
-            waitingTimeLeft = AYARLAR.beklemeTimeout;
+            // 1v1 = 30sn, 2v2/4v4 = 10sn
+            waitingTimeLeft = kisiSayisi === 2 ? 30 : 10;
             document.getElementById('waitTimer').innerText = waitingTimeLeft;
             
-            // Odaya katıl
             ben.isim = oyuncuIsmi;
             ben.takim = "bekliyor";
             ben.hp = AYARLAR.maxHp;
+            ben.maxHp = AYARLAR.maxHp;
             ben.girisZamani = Date.now();
             ben.equiped = userProfile.equiped || {};
             
             db.ref(odaAdi + "/" + myId).set(ben);
             db.ref(odaAdi + "/" + myId).onDisconnect().remove();
             
-            // Oyuncu değişikliklerini dinle
             waitingListener = db.ref(odaAdi).on('value', snapshot => {
                 oyuncular = snapshot.val() || {};
                 updateWaitingScreen();
                 
-                // Yeterli oyuncu var mı kontrol et
                 let gercekOyuncuSayisi = Object.values(oyuncular).filter(p => !p.isBot).length;
                 if (gercekOyuncuSayisi >= hedefKisiSayisi) {
-                    // Oyun başlasın!
                     clearWaitingState();
                     document.getElementById('waitingScreen').style.display = 'none';
                     assignTeams();
@@ -846,13 +845,11 @@
                 }
             });
             
-            // Bekleme sayacı
             waitingInterval = setInterval(() => {
                 waitingTimeLeft--;
                 document.getElementById('waitTimer').innerText = waitingTimeLeft;
                 
                 if (waitingTimeLeft <= 0) {
-                    // Süre doldu, botlarla tamamla seçeneği göster
                     document.getElementById('fillWithBotsBtn').style.display = 'block';
                     document.getElementById('waitingHint').innerText = 'Süre doldu! Botlarla tamamlayabilirsiniz.';
                     clearInterval(waitingInterval);
@@ -864,7 +861,6 @@
             let gercekOyuncular = Object.entries(oyuncular).filter(([k, p]) => !p.isBot);
             document.getElementById('currentPlayers').innerText = gercekOyuncular.length;
             
-            // Oyuncu listesi
             let listHtml = '';
             gercekOyuncular.forEach(([key, p], index) => {
                 let takimClass = index % 2 === 0 ? 'blue' : 'red';
@@ -873,7 +869,6 @@
                 listHtml += `<div class="player-list-item ${takimClass}">${takimText} ${p.isim || '???'}${benMi}</div>`;
             });
             
-            // Eksik slotları göster
             let eksik = hedefKisiSayisi - gercekOyuncular.length;
             for (let i = 0; i < eksik; i++) {
                 listHtml += `<div class="player-list-item" style="color: #5f574f;">[ ? ] Bekleniyor...</div>`;
@@ -886,20 +881,18 @@
             let gercekOyuncuSayisi = Object.values(oyuncular).filter(p => !p.isBot).length;
             let eksikSayi = hedefKisiSayisi - gercekOyuncuSayisi;
             
-            // Kırmızı takıma bot ekle
             for (let i = 0; i < eksikSayi; i++) {
                 let botId = "bot_" + Date.now() + "_" + i;
                 let botIsimler = ["CPU1", "CPU2", "BOT", "NPC", "AI01", "ROBO"];
                 db.ref(odaAdi + "/" + botId).set({
                     x: arena.x + arena.w - 100,
                     y: arena.y + arena.h / 2 + (Math.random() - 0.5) * 100,
-                    hp: 50, maxHp: 50, takim: "kirmizi", isBot: true, yon: -1, hareket: false,
+                    hp: AYARLAR.maxHp, maxHp: AYARLAR.maxHp, takim: "kirmizi", isBot: true, yon: -1, hareket: false,
                     isim: botIsimler[Math.floor(Math.random() * botIsimler.length)],
                     sonHasarZamani: Date.now()
                 });
             }
             
-            // Takımları ata ve oyunu başlat
             setTimeout(() => {
                 clearWaitingState();
                 document.getElementById('waitingScreen').style.display = 'none';
@@ -932,17 +925,10 @@
         }
 
         function clearWaitingState() {
-            if (waitingInterval) {
-                clearInterval(waitingInterval);
-                waitingInterval = null;
-            }
-            if (waitingListener) {
-                db.ref(odaAdi).off('value', waitingListener);
-                waitingListener = null;
-            }
+            if (waitingInterval) { clearInterval(waitingInterval); waitingInterval = null; }
+            if (waitingListener) { db.ref(odaAdi).off('value', waitingListener); waitingListener = null; }
         }
 
-        // MAĞAZA FONKSİYONLARI
         function openShop() {
             document.getElementById('mainMenu').style.display = 'none';
             document.getElementById('shopScreen').style.display = 'flex';
@@ -1021,7 +1007,7 @@
         }
 
         function getPlayerBonuses() {
-            let bonuses = { hasar: 0, hp: 0, hiz: 0, vampir: false, ghost: false };
+            let bonuses = { hasar: 0, hp: 0, hiz: 0, vampir: 0, ghost: false };
             if (userProfile.equiped) {
                 Object.entries(userProfile.equiped).forEach(([category, itemId]) => {
                     const items = MAGAZA[category] || [];
@@ -1030,7 +1016,7 @@
                         if (item.bonus.hasar) bonuses.hasar += item.bonus.hasar;
                         if (item.bonus.hp) bonuses.hp += item.bonus.hp;
                         if (item.bonus.hiz) bonuses.hiz += item.bonus.hiz;
-                        if (item.bonus.vampir) bonuses.vampir = true;
+                        if (item.bonus.vampir) bonuses.vampir = item.bonus.vampir;
                         if (item.bonus.ghost) bonuses.ghost = true;
                     }
                 });
@@ -1038,13 +1024,12 @@
             return bonuses;
         }
 
-        // KONTROLLER
         window.addEventListener('keydown', e => { tuslar[e.key] = true; if(e.code === "Space") saldir(); });
         window.addEventListener('keyup', e => tuslar[e.key] = false);
         window.addEventListener('mousedown', (e) => {
             initAudio();
             if(e.target.id !== 'attack-btn' && e.target.id !== 'joystick-base' && e.target.id !== 'joystick-thumb') {
-                if (oyunAktif) saldir();
+                if (oyunAktif && oyunBasladi) saldir();
             }
         });
 
@@ -1158,6 +1143,41 @@
                 db.ref(odaAdi + "/" + myId).set(ben);
                 db.ref(odaAdi + "/" + myId).onDisconnect().remove();
 
+                // Botları hemen ekle - TAKIMLARI DENGELE
+                const zorlukAyar = AYARLAR.botZorluk[botZorluk];
+                const botSayisi = hedefKisiSayisi - 1;
+                const maviTakimBotSayisi = Math.floor(hedefKisiSayisi / 2) - 1; // Sen mavi olduğun için -1
+                const kirmiziTakimBotSayisi = Math.floor(hedefKisiSayisi / 2);
+                
+                const botIsimler = ["CPU1", "CPU2", "BOT1", "BOT2", "AI01", "AI02", "NPC1", "NPC2"];
+                let botIndex = 0;
+                
+                // Mavi takıma bot ekle
+                for (let i = 0; i < maviTakimBotSayisi; i++) {
+                    let botId = "bot_mavi_" + Date.now() + "_" + i;
+                    db.ref(odaAdi + "/" + botId).set({
+                        x: arena.x + 80 + Math.random() * 50,
+                        y: arena.y + 50 + (i * 80) + Math.random() * 30,
+                        hp: zorlukAyar.hp, maxHp: zorlukAyar.hp, 
+                        takim: "mavi", isBot: true, yon: 1, hareket: false,
+                        isim: botIsimler[botIndex++ % botIsimler.length],
+                        sonHasarZamani: Date.now()
+                    });
+                }
+                
+                // Kırmızı takıma bot ekle
+                for (let i = 0; i < kirmiziTakimBotSayisi; i++) {
+                    let botId = "bot_kirmizi_" + Date.now() + "_" + i;
+                    db.ref(odaAdi + "/" + botId).set({
+                        x: arena.x + arena.w - 80 - Math.random() * 50,
+                        y: arena.y + 50 + (i * 80) + Math.random() * 30,
+                        hp: zorlukAyar.hp, maxHp: zorlukAyar.hp, 
+                        takim: "kirmizi", isBot: true, yon: -1, hareket: false,
+                        isim: botIsimler[botIndex++ % botIsimler.length],
+                        sonHasarZamani: Date.now()
+                    });
+                }
+
                 db.ref(odaAdi).on('value', snapshot => {
                     oyuncular = snapshot.val() || {};
                     if(!oyuncular[myId]) oyuncular[myId] = ben;
@@ -1169,14 +1189,12 @@
                     kazanmaKontrolu();
                 });
 
-                const zorlukAyar = AYARLAR.botZorluk[botZorluk];
-                document.getElementById('room-info').innerHTML = `BOT: ${botZorluk.toUpperCase()}<br>+${zorlukAyar.puan} Puan`;
+                document.getElementById('room-info').innerHTML = `BOT: ${botZorluk.toUpperCase()}<br>${hedefKisiSayisi/2}v${hedefKisiSayisi/2}<br>+${zorlukAyar.puan} Puan`;
                 geriSayimYap(3);
                 oyunDongusu();
                 return;
             }
 
-            // Online mod - listener zaten bekleme ekranında ayarlandı
             db.ref(odaAdi).on('value', snapshot => {
                 oyuncular = snapshot.val() || {};
                 if(!oyuncular[myId]) oyuncular[myId] = ben;
@@ -1188,7 +1206,7 @@
                 kazanmaKontrolu();
             });
 
-            document.getElementById('room-info').innerHTML = `${HARITALAR[seciliHarita].name}<br>${hedefKisiSayisi}P`;
+            document.getElementById('room-info').innerHTML = `${HARITALAR[seciliHarita].name}<br>${hedefKisiSayisi}P<br>+${AYARLAR.onlinePuan} Puan`;
             geriSayimYap(3);
             oyunDongusu();
         }
@@ -1222,9 +1240,10 @@
 
         function arayuzGuncelle() {
             if(botModuAktif) {
-                let botSayi = Object.values(oyuncular).filter(p => p.isBot && p.hp > 0).length;
+                let maviCanli = Object.values(oyuncular).filter(p => p.takim === "mavi" && p.hp > 0).length;
+                let kirmiziCanli = Object.values(oyuncular).filter(p => p.takim === "kirmizi" && p.hp > 0).length;
                 const zorlukAyar = AYARLAR.botZorluk[botZorluk];
-                document.getElementById('room-info').innerHTML = `BOT: ${botZorluk.toUpperCase()}<br>DÜŞMAN: ${botSayi}<br>+${zorlukAyar.puan} Puan`;
+                document.getElementById('room-info').innerHTML = `BOT: ${botZorluk.toUpperCase()}<br>MAVİ: ${maviCanli} | KIRMIZI: ${kirmiziCanli}<br>+${zorlukAyar.puan} Puan`;
             } else {
                 let maviTakim = Object.values(oyuncular).filter(p => p.takim === "mavi" && p.hp > 0).map(p => p.isim || "?").join(", ");
                 let kirmiziTakim = Object.values(oyuncular).filter(p => p.takim === "kirmizi" && p.hp > 0).map(p => p.isim || "?").join(", ");
@@ -1256,25 +1275,9 @@
 
         let lastBotUpdate = 0;
         function botlariYonet() {
-            if (!botModuAktif) return;
+            if (!botModuAktif || !oyunBasladi) return;
 
-            let gercekOyuncular = Object.keys(oyuncular).filter(key => !oyuncular[key].isBot).sort();
-            if (gercekOyuncular.length === 0 || gercekOyuncular[0] !== myId) return;
-
-            let mevcutSayi = Object.keys(oyuncular).length;
             const zorlukAyar = AYARLAR.botZorluk[botZorluk];
-            
-            if (mevcutSayi < hedefKisiSayisi && Math.random() < 0.3) { 
-                let botId = "bot_" + Date.now() + Math.floor(Math.random()*100);
-                let botIsimler = ["CPU1", "CPU2", "BOT", "NPC", "AI01", "ROBO", "SKYNET", "HAL"];
-                db.ref(odaAdi + "/" + botId).set({
-                    x: arena.x + arena.w - 100, 
-                    y: arena.y + arena.h / 2 + (Math.random() - 0.5) * 100, 
-                    hp: 50, maxHp: 50, takim: "kirmizi", isBot: true, yon: -1, hareket: false,
-                    isim: botIsimler[Math.floor(Math.random() * botIsimler.length)],
-                    sonHasarZamani: Date.now()
-                });
-            }
 
             if (Date.now() - lastBotUpdate > 50) {
                 Object.keys(oyuncular).forEach(key => {
@@ -1306,7 +1309,7 @@
                                 updates.saldiriyor = true;
                                 setTimeout(() => db.ref(odaAdi + "/" + key + "/saldiriyor").set(false), 300);
                                 if (enYakinDusmanKey && oyuncular[enYakinDusmanKey]) {
-                                    let hedefHp = oyuncular[enYakinDusmanKey].hp || 50;
+                                    let hedefHp = oyuncular[enYakinDusmanKey].hp || 100;
                                     db.ref(odaAdi + "/" + enYakinDusmanKey + "/hp").set(Math.max(0, hedefHp - zorlukAyar.hasar));
                                     db.ref(odaAdi + "/" + enYakinDusmanKey + "/sonHasarZamani").set(Date.now());
                                     playSound('hit');
@@ -1339,15 +1342,15 @@
                     let yuzDonuk = (ben.yon === 1 && rakip.x > ben.x) || (ben.yon === -1 && rakip.x < ben.x);
                     if (d < 70 && yuzDonuk) { 
                         db.ref(odaAdi + "/" + key + "/hp").once('value').then(snapshot => {
-                            let mevcutHp = snapshot.val() ?? 50;
+                            let mevcutHp = snapshot.val() ?? 100;
                             db.ref(odaAdi + "/" + key + "/hp").set(Math.max(0, mevcutHp - toplamHasar));
                             db.ref(odaAdi + "/" + key + "/sonHasarZamani").set(Date.now());
                         });
                         playSound('hit');
                         bildirimGoster("HIT! -" + toplamHasar);
                         
-                        if (bonuses.vampir && ben.hp < ben.maxHp) {
-                            ben.hp = Math.min(ben.maxHp, ben.hp + 2);
+                        if (bonuses.vampir > 0 && ben.hp < ben.maxHp) {
+                            ben.hp = Math.min(ben.maxHp, ben.hp + bonuses.vampir);
                             db.ref(odaAdi + "/" + myId + "/hp").set(ben.hp);
                         }
                     }
@@ -1447,7 +1450,7 @@
                 const bonuses = getPlayerBonuses();
                 let hiz = AYARLAR.oyuncuHiz + bonuses.hiz;
                 
-                if (joystickActive) {
+                if (joystickActive && oyunBasladi) {
                     if (Math.abs(joystickData.x) > 0.2) {
                         ben.x += joystickData.x * hiz;
                         ben.yon = joystickData.x > 0 ? 1 : -1;
@@ -1459,10 +1462,12 @@
                     }
                 }
                 
-                if (tuslar['w'] || tuslar['ArrowUp']) { ben.y -= hiz; hareket = true; }
-                if (tuslar['s'] || tuslar['ArrowDown']) { ben.y += hiz; hareket = true; }
-                if (tuslar['a'] || tuslar['ArrowLeft']) { ben.x -= hiz; ben.yon = -1; hareket = true; }
-                if (tuslar['d'] || tuslar['ArrowRight']) { ben.x += hiz; ben.yon = 1; hareket = true; }
+                if (oyunBasladi) {
+                    if (tuslar['w'] || tuslar['ArrowUp']) { ben.y -= hiz; hareket = true; }
+                    if (tuslar['s'] || tuslar['ArrowDown']) { ben.y += hiz; hareket = true; }
+                    if (tuslar['a'] || tuslar['ArrowLeft']) { ben.x -= hiz; ben.yon = -1; hareket = true; }
+                    if (tuslar['d'] || tuslar['ArrowRight']) { ben.x += hiz; ben.yon = 1; hareket = true; }
+                }
                 
                 ben.x = Math.max(arena.x + 20, Math.min(arena.x + arena.w - 20, ben.x));
                 ben.y = Math.max(arena.y + 20, Math.min(arena.y + arena.h - 20, ben.y));
@@ -1574,13 +1579,10 @@
             }
             
             ctx.fillStyle = renkKoyu;
-            if (yon > 0) {
-                ctx.fillRect(x - 18, y - 4 + bounce, 6, 14);
-            } else {
-                ctx.fillRect(x + 12, y - 4 + bounce, 6, 14);
-            }
+            if (yon > 0) ctx.fillRect(x - 18, y - 4 + bounce, 6, 14);
+            else ctx.fillRect(x + 12, y - 4 + bounce, 6, 14);
             
-            let maxHp = p.maxHp || 50;
+            let maxHp = p.maxHp || 100;
             if (p.hp > 0) {
                 ctx.fillStyle = RENKLER.siyah;
                 ctx.fillRect(x - 14, y - 36, 28, 8);
@@ -1610,11 +1612,9 @@
             let maviCanli = Object.values(oyuncular).filter(p => p.takim === "mavi" && p.hp > 0).length;
             let kirmiziCanli = Object.values(oyuncular).filter(p => p.takim === "kirmizi" && p.hp > 0).length;
             
-            // Her iki takımda da en az 1 kişi olmalı (başlangıçta)
             let maviToplam = Object.values(oyuncular).filter(p => p.takim === "mavi").length;
             let kirmiziToplam = Object.values(oyuncular).filter(p => p.takim === "kirmizi").length;
             
-            // Eğer rakip takım hiç yoksa (henüz gelmedi), kazanma sayılmasın
             if (maviToplam === 0 || kirmiziToplam === 0) return;
 
             let ekran = document.getElementById('gameOverScreen');
@@ -1649,7 +1649,7 @@
                             scoreGain.innerText = "Günlük bot limiti doldu! (10/10)";
                         }
                     } else {
-                        kazanilanPuan = 5;
+                        kazanilanPuan = AYARLAR.onlinePuan;
                         userProfile.puan = (userProfile.puan || 0) + kazanilanPuan;
                         scoreGain.innerText = `+${kazanilanPuan} PUAN! (Toplam: ${userProfile.puan})`;
                     }
