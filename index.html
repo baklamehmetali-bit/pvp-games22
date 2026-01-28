@@ -135,6 +135,15 @@
         }
         .auth-tab.active { background: #ffcc00; color: #0f0f23; }
         #authError { color: #ff004d; font-size: 8px; text-align: center; min-height: 20px; }
+        
+        .privacy-note {
+            font-size: 6px;
+            color: #666;
+            margin-top: 15px;
+            line-height: 1.8;
+            max-width: 250px;
+            text-align: center;
+        }
 
         /* PROFIL BÖLÜMÜ */
         .profile-bar {
@@ -250,10 +259,15 @@
                 <button class="auth-tab" onclick="showAuthTab('register')">KAYIT</button>
             </div>
             <input type="email" id="authEmail" placeholder="E-POSTA...">
-            <input type="password" id="authPassword" placeholder="ŞİFRE...">
+            <input type="password" id="authPassword" placeholder="ŞİFRE (min 6 karakter)...">
             <div id="authError"></div>
             <button id="authBtn" class="green" onclick="handleAuth()">GİRİŞ YAP</button>
             <button onclick="playAsGuest()" style="background: #5f574f; border-color: #3a3a3a;">MİSAFİR OYNA</button>
+            <p class="privacy-note">
+                Kayıt olarak, mail adresinizin sadece oyun girişi için 
+                kullanılacağını kabul ediyorsunuz. Şifreniz güvenli 
+                şekilde şifrelenir ve kimseyle paylaşılmaz.
+            </p>
         </div>
     </div>
 
@@ -407,7 +421,7 @@
         }
 
         function handleAuth() {
-            const email = document.getElementById('authEmail').value;
+            const email = document.getElementById('authEmail').value.trim();
             const password = document.getElementById('authPassword').value;
             const errorEl = document.getElementById('authError');
             
@@ -415,11 +429,29 @@
                 errorEl.innerText = 'Tüm alanları doldurun!';
                 return;
             }
+            
+            if (password.length < 6) {
+                errorEl.innerText = 'Şifre en az 6 karakter olmalı!';
+                return;
+            }
+
+            errorEl.innerText = 'Bekleyin...';
 
             if (authMode === 'login') {
                 auth.signInWithEmailAndPassword(email, password)
                     .then(userCredential => onAuthSuccess(userCredential.user))
-                    .catch(err => errorEl.innerText = 'Hatalı giriş!');
+                    .catch(err => {
+                        console.error(err);
+                        if (err.code === 'auth/user-not-found') {
+                            errorEl.innerText = 'Kullanıcı bulunamadı!';
+                        } else if (err.code === 'auth/wrong-password') {
+                            errorEl.innerText = 'Yanlış şifre!';
+                        } else if (err.code === 'auth/invalid-email') {
+                            errorEl.innerText = 'Geçersiz e-posta!';
+                        } else {
+                            errorEl.innerText = 'Giriş başarısız: ' + err.message;
+                        }
+                    });
             } else {
                 auth.createUserWithEmailAndPassword(email, password)
                     .then(userCredential => {
@@ -433,7 +465,18 @@
                         });
                         onAuthSuccess(userCredential.user);
                     })
-                    .catch(err => errorEl.innerText = 'Kayıt başarısız!');
+                    .catch(err => {
+                        console.error(err);
+                        if (err.code === 'auth/email-already-in-use') {
+                            errorEl.innerText = 'Bu e-posta zaten kayıtlı!';
+                        } else if (err.code === 'auth/invalid-email') {
+                            errorEl.innerText = 'Geçersiz e-posta formatı!';
+                        } else if (err.code === 'auth/weak-password') {
+                            errorEl.innerText = 'Şifre çok zayıf!';
+                        } else {
+                            errorEl.innerText = 'Kayıt başarısız: ' + err.message;
+                        }
+                    });
             }
         }
 
@@ -663,7 +706,7 @@
             checkMobile();
             
             let bottomPadding = isMobile ? 180 : 80;
-            if (window.innerHeight < 500) bottomPadding = 120; // Landscape
+            if (window.innerHeight < 500) bottomPadding = 120;
             
             arena.padding = Math.min(canvas.width, canvas.height) * 0.08;
             arena.x = arena.padding;
