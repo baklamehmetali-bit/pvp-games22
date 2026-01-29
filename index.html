@@ -21,84 +21,176 @@
             padding: 20px;
         }
         
-        .brand-logo { position: absolute; top: 20px; left: 30px; font-size: 16px; color: #ffcc00; z-index: 30; }
+        .brand-logo {
+            position: absolute; top: 20px; left: 30px;
+            font-size: 16px; color: #ffcc00;
+            z-index: 30;
+        }
         
-        h1 { color: #ff004d; font-size: 24px; margin: 0 0 15px 0; letter-spacing: 2px; animation: blink 1s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+        h1 { 
+            color: #ff004d; 
+            font-size: 24px; 
+            margin: 0 0 15px 0; 
+            letter-spacing: 2px;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
         
         h2 { color: #ffcc00; font-size: 12px; margin: 15px 0 10px 0; }
+        
         p { color: #c2c3c7; font-size: 8px; max-width: 500px; text-align: center; line-height: 2; margin: 5px 0; }
         
         .btn-group { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; justify-content: center; }
         button {
-            background: #29adff; color: #0f0f23; border: 4px solid #1d6fa5;
-            padding: 12px 20px; font-size: 10px; font-family: 'Press Start 2P', cursive;
-            cursor: pointer; box-shadow: 4px 4px 0px #1d6fa5; transition: all 0.1s;
+            background: #29adff; 
+            color: #0f0f23; 
+            border: 4px solid #1d6fa5;
+            padding: 12px 20px;
+            font-size: 10px; 
+            font-family: 'Press Start 2P', cursive;
+            cursor: pointer;
+            box-shadow: 4px 4px 0px #1d6fa5;
+            transition: all 0.1s;
         }
         button:hover { background: #5fcde4; }
         button:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px #1d6fa5; }
         button:disabled { background: #5f574f; border-color: #3a3a3a; cursor: not-allowed; opacity: 0.6; }
         
-        .bot-btn { background: #8b5cf6; border-color: #5b3a9e; box-shadow: 4px 4px 0px #5b3a9e; width: 100%; max-width: 280px; margin-bottom: 10px; }
+        .bot-btn { 
+            background: #8b5cf6; border-color: #5b3a9e;
+            box-shadow: 4px 4px 0px #5b3a9e;
+            width: 100%; max-width: 280px; margin-bottom: 10px; 
+        }
         .bot-btn:hover { background: #a78bfa; }
         
         button.red { background: #ff004d; border-color: #7e0026; box-shadow: 4px 4px 0px #7e0026; }
         button.red:hover { background: #ff5577; }
+        
         button.green { background: #00e436; border-color: #00a029; box-shadow: 4px 4px 0px #00a029; }
         button.green:hover { background: #5fcf7a; }
+        
         button.orange { background: #ffa300; border-color: #aa6b00; box-shadow: 4px 4px 0px #aa6b00; }
         button.orange:hover { background: #ffbf4d; }
 
-        #exit-btn { pointer-events: auto; position: absolute; top: 15px; left: 15px; background: #1d2b53; border: 3px solid #3a3a5c; padding: 8px 15px; font-size: 8px; color: #fff; box-shadow: 3px 3px 0px #3a3a5c; }
-        #sound-btn { pointer-events: auto; position: absolute; top: 15px; left: 120px; background: #1d2b53; border: 3px solid #3a3a5c; padding: 8px 12px; font-size: 12px; color: #fff; box-shadow: 3px 3px 0px #3a3a5c; }
-        #room-info { position: absolute; top: 15px; right: 15px; color: #c2c3c7; font-size: 7px; text-align: right; background: #1d2b53; padding: 10px; border: 3px solid #3a3a5c; line-height: 2; }
-        #health-container { position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); width: 200px; height: 20px; background: #1d2b53; border: 4px solid #ff004d; box-shadow: 4px 4px 0px #7e0026; z-index: 50; }
+        #exit-btn {
+            pointer-events: auto; position: absolute; top: 15px; left: 15px;
+            background: #1d2b53; border: 3px solid #3a3a5c;
+            padding: 8px 15px; font-size: 8px; color: #fff;
+            box-shadow: 3px 3px 0px #3a3a5c;
+        }
+        
+        #sound-btn {
+            pointer-events: auto; position: absolute; top: 15px; left: 120px;
+            background: #1d2b53; border: 3px solid #3a3a5c;
+            padding: 8px 12px; font-size: 12px; color: #fff;
+            box-shadow: 3px 3px 0px #3a3a5c;
+        }
+
+        #room-info { 
+            position: absolute; top: 15px; right: 15px; 
+            color: #c2c3c7; font-size: 7px; text-align: right;
+            background: #1d2b53; padding: 10px; border: 3px solid #3a3a5c;
+            line-height: 2;
+        }
+
+        #health-container {
+            position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%);
+            width: 200px; height: 20px; 
+            background: #1d2b53; border: 4px solid #ff004d;
+            box-shadow: 4px 4px 0px #7e0026; z-index: 50;
+        }
         #health-bar { width: 100%; height: 100%; background: #00e436; transition: width 0.1s steps(10); }
-        #health-text { position: absolute; bottom: 55px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 10px; text-shadow: 2px 2px 0px #000; z-index: 50; }
-        #regen-indicator { position: absolute; bottom: 85px; left: 50%; transform: translateX(-50%); color: #00e436; font-size: 8px; text-shadow: 2px 2px 0px #000; z-index: 50; opacity: 0; transition: opacity 0.3s; }
-        #countdown { position: absolute; top: 35%; left: 50%; transform: translate(-50%, -50%); font-size: 48px; color: #ffec27; text-shadow: 4px 4px 0px #aa8800; pointer-events: none; opacity: 0; }
-        #notification { position: absolute; top: 20%; left: 50%; transform: translateX(-50%); font-size: 16px; color: #ffec27; text-shadow: 3px 3px 0px #000; opacity: 0; }
+        #health-text { 
+            position: absolute; bottom: 55px; left: 50%; transform: translateX(-50%); 
+            color: #fff; font-size: 10px; text-shadow: 2px 2px 0px #000; z-index: 50;
+        }
+        
+        #regen-indicator {
+            position: absolute; bottom: 85px; left: 50%; transform: translateX(-50%);
+            color: #00e436; font-size: 8px; text-shadow: 2px 2px 0px #000;
+            z-index: 50; opacity: 0; transition: opacity 0.3s;
+        }
+
+        #countdown {
+            position: absolute; top: 35%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 48px; color: #ffec27; text-shadow: 4px 4px 0px #aa8800;
+            pointer-events: none; opacity: 0;
+        }
+
+        #notification {
+            position: absolute; top: 20%; left: 50%; transform: translateX(-50%);
+            font-size: 16px; color: #ffec27; text-shadow: 3px 3px 0px #000; opacity: 0;
+        }
 
         #authScreen { z-index: 25; }
-        .auth-container { background: #1d2b53; padding: 30px; border: 4px solid #3a3a5c; display: flex; flex-direction: column; gap: 15px; align-items: center; max-width: 320px; width: 90%; }
-        .auth-container input { padding: 10px 15px; font-size: 10px; font-family: 'Press Start 2P', cursive; border: 3px solid #3a3a5c; background: #0f0f23; color: #fff; width: 100%; outline: none; }
+        .auth-container { 
+            background: #1d2b53; padding: 30px; border: 4px solid #3a3a5c;
+            display: flex; flex-direction: column; gap: 15px; align-items: center;
+            max-width: 320px; width: 90%;
+        }
+        .auth-container input {
+            padding: 10px 15px; font-size: 10px; font-family: 'Press Start 2P', cursive;
+            border: 3px solid #3a3a5c; background: #0f0f23; color: #fff;
+            width: 100%; outline: none;
+        }
         .auth-container input:focus { border-color: #ffcc00; }
         .auth-tabs { display: flex; gap: 10px; margin-bottom: 10px; }
-        .auth-tab { padding: 10px 20px; background: #3a3a5c; color: #fff; border: none; cursor: pointer; font-family: 'Press Start 2P', cursive; font-size: 8px; }
+        .auth-tab { 
+            padding: 10px 20px; background: #3a3a5c; color: #fff; 
+            border: none; cursor: pointer; font-family: 'Press Start 2P', cursive; font-size: 8px;
+        }
         .auth-tab.active { background: #ffcc00; color: #0f0f23; }
         #authError { color: #ff004d; font-size: 8px; text-align: center; min-height: 20px; }
-        .privacy-note { font-size: 6px; color: #666; margin-top: 15px; line-height: 1.8; max-width: 250px; text-align: center; }
+        
+        .privacy-note {
+            font-size: 6px; color: #666; margin-top: 15px; line-height: 1.8;
+            max-width: 250px; text-align: center;
+        }
 
-        .profile-bar { position: absolute; top: 60px; left: 30px; background: #1d2b53; padding: 10px 15px; border: 3px solid #3a3a5c; font-size: 8px; color: #fff; z-index: 30; line-height: 1.8; }
+        .profile-bar {
+            position: absolute; top: 60px; left: 30px;
+            background: #1d2b53; padding: 10px 15px; border: 3px solid #3a3a5c;
+            font-size: 8px; color: #fff; z-index: 30; line-height: 1.8;
+        }
         .profile-bar span { color: #ffcc00; }
-        .rank-display { font-size: 10px; margin-top: 5px; }
         .daily-limit { color: #ff77a8; font-size: 6px; }
 
         #shopScreen { z-index: 22; display: none; }
-        .shop-container { background: #1d2b53; padding: 20px; border: 4px solid #ffcc00; max-width: 650px; width: 95%; max-height: 85vh; overflow-y: auto; }
-        .shop-header { text-align: center; margin-bottom: 15px; }
-        .shop-rank-info { background: #0f0f23; padding: 10px; margin: 10px 0; font-size: 7px; text-align: center; border: 2px solid #3a3a5c; }
-        .shop-rank-progress { width: 100%; height: 10px; background: #3a3a5c; margin-top: 8px; }
-        .shop-rank-progress-bar { height: 100%; background: linear-gradient(90deg, #ffcc00, #ffa300); transition: width 0.3s; }
+        .shop-container {
+            background: #1d2b53; padding: 20px; border: 4px solid #ffcc00;
+            max-width: 600px; width: 95%; max-height: 80vh; overflow-y: auto;
+        }
         .shop-tabs { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 15px; justify-content: center; }
-        .shop-tab { padding: 8px 12px; background: #3a3a5c; color: #fff; border: none; font-family: 'Press Start 2P', cursive; font-size: 7px; cursor: pointer; }
+        .shop-tab {
+            padding: 8px 12px; background: #3a3a5c; color: #fff; border: none;
+            font-family: 'Press Start 2P', cursive; font-size: 7px; cursor: pointer;
+        }
         .shop-tab.active { background: #ffcc00; color: #0f0f23; }
-        .shop-item { display: flex; align-items: center; justify-content: space-between; background: #0f0f23; padding: 12px; margin: 8px 0; border: 2px solid #3a3a5c; }
+        .shop-item {
+            display: flex; align-items: center; justify-content: space-between;
+            background: #0f0f23; padding: 12px; margin: 8px 0; border: 2px solid #3a3a5c;
+        }
         .shop-item.owned { border-color: #00e436; }
         .shop-item.equipped { border-color: #ffcc00; background: #2d1b53; }
-        .shop-item.locked { opacity: 0.5; border-color: #ff004d; }
         .shop-item-info { display: flex; align-items: center; gap: 12px; }
         .shop-item-icon { width: 36px; height: 36px; background: #3a3a5c; display: flex; align-items: center; justify-content: center; font-size: 18px; }
         .shop-item-details { font-size: 7px; }
         .shop-item-name { color: #fff; margin-bottom: 4px; }
         .shop-item-desc { color: #c2c3c7; }
-        .shop-item-tier { font-size: 6px; color: #ffa300; margin-top: 2px; }
         .shop-item button { padding: 6px 10px; font-size: 7px; }
-        .shop-item .locked-btn { background: #ff004d; border-color: #7e0026; }
 
         #botDifficultyScreen { z-index: 23; display: none; }
-        .difficulty-container { background: #1d2b53; padding: 25px; border: 4px solid #8b5cf6; max-width: 350px; width: 90%; text-align: center; }
-        .difficulty-btn { width: 100%; margin: 8px 0; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .difficulty-container {
+            background: #1d2b53; padding: 25px; border: 4px solid #8b5cf6;
+            max-width: 350px; width: 90%; text-align: center;
+        }
+        .difficulty-btn {
+            width: 100%; margin: 8px 0; padding: 15px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
         .diff-info { text-align: left; }
         .diff-name { display: block; }
         .diff-reward { font-size: 8px; color: #ffcc00; }
@@ -107,7 +199,10 @@
         .diff-hard { background: #ff004d; border-color: #7e0026; box-shadow: 4px 4px 0px #7e0026; }
 
         #mapSelectScreen { z-index: 22; display: none; }
-        .map-container { background: #1d2b53; padding: 20px; border: 4px solid #29adff; max-width: 450px; width: 90%; text-align: center; }
+        .map-container {
+            background: #1d2b53; padding: 20px; border: 4px solid #29adff;
+            max-width: 450px; width: 90%; text-align: center;
+        }
         .map-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
         .map-btn { padding: 15px 10px; text-align: center; font-size: 8px; }
         .map-icon { font-size: 24px; display: block; margin-bottom: 8px; }
@@ -116,26 +211,70 @@
         .map-lava { background: #ff004d; border-color: #7e0026; box-shadow: 4px 4px 0px #7e0026; }
         .map-forest { background: #00e436; border-color: #00a029; box-shadow: 4px 4px 0px #00a029; }
 
+        /* BOT OYUNCU SAYISI SEÇİMİ */
         #botPlayerCountScreen { z-index: 22; display: none; }
-        .player-count-container { background: #1d2b53; padding: 25px; border: 4px solid #8b5cf6; max-width: 350px; width: 90%; text-align: center; }
+        .player-count-container {
+            background: #1d2b53; padding: 25px; border: 4px solid #8b5cf6;
+            max-width: 350px; width: 90%; text-align: center;
+        }
 
         #waitingScreen { z-index: 24; display: none; }
-        .waiting-container { background: #1d2b53; padding: 30px; border: 4px solid #29adff; max-width: 400px; width: 90%; text-align: center; }
+        .waiting-container {
+            background: #1d2b53; padding: 30px; border: 4px solid #29adff;
+            max-width: 400px; width: 90%; text-align: center;
+        }
         .player-count { font-size: 32px; color: #ffcc00; margin: 20px 0; }
-        .player-list { background: #0f0f23; padding: 15px; margin: 15px 0; font-size: 8px; text-align: left; max-height: 150px; overflow-y: auto; }
+        .player-list {
+            background: #0f0f23; padding: 15px; margin: 15px 0;
+            font-size: 8px; text-align: left; max-height: 150px; overflow-y: auto;
+        }
         .player-list-item { padding: 5px 0; border-bottom: 1px solid #3a3a5c; }
         .player-list-item.blue { color: #29adff; }
         .player-list-item.red { color: #ff004d; }
         .waiting-timer { color: #ff77a8; font-size: 10px; margin-top: 10px; }
 
-        #joystick-container { position: fixed; left: 30px; bottom: 30px; width: 120px; height: 120px; display: none; z-index: 80; pointer-events: auto; touch-action: none; }
-        #joystick-base { width: 120px; height: 120px; background: rgba(255,255,255,0.15); border: 4px solid rgba(255,255,255,0.3); border-radius: 50%; position: relative; }
-        #joystick-thumb { width: 50px; height: 50px; background: rgba(255,236,39,0.7); border: 3px solid #ffcc00; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-        #attack-btn { position: fixed; right: 30px; bottom: 50px; width: 80px; height: 80px; background: rgba(255, 0, 77, 0.5); border: 4px solid #ff004d; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 10px; color: #fff; font-family: 'Press Start 2P', cursive; z-index: 80; pointer-events: auto; touch-action: none; box-shadow: 0 0 20px rgba(255, 0, 77, 0.5); }
-        #attack-btn:active, #attack-btn.active { background: rgba(255, 0, 77, 0.9); transform: scale(0.95); }
+        #joystick-container {
+            position: fixed; left: 30px; bottom: 30px;
+            width: 120px; height: 120px; display: none; z-index: 80;
+            pointer-events: auto; touch-action: none;
+        }
+        #joystick-base {
+            width: 120px; height: 120px; background: rgba(255,255,255,0.15);
+            border: 4px solid rgba(255,255,255,0.3); border-radius: 50%;
+            position: relative;
+        }
+        #joystick-thumb {
+            width: 50px; height: 50px; background: rgba(255,236,39,0.7);
+            border: 3px solid #ffcc00; border-radius: 50%;
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
 
-        .scanlines { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1) 1px, transparent 1px, transparent 2px); z-index: 100; }
-        .crt-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; box-shadow: inset 0 0 100px rgba(0,230,118,0.1); z-index: 99; }
+        #attack-btn {
+            position: fixed; right: 30px; bottom: 50px;
+            width: 80px; height: 80px;
+            background: rgba(255, 0, 77, 0.5); border: 4px solid #ff004d;
+            border-radius: 50%; display: none; align-items: center; justify-content: center;
+            font-size: 10px; color: #fff; font-family: 'Press Start 2P', cursive;
+            z-index: 80; pointer-events: auto; touch-action: none;
+            box-shadow: 0 0 20px rgba(255, 0, 77, 0.5);
+        }
+        #attack-btn:active, #attack-btn.active {
+            background: rgba(255, 0, 77, 0.9); transform: scale(0.95);
+        }
+
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1) 1px, transparent 1px, transparent 2px);
+            z-index: 100;
+        }
+
+        .crt-glow {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; box-shadow: inset 0 0 100px rgba(0,230,118,0.1); z-index: 99;
+        }
+
         canvas { image-rendering: pixelated; image-rendering: crisp-edges; }
 
         @media (max-width: 1024px), (pointer: coarse) {
@@ -181,7 +320,11 @@
             <div id="authError"></div>
             <button id="authBtn" class="green" onclick="handleAuth()">GİRİŞ YAP</button>
             <button onclick="playAsGuest()" style="background: #5f574f; border-color: #3a3a3a;">MİSAFİR OYNA</button>
-            <p class="privacy-note">Kayıt olarak, mail adresinizin sadece oyun girişi için kullanılacağını kabul ediyorsunuz.</p>
+            <p class="privacy-note">
+                Kayıt olarak, mail adresinizin sadece oyun girişi için 
+                kullanılacağını kabul ediyorsunuz. Şifreniz güvenli 
+                şekilde şifrelenir ve kimseyle paylaşılmaz.
+            </p>
         </div>
     </div>
 
@@ -190,7 +333,6 @@
         <div class="profile-bar" id="profileBar">
             OYUNCU: <span id="profileName">-</span><br>
             PUAN: <span id="profileScore">0</span> ⭐<br>
-            <div class="rank-display" id="rankDisplay">🥉 BRONZ</div>
             <span class="daily-limit">BOT: <span id="dailyBotPoints">0</span>/10 bugün</span>
         </div>
         <h1>PVP ARENA</h1>
@@ -227,14 +369,18 @@
     <div id="botPlayerCountScreen" class="overlay-screen">
         <div class="player-count-container">
             <h2>👥 OYUNCU SAYISI</h2>
+            <p>Kaç kişilik maç?</p>
             <button class="difficulty-btn" onclick="showMapSelect('bot', botZorluk, 2)" style="background: #29adff; border-color: #1d6fa5; box-shadow: 4px 4px 0px #1d6fa5;">
-                <span class="diff-info"><span class="diff-name">1 VS 1</span><span class="diff-reward">Sen + 1 Bot</span></span><span>⚔️</span>
+                <span class="diff-info"><span class="diff-name">1 VS 1</span><span class="diff-reward">Sen + 1 Bot</span></span>
+                <span>⚔️</span>
             </button>
             <button class="difficulty-btn" onclick="showMapSelect('bot', botZorluk, 4)" style="background: #ffa300; border-color: #aa6b00; box-shadow: 4px 4px 0px #aa6b00;">
-                <span class="diff-info"><span class="diff-name">2 VS 2</span><span class="diff-reward">Sen + 3 Bot</span></span><span>⚔️</span>
+                <span class="diff-info"><span class="diff-name">2 VS 2</span><span class="diff-reward">Sen + 3 Bot</span></span>
+                <span>⚔️</span>
             </button>
             <button class="difficulty-btn" onclick="showMapSelect('bot', botZorluk, 8)" style="background: #ff004d; border-color: #7e0026; box-shadow: 4px 4px 0px #7e0026;">
-                <span class="diff-info"><span class="diff-name">4 VS 4</span><span class="diff-reward">Sen + 7 Bot</span></span><span>⚔️</span>
+                <span class="diff-info"><span class="diff-name">4 VS 4</span><span class="diff-reward">Sen + 7 Bot</span></span>
+                <span>⚔️</span>
             </button>
             <button class="red" onclick="closeBotPlayerCount()" style="width: 100%; margin-top: 15px;">GERİ</button>
         </div>
@@ -244,10 +390,18 @@
         <div class="map-container">
             <h2>🗺️ HARİTA SEÇ</h2>
             <div class="map-grid">
-                <button class="map-btn map-sand" onclick="selectMap('sand')"><span class="map-icon">🏜️</span>KUM</button>
-                <button class="map-btn map-ice" onclick="selectMap('ice')"><span class="map-icon">❄️</span>BUZ</button>
-                <button class="map-btn map-lava" onclick="selectMap('lava')"><span class="map-icon">🌋</span>LAV</button>
-                <button class="map-btn map-forest" onclick="selectMap('forest')"><span class="map-icon">🌲</span>ORMAN</button>
+                <button class="map-btn map-sand" onclick="selectMap('sand')">
+                    <span class="map-icon">🏜️</span>KUM ARENA
+                </button>
+                <button class="map-btn map-ice" onclick="selectMap('ice')">
+                    <span class="map-icon">❄️</span>BUZ ARENA
+                </button>
+                <button class="map-btn map-lava" onclick="selectMap('lava')">
+                    <span class="map-icon">🌋</span>LAV ARENA
+                </button>
+                <button class="map-btn map-forest" onclick="selectMap('forest')">
+                    <span class="map-icon">🌲</span>ORMAN ARENA
+                </button>
             </div>
             <div id="onlineModeSelect" style="margin-top: 15px; display: none;">
                 <p>OYUNCU SAYISI:</p>
@@ -264,26 +418,25 @@
     <div id="waitingScreen" class="overlay-screen">
         <div class="waiting-container">
             <h2>⏳ OYUNCU BEKLENİYOR</h2>
-            <div class="player-count"><span id="currentPlayers">1</span> / <span id="targetPlayers">2</span></div>
+            <div class="player-count">
+                <span id="currentPlayers">1</span> / <span id="targetPlayers">2</span>
+            </div>
             <div class="player-list" id="playerList"></div>
-            <div class="waiting-timer">Kalan: <span id="waitTimer">30</span> sn</div>
+            <div class="waiting-timer">
+                Kalan süre: <span id="waitTimer">30</span> sn
+            </div>
             <p id="waitingHint">Rakip bekleniyor...</p>
-            <button id="fillWithBotsBtn" class="orange" onclick="fillWithBots()" style="display: none; width: 100%; margin-top: 10px;">🤖 BOTLARLA TAMAMLA</button>
+            <button id="fillWithBotsBtn" class="orange" onclick="fillWithBots()" style="display: none; width: 100%; margin-top: 10px;">
+                🤖 BOTLARLA TAMAMLA
+            </button>
             <button class="red" onclick="cancelWaiting()" style="width: 100%; margin-top: 10px;">İPTAL</button>
         </div>
     </div>
 
     <div id="shopScreen" class="overlay-screen">
         <div class="shop-container">
-            <div class="shop-header">
-                <h2>🛒 MAĞAZA</h2>
-                <p>Puanınız: <span id="shopPoints">0</span> ⭐</p>
-            </div>
-            <div class="shop-rank-info">
-                <span id="shopRankDisplay">🥉 BRONZ</span> - Tier <span id="shopMaxTier">2</span> itemlere erişim
-                <div class="shop-rank-progress"><div class="shop-rank-progress-bar" id="rankProgressBar" style="width: 0%"></div></div>
-                <span id="nextRankInfo" style="font-size: 6px; color: #ffa300;"></span>
-            </div>
+            <h2 style="text-align: center;">🛒 MAĞAZA</h2>
+            <p>Puanınız: <span id="shopPoints">0</span> ⭐</p>
             <div class="shop-tabs">
                 <button class="shop-tab active" onclick="showShopTab('silah')">⚔️ SİLAH</button>
                 <button class="shop-tab" onclick="showShopTab('zirh')">🛡️ ZIRH</button>
@@ -312,12 +465,18 @@
         <div id="room-info">YUKLENIYOR...</div>
         <div id="regen-indicator">♥ REGEN ♥</div>
         <div id="health-text">HP: 100</div>
-        <div id="health-container"><div id="health-bar"></div></div>
+        <div id="health-container">
+            <div id="health-bar"></div>
+        </div>
         <div id="countdown"></div>
         <div id="notification"></div>
     </div>
 
-    <div id="joystick-container"><div id="joystick-base"><div id="joystick-thumb"></div></div></div>
+    <div id="joystick-container">
+        <div id="joystick-base">
+            <div id="joystick-thumb"></div>
+        </div>
+    </div>
     <div id="attack-btn">SALDIRI</div>
 
     <canvas id="gameCanvas"></canvas>
@@ -347,101 +506,63 @@
         let audioCtx = null;
         let soundEnabled = true;
         
-        function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+        function initAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
         
         function playSound(type) {
             if (!soundEnabled || !audioCtx) return;
             try {
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
-                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
                 switch(type) {
-                    case 'hit': osc.frequency.setValueAtTime(200, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.1); gain.gain.setValueAtTime(0.3, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1); osc.start(); osc.stop(audioCtx.currentTime + 0.1); break;
-                    case 'attack': osc.frequency.setValueAtTime(400, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.05); gain.gain.setValueAtTime(0.2, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05); osc.start(); osc.stop(audioCtx.currentTime + 0.05); break;
-                    case 'victory': [523, 659, 784, 1047].forEach((freq, i) => { setTimeout(() => { const o = audioCtx.createOscillator(); const g = audioCtx.createGain(); o.connect(g); g.connect(audioCtx.destination); o.type = 'square'; o.frequency.value = freq; g.gain.setValueAtTime(0.1, audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2); o.start(); o.stop(audioCtx.currentTime + 0.2); }, i * 150); }); return;
-                    case 'defeat': osc.frequency.setValueAtTime(200, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.8); gain.gain.setValueAtTime(0.2, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.8); osc.start(); osc.stop(audioCtx.currentTime + 0.8); break;
-                    case 'buy': osc.frequency.setValueAtTime(600, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1); gain.gain.setValueAtTime(0.15, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15); osc.start(); osc.stop(audioCtx.currentTime + 0.15); break;
-                    case 'error': osc.frequency.setValueAtTime(150, audioCtx.currentTime); gain.gain.setValueAtTime(0.2, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2); osc.start(); osc.stop(audioCtx.currentTime + 0.2); break;
+                    case 'hit':
+                        osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+                        osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.1);
+                        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                        osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+                        break;
+                    case 'attack':
+                        osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                        osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.05);
+                        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+                        osc.start(); osc.stop(audioCtx.currentTime + 0.05);
+                        break;
+                    case 'victory':
+                        [523, 659, 784, 1047].forEach((freq, i) => {
+                            setTimeout(() => {
+                                const o = audioCtx.createOscillator();
+                                const g = audioCtx.createGain();
+                                o.connect(g); g.connect(audioCtx.destination);
+                                o.type = 'square';
+                                o.frequency.value = freq;
+                                g.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                                g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                                o.start(); o.stop(audioCtx.currentTime + 0.2);
+                            }, i * 150);
+                        });
+                        return;
+                    case 'defeat':
+                        osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+                        osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.8);
+                        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.8);
+                        osc.start(); osc.stop(audioCtx.currentTime + 0.8);
+                        break;
                 }
             } catch(e) {}
         }
         
-        function toggleSound() { initAudio(); soundEnabled = !soundEnabled; document.getElementById('sound-btn').innerText = soundEnabled ? '🔊' : '🔇'; }
-        
-        // RANK SİSTEMİ
-        const RANKLAR = {
-            bronz: { min: 0, max: 99, isim: 'BRONZ', icon: '🥉', maxTier: 2, renk: '#cd7f32' },
-            gumus: { min: 100, max: 299, isim: 'GÜMÜŞ', icon: '🥈', maxTier: 4, renk: '#c0c0c0' },
-            altin: { min: 300, max: 599, isim: 'ALTIN', icon: '🥇', maxTier: 6, renk: '#ffd700' },
-            platin: { min: 600, max: 999, isim: 'PLATİN', icon: '💎', maxTier: 8, renk: '#00ffff' },
-            elmas: { min: 1000, max: Infinity, isim: 'ELMAS', icon: '👑', maxTier: 10, renk: '#ff00ff' }
-        };
-
-        function getRank(puan) {
-            if (puan >= 1000) return RANKLAR.elmas;
-            if (puan >= 600) return RANKLAR.platin;
-            if (puan >= 300) return RANKLAR.altin;
-            if (puan >= 100) return RANKLAR.gumus;
-            return RANKLAR.bronz;
+        function toggleSound() {
+            initAudio();
+            soundEnabled = !soundEnabled;
+            document.getElementById('sound-btn').innerText = soundEnabled ? '🔊' : '🔇';
         }
-
-        function getNextRank(puan) {
-            if (puan >= 1000) return null;
-            if (puan >= 600) return { rank: RANKLAR.elmas, needed: 1000 - puan };
-            if (puan >= 300) return { rank: RANKLAR.platin, needed: 600 - puan };
-            if (puan >= 100) return { rank: RANKLAR.altin, needed: 300 - puan };
-            return { rank: RANKLAR.gumus, needed: 100 - puan };
-        }
-        
-        // GENİŞLETİLMİŞ MAĞAZA
-        const MAGAZA = {
-            silah: [
-                { id: 'sword1', name: 'AHŞAP KILIÇ', desc: '+2 Hasar', icon: '🪵', puan: 20, tier: 1, bonus: { hasar: 2 } },
-                { id: 'sword2', name: 'DEMİR KILIÇ', desc: '+4 Hasar', icon: '🗡️', puan: 60, tier: 2, bonus: { hasar: 4 } },
-                { id: 'sword3', name: 'ÇELİK KILIÇ', desc: '+7 Hasar', icon: '⚔️', puan: 150, tier: 3, bonus: { hasar: 7 } },
-                { id: 'sword4', name: 'GÜMÜŞ KILIÇ', desc: '+10 Hasar', icon: '🌙', puan: 300, tier: 4, bonus: { hasar: 10 } },
-                { id: 'sword5', name: 'ALTIN KILIÇ', desc: '+14 Hasar', icon: '✨', puan: 500, tier: 5, bonus: { hasar: 14 } },
-                { id: 'sword6', name: 'ELMAS KILIÇ', desc: '+18 Hasar', icon: '💎', puan: 800, tier: 6, bonus: { hasar: 18 } },
-                { id: 'sword7', name: 'ATEŞ KILICI', desc: '+23 Hasar', icon: '🔥', puan: 1200, tier: 7, bonus: { hasar: 23 } },
-                { id: 'sword8', name: 'EJDERHA KILICI', desc: '+30 Hasar', icon: '🐉', puan: 2000, tier: 8, bonus: { hasar: 30 } },
-            ],
-            zirh: [
-                { id: 'armor1', name: 'KUMAŞ ZIRH', desc: '+8 HP', icon: '👕', puan: 25, tier: 1, bonus: { hp: 8 } },
-                { id: 'armor2', name: 'DERİ ZIRH', desc: '+15 HP', icon: '🦺', puan: 70, tier: 2, bonus: { hp: 15 } },
-                { id: 'armor3', name: 'ZİNCİR ZIRH', desc: '+25 HP', icon: '⛓️', puan: 180, tier: 3, bonus: { hp: 25 } },
-                { id: 'armor4', name: 'DEMİR ZIRH', desc: '+40 HP', icon: '🛡️', puan: 350, tier: 4, bonus: { hp: 40 } },
-                { id: 'armor5', name: 'ÇELİK ZIRH', desc: '+55 HP', icon: '⚙️', puan: 600, tier: 5, bonus: { hp: 55 } },
-                { id: 'armor6', name: 'ALTIN ZIRH', desc: '+75 HP', icon: '🌟', puan: 900, tier: 6, bonus: { hp: 75 } },
-                { id: 'armor7', name: 'ELMAS ZIRH', desc: '+100 HP', icon: '💠', puan: 1400, tier: 7, bonus: { hp: 100 } },
-                { id: 'armor8', name: 'TİTAN ZIRHI', desc: '+130 HP', icon: '🗿', puan: 2200, tier: 8, bonus: { hp: 130 } },
-            ],
-            kask: [
-                { id: 'helmet1', name: 'BANDANA', desc: '+4 HP', icon: '🎀', puan: 15, tier: 1, bonus: { hp: 4 } },
-                { id: 'helmet2', name: 'DERİ KASK', desc: '+10 HP', icon: '🎩', puan: 50, tier: 2, bonus: { hp: 10 } },
-                { id: 'helmet3', name: 'DEMİR KASK', desc: '+18 HP', icon: '⛑️', puan: 120, tier: 3, bonus: { hp: 18 } },
-                { id: 'helmet4', name: 'ÇELİK KASK', desc: '+28 HP', icon: '🪖', puan: 250, tier: 4, bonus: { hp: 28 } },
-                { id: 'helmet5', name: 'ALTIN KASK', desc: '+40 HP', icon: '👑', puan: 450, tier: 5, bonus: { hp: 40 } },
-                { id: 'helmet6', name: 'ELMAS KASK', desc: '+55 HP', icon: '💎', puan: 800, tier: 6, bonus: { hp: 55 } },
-            ],
-            bot: [
-                { id: 'boots1', name: 'SANDALET', desc: '+0.3 Hız', icon: '🩴', puan: 20, tier: 1, bonus: { hiz: 0.3 } },
-                { id: 'boots2', name: 'DERİ BOT', desc: '+0.6 Hız', icon: '👞', puan: 80, tier: 2, bonus: { hiz: 0.6 } },
-                { id: 'boots3', name: 'HIZ BOTLARI', desc: '+1.0 Hız', icon: '👟', puan: 200, tier: 3, bonus: { hiz: 1.0 } },
-                { id: 'boots4', name: 'ÇEVİK BOTLAR', desc: '+1.4 Hız', icon: '👢', puan: 400, tier: 4, bonus: { hiz: 1.4 } },
-                { id: 'boots5', name: 'RÜZGAR BOTLARI', desc: '+1.8 Hız', icon: '💨', puan: 700, tier: 5, bonus: { hiz: 1.8 } },
-                { id: 'boots6', name: 'IŞIK BOTLARI', desc: '+2.3 Hız', icon: '⚡', puan: 1100, tier: 6, bonus: { hiz: 2.3 } },
-            ],
-            ozel: [
-                { id: 'special1', name: 'VAMPİR HANCERİ', desc: '+5 Hasar, +2 Can çal', icon: '🗡️', puan: 400, tier: 4, bonus: { hasar: 5, vampir: 2 } },
-                { id: 'special2', name: 'VAMPİR KILICI', desc: '+12 Hasar, +5 Can çal', icon: '🧛', puan: 1000, tier: 7, bonus: { hasar: 12, vampir: 5 } },
-                { id: 'special3', name: 'HAYALET PELERİN', desc: 'Yarı saydam', icon: '👻', puan: 300, tier: 3, bonus: { ghost: true } },
-                { id: 'special4', name: 'GÖLGE PELERİN', desc: 'Çok saydam', icon: '🌑', puan: 800, tier: 6, bonus: { ghost: true, shadow: true } },
-                { id: 'special5', name: 'BERSERKER YÜZÜĞÜ', desc: '+18 Hasar, -30 HP', icon: '💍', puan: 600, tier: 5, bonus: { hasar: 18, hp: -30 } },
-                { id: 'special6', name: 'TANK KALKANI', desc: '+60 HP, -0.5 Hız', icon: '🛡️', puan: 500, tier: 4, bonus: { hp: 60, hiz: -0.5 } },
-                { id: 'special7', name: 'ŞİFA MUSKASI', desc: 'Regen 2x hızlı', icon: '💚', puan: 700, tier: 5, bonus: { fastRegen: true } },
-                { id: 'special8', name: 'EFSANE TAŞI', desc: '+15 Hasar, +50 HP, +0.8 Hız', icon: '🌈', puan: 2500, tier: 9, bonus: { hasar: 15, hp: 50, hiz: 0.8 } },
-            ]
-        };
         
         const HARITALAR = {
             sand: { name: 'KUM ARENA', zemin: '#3d2b1f', detay: '#4d3b2f', duvar: '#4a3a5a', cizgi: '#5d4b3f', arka: '#2a1a3a' },
@@ -450,50 +571,150 @@
             forest: { name: 'ORMAN ARENA', zemin: '#2d4a2d', detay: '#3d5a3d', duvar: '#5a7a5a', cizgi: '#7a9a7a', arka: '#1a2a1a' }
         };
         
-        const RENKLER = { siyah: '#0f0f23', koyu_mavi: '#1d2b53', koyu_mor: '#7e2553', koyu_yesil: '#008751', kahve: '#ab5236', koyu_gri: '#5f574f', acik_gri: '#c2c3c7', beyaz: '#fff1e8', kirmizi: '#ff004d', turuncu: '#ffa300', sari: '#ffec27', yesil: '#00e436', mavi: '#29adff', mor: '#83769c', pembe: '#ff77a8', krem: '#ffccaa' };
+        const MAGAZA = {
+            silah: [
+                { id: 'sword1', name: 'DEMİR KILIÇ', desc: '+2 Hasar', icon: '🗡️', puan: 30, bonus: { hasar: 2 } },
+                { id: 'sword2', name: 'ÇELİK KILIÇ', desc: '+4 Hasar', icon: '⚔️', puan: 60, bonus: { hasar: 4 } },
+                { id: 'axe1', name: 'SAVAŞ BALTASI', desc: '+6 Hasar', icon: '🪓', puan: 100, bonus: { hasar: 6 } },
+                { id: 'sword3', name: 'ATEŞ KILICI', desc: '+8 Hasar', icon: '🔥', puan: 150, bonus: { hasar: 8 } },
+                { id: 'sword4', name: 'EJDERHA KILICI', desc: '+12 Hasar', icon: '🐉', puan: 250, bonus: { hasar: 12 } },
+            ],
+            zirh: [
+                { id: 'armor1', name: 'DERİ ZIRH', desc: '+10 HP', icon: '🦺', puan: 40, bonus: { hp: 10 } },
+                { id: 'armor2', name: 'DEMİR ZIRH', desc: '+20 HP', icon: '🛡️', puan: 80, bonus: { hp: 20 } },
+                { id: 'armor3', name: 'ÇELİK ZIRH', desc: '+30 HP', icon: '⚙️', puan: 130, bonus: { hp: 30 } },
+                { id: 'armor4', name: 'ELMAS ZIRH', desc: '+50 HP', icon: '💎', puan: 220, bonus: { hp: 50 } },
+            ],
+            kask: [
+                { id: 'helmet1', name: 'DERİ KASK', desc: '+5 HP', icon: '🎩', puan: 25, bonus: { hp: 5 } },
+                { id: 'helmet2', name: 'DEMİR KASK', desc: '+10 HP', icon: '⛑️', puan: 50, bonus: { hp: 10 } },
+                { id: 'helmet3', name: 'ALTIN KASK', desc: '+15 HP', icon: '👑', puan: 90, bonus: { hp: 15 } },
+            ],
+            bot: [
+                { id: 'boots1', name: 'DERİ BOT', desc: '+0.5 Hız', icon: '👞', puan: 35, bonus: { hiz: 0.5 } },
+                { id: 'boots2', name: 'HIZ BOTLARI', desc: '+1 Hız', icon: '👢', puan: 75, bonus: { hiz: 1 } },
+                { id: 'boots3', name: 'RÜZGAR BOTLARI', desc: '+1.5 Hız', icon: '💨', puan: 140, bonus: { hiz: 1.5 } },
+            ],
+            ozel: [
+                { id: 'special1', name: 'VAMPİR KILICI', desc: '+4 Hasar, +3 Can çal', icon: '🧛', puan: 300, bonus: { vampir: 3, hasar: 4 } },
+                { id: 'special2', name: 'TİTAN ZIRHI', desc: '+60 HP, -0.5 Hız', icon: '🗿', puan: 280, bonus: { hp: 60, hiz: -0.5 } },
+                { id: 'special3', name: 'HAYALET PELERİN', desc: 'Yarı saydam ol', icon: '👻', puan: 200, bonus: { ghost: true } },
+            ]
+        };
+        
+        const RENKLER = {
+            siyah: '#0f0f23', koyu_mavi: '#1d2b53', koyu_mor: '#7e2553',
+            koyu_yesil: '#008751', kahve: '#ab5236', koyu_gri: '#5f574f',
+            acik_gri: '#c2c3c7', beyaz: '#fff1e8', kirmizi: '#ff004d',
+            turuncu: '#ffa300', sari: '#ffec27', yesil: '#00e436',
+            mavi: '#29adff', mor: '#83769c', pembe: '#ff77a8', krem: '#ffccaa'
+        };
 
-        const AYARLAR = { regenSuresi: 30000, regenMiktari: 4, maxHp: 100, oyuncuHasar: 10, botHasar: 6, oyuncuHiz: 4, gunlukBotLimit: 10, onlinePuan: 10,
-            botZorluk: { easy: { hiz: 2, hasar: 4, hp: 80, puan: 1, saldirisans: 0.25 }, normal: { hiz: 3, hasar: 6, hp: 100, puan: 2, saldirisans: 0.4 }, hard: { hiz: 4.5, hasar: 10, hp: 120, puan: 3, saldirisans: 0.6 } }
+        const AYARLAR = {
+            regenSuresi: 30000, 
+            regenMiktari: 4, 
+            maxHp: 100,  // 50 -> 100
+            oyuncuHasar: 10, 
+            botHasar: 6, 
+            oyuncuHiz: 4,
+            gunlukBotLimit: 10,
+            onlinePuan: 10,  // 5 -> 10
+            botZorluk: {
+                easy: { hiz: 2, hasar: 4, hp: 80, puan: 1, saldirisans: 0.25 },
+                normal: { hiz: 3, hasar: 6, hp: 100, puan: 2, saldirisans: 0.4 },
+                hard: { hiz: 4.5, hasar: 10, hp: 120, puan: 3, saldirisans: 0.6 }
+            }
         };
 
         let arena = { x: 0, y: 0, w: 0, h: 0, padding: 80 };
         let myId = "player_" + Math.floor(Math.random() * 99999);
-        let oyuncuIsmi = "PLAYER", odaAdi = "", oyuncular = {}, hedefKisiSayisi = 0;
-        let oyunAktif = false, botModuAktif = false, botZorluk = 'normal', seciliHarita = 'sand', gameMode = 'bot';
-        let oyunBaslamaZamani = 0, girisZamani = 0, oyunBasladi = false, sonRegenZamani = 0;
-        let authMode = 'login', currentUser = null;
+        let oyuncuIsmi = "PLAYER";
+        let odaAdi = "";
+        let oyuncular = {};
+        let hedefKisiSayisi = 0;
+        let oyunAktif = false;
+        let botModuAktif = false;
+        let botZorluk = 'normal';
+        let seciliHarita = 'sand';
+        let gameMode = 'bot';
+        let oyunBaslamaZamani = 0;
+        let girisZamani = 0;
+        let oyunBasladi = false;
+        let sonRegenZamani = 0;
+        let authMode = 'login';
+        let currentUser = null;
         let userProfile = { puan: 0, sahipOlunanlar: [], equiped: {}, botPuanBugun: 0, sonBotTarih: '' };
-        let isMobile = false, currentShopTab = 'silah', waitingInterval = null, waitingListener = null, waitingTimeLeft = 30;
+        let isMobile = false;
+        let currentShopTab = 'silah';
+        let waitingInterval = null;
+        let waitingListener = null;
+        let waitingTimeLeft = 30;
         
         let takim = "mavi"; 
-        let ben = { x: 100, y: 100, hp: 100, maxHp: 100, yon: 1, hareket: false, saldiriyor: false, sonHasarZamani: 0, takim: takim, isBot: false, isim: "PLAYER", girisZamani: 0 };
-        const tuslar = {};
-        let joystickActive = false, joystickData = { x: 0, y: 0 };
+        let ben = {
+            x: 100, y: 100, hp: 100, maxHp: 100, yon: 1, 
+            hareket: false, saldiriyor: false, sonHasarZamani: 0, 
+            takim: takim, isBot: false, isim: "PLAYER", girisZamani: 0
+        };
 
-        function showAuthTab(tab) { authMode = tab; document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active')); event.target.classList.add('active'); document.getElementById('authBtn').innerText = tab === 'login' ? 'GİRİŞ YAP' : 'KAYIT OL'; document.getElementById('authError').innerText = ''; }
+        const tuslar = {};
+        let joystickActive = false;
+        let joystickData = { x: 0, y: 0 };
+
+        function showAuthTab(tab) {
+            authMode = tab;
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('authBtn').innerText = tab === 'login' ? 'GİRİŞ YAP' : 'KAYIT OL';
+            document.getElementById('authError').innerText = '';
+        }
 
         function handleAuth() {
             const email = document.getElementById('authEmail').value.trim();
             const password = document.getElementById('authPassword').value;
             const errorEl = document.getElementById('authError');
+            
             if (!email || !password) { errorEl.innerText = 'Tüm alanları doldurun!'; return; }
             if (password.length < 6) { errorEl.innerText = 'Şifre en az 6 karakter!'; return; }
             errorEl.innerText = 'Bekleyin...';
+
             if (authMode === 'login') {
-                auth.signInWithEmailAndPassword(email, password).then(u => onAuthSuccess(u.user)).catch(err => { errorEl.innerText = err.code === 'auth/user-not-found' ? 'Kullanıcı bulunamadı!' : err.code === 'auth/wrong-password' ? 'Yanlış şifre!' : 'Giriş başarısız!'; });
+                auth.signInWithEmailAndPassword(email, password)
+                    .then(u => onAuthSuccess(u.user))
+                    .catch(err => {
+                        if (err.code === 'auth/user-not-found') errorEl.innerText = 'Kullanıcı bulunamadı!';
+                        else if (err.code === 'auth/wrong-password') errorEl.innerText = 'Yanlış şifre!';
+                        else errorEl.innerText = 'Giriş başarısız!';
+                    });
             } else {
-                auth.createUserWithEmailAndPassword(email, password).then(u => { db.ref('users/' + u.user.uid).set({ email, puan: 0, sahipOlunanlar: [], equiped: {}, botPuanBugun: 0, sonBotTarih: getTodayString(), olusturulma: Date.now() }); onAuthSuccess(u.user); }).catch(err => { errorEl.innerText = err.code === 'auth/email-already-in-use' ? 'Bu e-posta kayıtlı!' : 'Kayıt başarısız!'; });
+                auth.createUserWithEmailAndPassword(email, password)
+                    .then(u => {
+                        db.ref('users/' + u.user.uid).set({
+                            email: email, puan: 0, sahipOlunanlar: [], equiped: {},
+                            botPuanBugun: 0, sonBotTarih: getTodayString(), olusturulma: Date.now()
+                        });
+                        onAuthSuccess(u.user);
+                    })
+                    .catch(err => {
+                        if (err.code === 'auth/email-already-in-use') errorEl.innerText = 'Bu e-posta kayıtlı!';
+                        else errorEl.innerText = 'Kayıt başarısız!';
+                    });
             }
         }
 
-        function playAsGuest() { currentUser = null; oyuncuIsmi = "MISAFIR_" + Math.floor(Math.random() * 999); userProfile = { puan: 0, sahipOlunanlar: [], equiped: {}, botPuanBugun: 0, sonBotTarih: getTodayString() }; document.getElementById('authScreen').style.display = 'none'; document.getElementById('mainMenu').style.display = 'flex'; updateProfileUI(); }
+        function playAsGuest() {
+            currentUser = null;
+            oyuncuIsmi = "MISAFIR_" + Math.floor(Math.random() * 999);
+            userProfile = { puan: 0, sahipOlunanlar: [], equiped: {}, botPuanBugun: 0, sonBotTarih: getTodayString() };
+            document.getElementById('authScreen').style.display = 'none';
+            document.getElementById('mainMenu').style.display = 'flex';
+            updateProfileUI();
+        }
 
         function onAuthSuccess(user) {
             currentUser = user;
             db.ref('users/' + user.uid).once('value').then(snapshot => {
                 userProfile = snapshot.exists() ? snapshot.val() : { puan: 0, sahipOlunanlar: [], equiped: {}, botPuanBugun: 0, sonBotTarih: getTodayString() };
-                if (!userProfile.sahipOlunanlar) userProfile.sahipOlunanlar = [];
-                if (!userProfile.equiped) userProfile.equiped = {};
                 checkDailyReset();
                 oyuncuIsmi = user.email.split('@')[0].toUpperCase().substring(0, 8);
                 document.getElementById('authScreen').style.display = 'none';
@@ -503,28 +724,62 @@
         }
 
         function logout() { auth.signOut().then(() => location.reload()); }
-        function getTodayString() { const d = new Date(); return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate(); }
-        function checkDailyReset() { const today = getTodayString(); if (userProfile.sonBotTarih !== today) { userProfile.botPuanBugun = 0; userProfile.sonBotTarih = today; saveUserProfile(); } }
+
+        function getTodayString() {
+            const d = new Date();
+            return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
+        }
+
+        function checkDailyReset() {
+            const today = getTodayString();
+            if (userProfile.sonBotTarih !== today) {
+                userProfile.botPuanBugun = 0;
+                userProfile.sonBotTarih = today;
+                saveUserProfile();
+            }
+        }
 
         function updateProfileUI() {
             document.getElementById('profileName').innerText = oyuncuIsmi;
             document.getElementById('profileScore').innerText = userProfile.puan || 0;
             document.getElementById('dailyBotPoints').innerText = userProfile.botPuanBugun || 0;
-            const rank = getRank(userProfile.puan || 0);
-            document.getElementById('rankDisplay').innerHTML = `${rank.icon} ${rank.isim}`;
-            document.getElementById('rankDisplay').style.color = rank.renk;
         }
 
-        function saveUserProfile() { if (currentUser) db.ref('users/' + currentUser.uid).update(userProfile); }
+        function saveUserProfile() {
+            if (currentUser) {
+                db.ref('users/' + currentUser.uid).update(userProfile);
+            }
+        }
 
-        function showBotDifficulty() { checkDailyReset(); document.getElementById('diffDailyLimit').innerText = userProfile.botPuanBugun || 0; document.getElementById('mainMenu').style.display = 'none'; document.getElementById('botDifficultyScreen').style.display = 'flex'; }
-        function closeBotDifficulty() { document.getElementById('botDifficultyScreen').style.display = 'none'; document.getElementById('mainMenu').style.display = 'flex'; }
-        function showBotPlayerCount(difficulty) { botZorluk = difficulty; document.getElementById('botDifficultyScreen').style.display = 'none'; document.getElementById('botPlayerCountScreen').style.display = 'flex'; }
-        function closeBotPlayerCount() { document.getElementById('botPlayerCountScreen').style.display = 'none'; document.getElementById('botDifficultyScreen').style.display = 'flex'; }
+        function showBotDifficulty() {
+            checkDailyReset();
+            document.getElementById('diffDailyLimit').innerText = userProfile.botPuanBugun || 0;
+            document.getElementById('mainMenu').style.display = 'none';
+            document.getElementById('botDifficultyScreen').style.display = 'flex';
+        }
+
+        function closeBotDifficulty() {
+            document.getElementById('botDifficultyScreen').style.display = 'none';
+            document.getElementById('mainMenu').style.display = 'flex';
+        }
+
+        function showBotPlayerCount(difficulty) {
+            botZorluk = difficulty;
+            document.getElementById('botDifficultyScreen').style.display = 'none';
+            document.getElementById('botPlayerCountScreen').style.display = 'flex';
+        }
+
+        function closeBotPlayerCount() {
+            document.getElementById('botPlayerCountScreen').style.display = 'none';
+            document.getElementById('botDifficultyScreen').style.display = 'flex';
+        }
 
         function showMapSelect(mode, difficulty = 'normal', playerCount = 2) {
             gameMode = mode;
-            if (mode === 'bot') { botZorluk = difficulty; hedefKisiSayisi = playerCount; }
+            if (mode === 'bot') {
+                botZorluk = difficulty;
+                hedefKisiSayisi = playerCount;
+            }
             document.getElementById('botDifficultyScreen').style.display = 'none';
             document.getElementById('botPlayerCountScreen').style.display = 'none';
             document.getElementById('mainMenu').style.display = 'none';
@@ -532,89 +787,186 @@
             document.getElementById('onlineModeSelect').style.display = mode === 'online' ? 'block' : 'none';
         }
 
-        function closeMapSelect() { document.getElementById('mapSelectScreen').style.display = 'none'; if (gameMode === 'bot') document.getElementById('botPlayerCountScreen').style.display = 'flex'; else document.getElementById('mainMenu').style.display = 'flex'; }
+        function closeMapSelect() {
+            document.getElementById('mapSelectScreen').style.display = 'none';
+            if (gameMode === 'bot') {
+                document.getElementById('botPlayerCountScreen').style.display = 'flex';
+            } else {
+                document.getElementById('mainMenu').style.display = 'flex';
+            }
+        }
 
-        function selectMap(map) { seciliHarita = map; if (gameMode === 'bot') { botModuAktif = true; document.getElementById('mapSelectScreen').style.display = 'none'; odaAdi = "bot_arena_v9_" + Math.floor(Math.random() * 100000); oyunuBaslat(); } }
+        function selectMap(map) {
+            seciliHarita = map;
+            if (gameMode === 'bot') {
+                botModuAktif = true;
+                document.getElementById('mapSelectScreen').style.display = 'none';
+                odaAdi = "bot_arena_v8_" + Math.floor(Math.random() * 100000);
+                oyunuBaslat();
+            }
+        }
 
         function startOnlineGame(kisiSayisi) {
-            initAudio(); hedefKisiSayisi = kisiSayisi; botModuAktif = false;
-            odaAdi = "arena_v9_" + seciliHarita + "_" + kisiSayisi;
+            initAudio();
+            hedefKisiSayisi = kisiSayisi;
+            botModuAktif = false;
+            odaAdi = "arena_v8_" + seciliHarita + "_" + kisiSayisi;
+            
             document.getElementById('mapSelectScreen').style.display = 'none';
             document.getElementById('waitingScreen').style.display = 'flex';
             document.getElementById('targetPlayers').innerText = kisiSayisi;
             document.getElementById('fillWithBotsBtn').style.display = 'none';
             document.getElementById('waitingHint').innerText = 'Rakip bekleniyor...';
+            
+            // 1v1 = 30sn, 2v2/4v4 = 10sn
             waitingTimeLeft = kisiSayisi === 2 ? 30 : 10;
             document.getElementById('waitTimer').innerText = waitingTimeLeft;
-            ben.isim = oyuncuIsmi; ben.takim = "bekliyor"; ben.hp = AYARLAR.maxHp; ben.maxHp = AYARLAR.maxHp; ben.girisZamani = Date.now(); ben.equiped = userProfile.equiped || {};
-            db.ref(odaAdi + "/" + myId).set(ben); db.ref(odaAdi + "/" + myId).onDisconnect().remove();
-            waitingListener = db.ref(odaAdi).on('value', snapshot => { oyuncular = snapshot.val() || {}; updateWaitingScreen(); let gercekOyuncuSayisi = Object.values(oyuncular).filter(p => !p.isBot).length; if (gercekOyuncuSayisi >= hedefKisiSayisi) { clearWaitingState(); document.getElementById('waitingScreen').style.display = 'none'; assignTeams(); oyunuBaslat(); } });
-            waitingInterval = setInterval(() => { waitingTimeLeft--; document.getElementById('waitTimer').innerText = waitingTimeLeft; if (waitingTimeLeft <= 0) { document.getElementById('fillWithBotsBtn').style.display = 'block'; document.getElementById('waitingHint').innerText = 'Süre doldu! Botlarla tamamlayabilirsiniz.'; clearInterval(waitingInterval); } }, 1000);
+            
+            ben.isim = oyuncuIsmi;
+            ben.takim = "bekliyor";
+            ben.hp = AYARLAR.maxHp;
+            ben.maxHp = AYARLAR.maxHp;
+            ben.girisZamani = Date.now();
+            ben.equiped = userProfile.equiped || {};
+            
+            db.ref(odaAdi + "/" + myId).set(ben);
+            db.ref(odaAdi + "/" + myId).onDisconnect().remove();
+            
+            waitingListener = db.ref(odaAdi).on('value', snapshot => {
+                oyuncular = snapshot.val() || {};
+                updateWaitingScreen();
+                
+                let gercekOyuncuSayisi = Object.values(oyuncular).filter(p => !p.isBot).length;
+                if (gercekOyuncuSayisi >= hedefKisiSayisi) {
+                    clearWaitingState();
+                    document.getElementById('waitingScreen').style.display = 'none';
+                    assignTeams();
+                    oyunuBaslat();
+                }
+            });
+            
+            waitingInterval = setInterval(() => {
+                waitingTimeLeft--;
+                document.getElementById('waitTimer').innerText = waitingTimeLeft;
+                
+                if (waitingTimeLeft <= 0) {
+                    document.getElementById('fillWithBotsBtn').style.display = 'block';
+                    document.getElementById('waitingHint').innerText = 'Süre doldu! Botlarla tamamlayabilirsiniz.';
+                    clearInterval(waitingInterval);
+                }
+            }, 1000);
         }
 
-        function updateWaitingScreen() { let gercekOyuncular = Object.entries(oyuncular).filter(([k, p]) => !p.isBot); document.getElementById('currentPlayers').innerText = gercekOyuncular.length; let listHtml = ''; gercekOyuncular.forEach(([key, p], index) => { let takimClass = index % 2 === 0 ? 'blue' : 'red'; let takimText = index % 2 === 0 ? '[MAVİ]' : '[KIRMIZI]'; let benMi = key === myId ? ' (SEN)' : ''; listHtml += `<div class="player-list-item ${takimClass}">${takimText} ${p.isim || '???'}${benMi}</div>`; }); let eksik = hedefKisiSayisi - gercekOyuncular.length; for (let i = 0; i < eksik; i++) listHtml += `<div class="player-list-item" style="color: #5f574f;">[ ? ] Bekleniyor...</div>`; document.getElementById('playerList').innerHTML = listHtml; }
-
-        function fillWithBots() { let gercekOyuncuSayisi = Object.values(oyuncular).filter(p => !p.isBot).length; let eksikSayi = hedefKisiSayisi - gercekOyuncuSayisi; for (let i = 0; i < eksikSayi; i++) { let botId = "bot_" + Date.now() + "_" + i; let botIsimler = ["CPU1", "CPU2", "BOT", "NPC", "AI01", "ROBO"]; db.ref(odaAdi + "/" + botId).set({ x: arena.x + arena.w - 100, y: arena.y + arena.h / 2 + (Math.random() - 0.5) * 100, hp: AYARLAR.maxHp, maxHp: AYARLAR.maxHp, takim: "kirmizi", isBot: true, yon: -1, hareket: false, isim: botIsimler[Math.floor(Math.random() * botIsimler.length)], sonHasarZamani: Date.now() }); } setTimeout(() => { clearWaitingState(); document.getElementById('waitingScreen').style.display = 'none'; assignTeams(); oyunuBaslat(); }, 500); }
-
-        function assignTeams() { let gercekOyuncular = Object.entries(oyuncular).filter(([k, p]) => !p.isBot).sort((a, b) => (a[1].girisZamani || 0) - (b[1].girisZamani || 0)); let benimIndex = gercekOyuncular.findIndex(([k]) => k === myId); if (benimIndex !== -1) { let yeniTakim = (benimIndex % 2 === 0) ? "mavi" : "kirmizi"; ben.takim = yeniTakim; takim = yeniTakim; ben.x = takim === "mavi" ? arena.x + 100 : arena.x + arena.w - 100; ben.y = arena.y + arena.h / 2; db.ref(odaAdi + "/" + myId).update({ takim: yeniTakim, x: ben.x, y: ben.y }); } }
-        function cancelWaiting() { clearWaitingState(); db.ref(odaAdi + "/" + myId).remove(); document.getElementById('waitingScreen').style.display = 'none'; document.getElementById('mainMenu').style.display = 'flex'; }
-        function clearWaitingState() { if (waitingInterval) { clearInterval(waitingInterval); waitingInterval = null; } if (waitingListener) { db.ref(odaAdi).off('value', waitingListener); waitingListener = null; } }
-
-        // MAĞAZA FONKSİYONLARI
-        function openShop() {
-            document.getElementById('mainMenu').style.display = 'none';
-            document.getElementById('shopScreen').style.display = 'flex';
-            updateShopUI();
-            renderShopItems();
+        function updateWaitingScreen() {
+            let gercekOyuncular = Object.entries(oyuncular).filter(([k, p]) => !p.isBot);
+            document.getElementById('currentPlayers').innerText = gercekOyuncular.length;
+            
+            let listHtml = '';
+            gercekOyuncular.forEach(([key, p], index) => {
+                let takimClass = index % 2 === 0 ? 'blue' : 'red';
+                let takimText = index % 2 === 0 ? '[MAVİ]' : '[KIRMIZI]';
+                let benMi = key === myId ? ' (SEN)' : '';
+                listHtml += `<div class="player-list-item ${takimClass}">${takimText} ${p.isim || '???'}${benMi}</div>`;
+            });
+            
+            let eksik = hedefKisiSayisi - gercekOyuncular.length;
+            for (let i = 0; i < eksik; i++) {
+                listHtml += `<div class="player-list-item" style="color: #5f574f;">[ ? ] Bekleniyor...</div>`;
+            }
+            
+            document.getElementById('playerList').innerHTML = listHtml;
         }
 
-        function updateShopUI() {
-            const puan = userProfile.puan || 0;
-            const rank = getRank(puan);
-            const nextRank = getNextRank(puan);
+        function fillWithBots() {
+            let gercekOyuncuSayisi = Object.values(oyuncular).filter(p => !p.isBot).length;
+            let eksikSayi = hedefKisiSayisi - gercekOyuncuSayisi;
             
-            document.getElementById('shopPoints').innerText = puan;
-            document.getElementById('shopRankDisplay').innerHTML = `${rank.icon} ${rank.isim}`;
-            document.getElementById('shopRankDisplay').style.color = rank.renk;
-            document.getElementById('shopMaxTier').innerText = rank.maxTier;
+            for (let i = 0; i < eksikSayi; i++) {
+                let botId = "bot_" + Date.now() + "_" + i;
+                let botIsimler = ["CPU1", "CPU2", "BOT", "NPC", "AI01", "ROBO"];
+                db.ref(odaAdi + "/" + botId).set({
+                    x: arena.x + arena.w - 100,
+                    y: arena.y + arena.h / 2 + (Math.random() - 0.5) * 100,
+                    hp: AYARLAR.maxHp, maxHp: AYARLAR.maxHp, takim: "kirmizi", isBot: true, yon: -1, hareket: false,
+                    isim: botIsimler[Math.floor(Math.random() * botIsimler.length)],
+                    sonHasarZamani: Date.now()
+                });
+            }
             
-            if (nextRank) {
-                const progress = ((puan - (rank.min)) / (nextRank.rank.min - rank.min)) * 100;
-                document.getElementById('rankProgressBar').style.width = Math.min(100, progress) + '%';
-                document.getElementById('nextRankInfo').innerText = `Sonraki rank: ${nextRank.rank.icon} ${nextRank.rank.isim} (${nextRank.needed} puan kaldı)`;
-            } else {
-                document.getElementById('rankProgressBar').style.width = '100%';
-                document.getElementById('nextRankInfo').innerText = 'MAX RANK!';
+            setTimeout(() => {
+                clearWaitingState();
+                document.getElementById('waitingScreen').style.display = 'none';
+                assignTeams();
+                oyunuBaslat();
+            }, 500);
+        }
+
+        function assignTeams() {
+            let gercekOyuncular = Object.entries(oyuncular)
+                .filter(([k, p]) => !p.isBot)
+                .sort((a, b) => (a[1].girisZamani || 0) - (b[1].girisZamani || 0));
+            
+            let benimIndex = gercekOyuncular.findIndex(([k]) => k === myId);
+            if (benimIndex !== -1) {
+                let yeniTakim = (benimIndex % 2 === 0) ? "mavi" : "kirmizi";
+                ben.takim = yeniTakim;
+                takim = yeniTakim;
+                ben.x = takim === "mavi" ? arena.x + 100 : arena.x + arena.w - 100;
+                ben.y = arena.y + arena.h / 2;
+                db.ref(odaAdi + "/" + myId).update({ takim: yeniTakim, x: ben.x, y: ben.y });
             }
         }
 
-        function closeShop() { document.getElementById('shopScreen').style.display = 'none'; document.getElementById('mainMenu').style.display = 'flex'; }
+        function cancelWaiting() {
+            clearWaitingState();
+            db.ref(odaAdi + "/" + myId).remove();
+            document.getElementById('waitingScreen').style.display = 'none';
+            document.getElementById('mainMenu').style.display = 'flex';
+        }
 
-        function showShopTab(tab) { currentShopTab = tab; document.querySelectorAll('.shop-tab').forEach(t => t.classList.remove('active')); event.target.classList.add('active'); renderShopItems(); }
+        function clearWaitingState() {
+            if (waitingInterval) { clearInterval(waitingInterval); waitingInterval = null; }
+            if (waitingListener) { db.ref(odaAdi).off('value', waitingListener); waitingListener = null; }
+        }
+
+        function openShop() {
+            document.getElementById('mainMenu').style.display = 'none';
+            document.getElementById('shopScreen').style.display = 'flex';
+            document.getElementById('shopPoints').innerText = userProfile.puan || 0;
+            renderShopItems();
+        }
+
+        function closeShop() {
+            document.getElementById('shopScreen').style.display = 'none';
+            document.getElementById('mainMenu').style.display = 'flex';
+        }
+
+        function showShopTab(tab) {
+            currentShopTab = tab;
+            document.querySelectorAll('.shop-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            renderShopItems();
+        }
 
         function renderShopItems() {
             const container = document.getElementById('shopItems');
             container.innerHTML = '';
-            const items = MAGAZA[currentShopTab] || [];
-            const puan = userProfile.puan || 0;
-            const rank = getRank(puan);
             
+            const items = MAGAZA[currentShopTab] || [];
             items.forEach(item => {
                 const owned = userProfile.sahipOlunanlar?.includes(item.id);
                 const equipped = userProfile.equiped?.[currentShopTab] === item.id;
-                const locked = item.tier > rank.maxTier;
                 
                 const div = document.createElement('div');
-                div.className = 'shop-item' + (owned ? ' owned' : '') + (equipped ? ' equipped' : '') + (locked ? ' locked' : '');
+                div.className = 'shop-item' + (owned ? ' owned' : '') + (equipped ? ' equipped' : '');
                 
                 let btnHtml = '';
-                if (locked) {
-                    const neededRank = Object.values(RANKLAR).find(r => r.maxTier >= item.tier);
-                    btnHtml = `<button class="locked-btn" disabled>🔒 ${neededRank?.isim || '???'}</button>`;
-                } else if (owned) {
-                    btnHtml = equipped ? `<button disabled style="background:#5f574f">TAKILDI</button>` : `<button class="green" onclick="equipItem('${item.id}', '${currentShopTab}')">TAK</button>`;
+                if (owned) {
+                    btnHtml = equipped 
+                        ? `<button disabled style="background:#5f574f">TAKILDI</button>`
+                        : `<button class="green" onclick="equipItem('${item.id}', '${currentShopTab}')">TAK</button>`;
                 } else {
-                    const canBuy = puan >= item.puan;
+                    const canBuy = (userProfile.puan || 0) >= item.puan;
                     btnHtml = `<button ${canBuy ? '' : 'disabled'} onclick="buyItem('${item.id}', '${currentShopTab}')">${item.puan} ⭐</button>`;
                 }
                 
@@ -624,7 +976,6 @@
                         <div class="shop-item-details">
                             <div class="shop-item-name">${item.name}</div>
                             <div class="shop-item-desc">${item.desc}</div>
-                            <div class="shop-item-tier">Tier ${item.tier}</div>
                         </div>
                     </div>
                     ${btnHtml}
@@ -635,19 +986,17 @@
 
         function buyItem(itemId, category) {
             const item = MAGAZA[category].find(i => i.id === itemId);
-            const rank = getRank(userProfile.puan || 0);
-            if (!item || (userProfile.puan || 0) < item.puan) { playSound('error'); return; }
-            if (item.tier > rank.maxTier) { playSound('error'); return; }
+            if (!item || (userProfile.puan || 0) < item.puan) return;
             
             userProfile.puan -= item.puan;
             if (!userProfile.sahipOlunanlar) userProfile.sahipOlunanlar = [];
             userProfile.sahipOlunanlar.push(itemId);
             
             saveUserProfile();
-            updateShopUI();
+            document.getElementById('shopPoints').innerText = userProfile.puan;
             updateProfileUI();
             renderShopItems();
-            playSound('buy');
+            playSound('victory');
         }
 
         function equipItem(itemId, category) {
@@ -658,7 +1007,7 @@
         }
 
         function getPlayerBonuses() {
-            let bonuses = { hasar: 0, hp: 0, hiz: 0, vampir: 0, ghost: false, shadow: false, fastRegen: false };
+            let bonuses = { hasar: 0, hp: 0, hiz: 0, vampir: 0, ghost: false };
             if (userProfile.equiped) {
                 Object.entries(userProfile.equiped).forEach(([category, itemId]) => {
                     const items = MAGAZA[category] || [];
@@ -669,8 +1018,6 @@
                         if (item.bonus.hiz) bonuses.hiz += item.bonus.hiz;
                         if (item.bonus.vampir) bonuses.vampir = item.bonus.vampir;
                         if (item.bonus.ghost) bonuses.ghost = true;
-                        if (item.bonus.shadow) bonuses.shadow = true;
-                        if (item.bonus.fastRegen) bonuses.fastRegen = true;
                     }
                 });
             }
@@ -679,88 +1026,297 @@
 
         window.addEventListener('keydown', e => { tuslar[e.key] = true; if(e.code === "Space") saldir(); });
         window.addEventListener('keyup', e => tuslar[e.key] = false);
-        window.addEventListener('mousedown', (e) => { initAudio(); if(e.target.id !== 'attack-btn' && e.target.id !== 'joystick-base' && e.target.id !== 'joystick-thumb') { if (oyunAktif && oyunBasladi) saldir(); } });
+        window.addEventListener('mousedown', (e) => {
+            initAudio();
+            if(e.target.id !== 'attack-btn' && e.target.id !== 'joystick-base' && e.target.id !== 'joystick-thumb') {
+                if (oyunAktif && oyunBasladi) saldir();
+            }
+        });
 
-        function setupJoystick() { const container = document.getElementById('joystick-container'); const base = document.getElementById('joystick-base'); const thumb = document.getElementById('joystick-thumb'); function handleJoystick(e) { e.preventDefault(); initAudio(); const touch = e.touches ? e.touches[0] : e; const rect = base.getBoundingClientRect(); const centerX = rect.left + rect.width / 2; const centerY = rect.top + rect.height / 2; let deltaX = touch.clientX - centerX; let deltaY = touch.clientY - centerY; const maxDist = rect.width / 2 - 25; const dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY); if (dist > maxDist) { deltaX = (deltaX / dist) * maxDist; deltaY = (deltaY / dist) * maxDist; } thumb.style.transform = `translate(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px))`; joystickData.x = deltaX / maxDist; joystickData.y = deltaY / maxDist; joystickActive = true; } function resetJoystick() { thumb.style.transform = 'translate(-50%, -50%)'; joystickData.x = 0; joystickData.y = 0; joystickActive = false; } container.addEventListener('touchstart', handleJoystick, { passive: false }); container.addEventListener('touchmove', handleJoystick, { passive: false }); container.addEventListener('touchend', resetJoystick); container.addEventListener('touchcancel', resetJoystick); }
-        function setupAttackButton() { const attackBtn = document.getElementById('attack-btn'); attackBtn.addEventListener('touchstart', (e) => { e.preventDefault(); initAudio(); attackBtn.classList.add('active'); saldir(); }, { passive: false }); attackBtn.addEventListener('touchend', (e) => { e.preventDefault(); attackBtn.classList.remove('active'); }, { passive: false }); }
-        function showMobileControls(show) { document.getElementById('joystick-container').style.display = isMobile && show ? 'block' : 'none'; document.getElementById('attack-btn').style.display = isMobile && show ? 'flex' : 'none'; }
-        function checkMobile() { isMobile = window.innerWidth <= 1024 || 'ontouchstart' in window || navigator.maxTouchPoints > 0; }
-        document.addEventListener('DOMContentLoaded', () => { checkMobile(); setupJoystick(); setupAttackButton(); auth.onAuthStateChanged(user => { if (user) onAuthSuccess(user); }); });
+        function setupJoystick() {
+            const container = document.getElementById('joystick-container');
+            const base = document.getElementById('joystick-base');
+            const thumb = document.getElementById('joystick-thumb');
+            
+            function handleJoystick(e) {
+                e.preventDefault();
+                initAudio();
+                const touch = e.touches ? e.touches[0] : e;
+                const rect = base.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                let deltaX = touch.clientX - centerX;
+                let deltaY = touch.clientY - centerY;
+                const maxDist = rect.width / 2 - 25;
+                const dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                
+                if (dist > maxDist) {
+                    deltaX = (deltaX / dist) * maxDist;
+                    deltaY = (deltaY / dist) * maxDist;
+                }
+                
+                thumb.style.transform = `translate(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px))`;
+                joystickData.x = deltaX / maxDist;
+                joystickData.y = deltaY / maxDist;
+                joystickActive = true;
+            }
+            
+            function resetJoystick() {
+                thumb.style.transform = 'translate(-50%, -50%)';
+                joystickData.x = 0; joystickData.y = 0; joystickActive = false;
+            }
+            
+            container.addEventListener('touchstart', handleJoystick, { passive: false });
+            container.addEventListener('touchmove', handleJoystick, { passive: false });
+            container.addEventListener('touchend', resetJoystick);
+            container.addEventListener('touchcancel', resetJoystick);
+        }
 
-        function boyutlandir() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; checkMobile(); let bottomPadding = isMobile ? 180 : 80; if (window.innerHeight < 500) bottomPadding = 120; arena.padding = Math.min(canvas.width, canvas.height) * 0.08; arena.x = arena.padding; arena.y = arena.padding + 20; arena.w = canvas.width - arena.padding * 2; arena.h = canvas.height - arena.padding * 2 - bottomPadding; }
+        function setupAttackButton() {
+            const attackBtn = document.getElementById('attack-btn');
+            attackBtn.addEventListener('touchstart', (e) => {
+                e.preventDefault(); initAudio(); attackBtn.classList.add('active'); saldir();
+            }, { passive: false });
+            attackBtn.addEventListener('touchend', (e) => {
+                e.preventDefault(); attackBtn.classList.remove('active');
+            }, { passive: false });
+        }
+
+        function showMobileControls(show) {
+            document.getElementById('joystick-container').style.display = isMobile && show ? 'block' : 'none';
+            document.getElementById('attack-btn').style.display = isMobile && show ? 'flex' : 'none';
+        }
+
+        function checkMobile() {
+            isMobile = window.innerWidth <= 1024 || 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkMobile();
+            setupJoystick();
+            setupAttackButton();
+            auth.onAuthStateChanged(user => { if (user) onAuthSuccess(user); });
+        });
+
+        function boyutlandir() { 
+            canvas.width = window.innerWidth; 
+            canvas.height = window.innerHeight;
+            checkMobile();
+            
+            let bottomPadding = isMobile ? 180 : 80;
+            if (window.innerHeight < 500) bottomPadding = 120;
+            
+            arena.padding = Math.min(canvas.width, canvas.height) * 0.08;
+            arena.x = arena.padding;
+            arena.y = arena.padding + 20;
+            arena.w = canvas.width - arena.padding * 2;
+            arena.h = canvas.height - arena.padding * 2 - bottomPadding;
+        }
         window.onresize = boyutlandir;
         boyutlandir();
 
         function oyunuBaslat() {
-            initAudio(); oyunBaslamaZamani = Date.now(); girisZamani = Date.now();
+            initAudio();
+            oyunBaslamaZamani = Date.now();
+            girisZamani = Date.now();
+            
             const bonuses = getPlayerBonuses();
-            ben.maxHp = AYARLAR.maxHp + bonuses.hp; ben.hp = ben.maxHp; ben.sonHasarZamani = Date.now(); ben.isim = oyuncuIsmi; ben.girisZamani = girisZamani; ben.equiped = userProfile.equiped || {};
-            document.getElementById('mainMenu').style.display = 'none'; document.getElementById('ui-layer').style.display = 'block'; showMobileControls(true); oyunAktif = true;
+            ben.maxHp = AYARLAR.maxHp + bonuses.hp;
+            ben.hp = ben.maxHp;
+            ben.sonHasarZamani = Date.now();
+            ben.isim = oyuncuIsmi;
+            ben.girisZamani = girisZamani;
+            ben.equiped = userProfile.equiped || {};
+
+            document.getElementById('mainMenu').style.display = 'none';
+            document.getElementById('ui-layer').style.display = 'block';
+            showMobileControls(true);
+            oyunAktif = true;
 
             if (botModuAktif) {
-                takim = "mavi"; ben.takim = takim; ben.x = arena.x + 100; ben.y = arena.y + arena.h / 2;
-                db.ref(odaAdi + "/" + myId).set(ben); db.ref(odaAdi + "/" + myId).onDisconnect().remove();
+                takim = "mavi";
+                ben.takim = takim;
+                ben.x = arena.x + 100;
+                ben.y = arena.y + arena.h / 2;
+
+                db.ref(odaAdi + "/" + myId).set(ben);
+                db.ref(odaAdi + "/" + myId).onDisconnect().remove();
+
+                // Botları hemen ekle - TAKIMLARI DENGELE
                 const zorlukAyar = AYARLAR.botZorluk[botZorluk];
-                const maviTakimBotSayisi = Math.floor(hedefKisiSayisi / 2) - 1;
+                const botSayisi = hedefKisiSayisi - 1;
+                const maviTakimBotSayisi = Math.floor(hedefKisiSayisi / 2) - 1; // Sen mavi olduğun için -1
                 const kirmiziTakimBotSayisi = Math.floor(hedefKisiSayisi / 2);
+                
                 const botIsimler = ["CPU1", "CPU2", "BOT1", "BOT2", "AI01", "AI02", "NPC1", "NPC2"];
                 let botIndex = 0;
-                for (let i = 0; i < maviTakimBotSayisi; i++) { let botId = "bot_mavi_" + Date.now() + "_" + i; db.ref(odaAdi + "/" + botId).set({ x: arena.x + 80 + Math.random() * 50, y: arena.y + 50 + (i * 80) + Math.random() * 30, hp: zorlukAyar.hp, maxHp: zorlukAyar.hp, takim: "mavi", isBot: true, yon: 1, hareket: false, isim: botIsimler[botIndex++ % botIsimler.length], sonHasarZamani: Date.now() }); }
-                for (let i = 0; i < kirmiziTakimBotSayisi; i++) { let botId = "bot_kirmizi_" + Date.now() + "_" + i; db.ref(odaAdi + "/" + botId).set({ x: arena.x + arena.w - 80 - Math.random() * 50, y: arena.y + 50 + (i * 80) + Math.random() * 30, hp: zorlukAyar.hp, maxHp: zorlukAyar.hp, takim: "kirmizi", isBot: true, yon: -1, hareket: false, isim: botIsimler[botIndex++ % botIsimler.length], sonHasarZamani: Date.now() }); }
-                db.ref(odaAdi).on('value', snapshot => { oyuncular = snapshot.val() || {}; if(!oyuncular[myId]) oyuncular[myId] = ben; if(oyuncular[myId]) { if(oyuncular[myId].hp !== undefined) ben.hp = oyuncular[myId].hp; if(oyuncular[myId].sonHasarZamani !== undefined) ben.sonHasarZamani = oyuncular[myId].sonHasarZamani; } arayuzGuncelle(); kazanmaKontrolu(); });
+                
+                // Mavi takıma bot ekle
+                for (let i = 0; i < maviTakimBotSayisi; i++) {
+                    let botId = "bot_mavi_" + Date.now() + "_" + i;
+                    db.ref(odaAdi + "/" + botId).set({
+                        x: arena.x + 80 + Math.random() * 50,
+                        y: arena.y + 50 + (i * 80) + Math.random() * 30,
+                        hp: zorlukAyar.hp, maxHp: zorlukAyar.hp, 
+                        takim: "mavi", isBot: true, yon: 1, hareket: false,
+                        isim: botIsimler[botIndex++ % botIsimler.length],
+                        sonHasarZamani: Date.now()
+                    });
+                }
+                
+                // Kırmızı takıma bot ekle
+                for (let i = 0; i < kirmiziTakimBotSayisi; i++) {
+                    let botId = "bot_kirmizi_" + Date.now() + "_" + i;
+                    db.ref(odaAdi + "/" + botId).set({
+                        x: arena.x + arena.w - 80 - Math.random() * 50,
+                        y: arena.y + 50 + (i * 80) + Math.random() * 30,
+                        hp: zorlukAyar.hp, maxHp: zorlukAyar.hp, 
+                        takim: "kirmizi", isBot: true, yon: -1, hareket: false,
+                        isim: botIsimler[botIndex++ % botIsimler.length],
+                        sonHasarZamani: Date.now()
+                    });
+                }
+
+                db.ref(odaAdi).on('value', snapshot => {
+                    oyuncular = snapshot.val() || {};
+                    if(!oyuncular[myId]) oyuncular[myId] = ben;
+                    if(oyuncular[myId]) {
+                        if(oyuncular[myId].hp !== undefined) ben.hp = oyuncular[myId].hp;
+                        if(oyuncular[myId].sonHasarZamani !== undefined) ben.sonHasarZamani = oyuncular[myId].sonHasarZamani;
+                    }
+                    arayuzGuncelle();
+                    kazanmaKontrolu();
+                });
+
                 document.getElementById('room-info').innerHTML = `BOT: ${botZorluk.toUpperCase()}<br>${hedefKisiSayisi/2}v${hedefKisiSayisi/2}<br>+${zorlukAyar.puan} Puan`;
-                geriSayimYap(3); oyunDongusu(); return;
+                geriSayimYap(3);
+                oyunDongusu();
+                return;
             }
 
-            db.ref(odaAdi).on('value', snapshot => { oyuncular = snapshot.val() || {}; if(!oyuncular[myId]) oyuncular[myId] = ben; if(oyuncular[myId]) { if(oyuncular[myId].hp !== undefined) ben.hp = oyuncular[myId].hp; if(oyuncular[myId].sonHasarZamani !== undefined) ben.sonHasarZamani = oyuncular[myId].sonHasarZamani; } arayuzGuncelle(); kazanmaKontrolu(); });
+            db.ref(odaAdi).on('value', snapshot => {
+                oyuncular = snapshot.val() || {};
+                if(!oyuncular[myId]) oyuncular[myId] = ben;
+                if(oyuncular[myId]) {
+                    if(oyuncular[myId].hp !== undefined) ben.hp = oyuncular[myId].hp;
+                    if(oyuncular[myId].sonHasarZamani !== undefined) ben.sonHasarZamani = oyuncular[myId].sonHasarZamani;
+                }
+                arayuzGuncelle();
+                kazanmaKontrolu();
+            });
+
             document.getElementById('room-info').innerHTML = `${HARITALAR[seciliHarita].name}<br>${hedefKisiSayisi}P<br>+${AYARLAR.onlinePuan} Puan`;
-            geriSayimYap(3); oyunDongusu();
+            geriSayimYap(3);
+            oyunDongusu();
         }
 
-        function geriSayimYap(saniye) { let cd = document.getElementById('countdown'); cd.style.opacity = 1; cd.innerText = "READY!"; let sayac = saniye; let interval = setInterval(() => { if(sayac > 0) { cd.innerText = sayac; sayac--; } else { cd.innerText = "FIGHT!"; oyunBasladi = true; setTimeout(() => cd.style.opacity = 0, 1000); clearInterval(interval); } }, 1000); }
-        function exitGame() { if(odaAdi) db.ref(odaAdi + "/" + myId).remove(); location.reload(); }
-        function backToMenu() { if(odaAdi) db.ref(odaAdi + "/" + myId).remove(); location.reload(); }
+        function geriSayimYap(saniye) {
+            let cd = document.getElementById('countdown');
+            cd.style.opacity = 1;
+            cd.innerText = "READY!";
+            
+            let sayac = saniye;
+            let interval = setInterval(() => {
+                if(sayac > 0) { cd.innerText = sayac; sayac--; }
+                else {
+                    cd.innerText = "FIGHT!";
+                    oyunBasladi = true;
+                    setTimeout(() => cd.style.opacity = 0, 1000);
+                    clearInterval(interval);
+                }
+            }, 1000);
+        }
+
+        function exitGame() {
+            if(odaAdi) db.ref(odaAdi + "/" + myId).remove();
+            location.reload();
+        }
+
+        function backToMenu() {
+            if(odaAdi) db.ref(odaAdi + "/" + myId).remove();
+            location.reload();
+        }
 
         function arayuzGuncelle() {
-            if(botModuAktif) { let maviCanli = Object.values(oyuncular).filter(p => p.takim === "mavi" && p.hp > 0).length; let kirmiziCanli = Object.values(oyuncular).filter(p => p.takim === "kirmizi" && p.hp > 0).length; const zorlukAyar = AYARLAR.botZorluk[botZorluk]; document.getElementById('room-info').innerHTML = `BOT: ${botZorluk.toUpperCase()}<br>MAVİ: ${maviCanli} | KIRMIZI: ${kirmiziCanli}<br>+${zorlukAyar.puan} Puan`; }
-            else { let maviTakim = Object.values(oyuncular).filter(p => p.takim === "mavi" && p.hp > 0).map(p => p.isim || "?").join(", "); let kirmiziTakim = Object.values(oyuncular).filter(p => p.takim === "kirmizi" && p.hp > 0).map(p => p.isim || "?").join(", "); document.getElementById('room-info').innerHTML = `<span style="color:${RENKLER.mavi}">MAVİ: ${maviTakim || "-"}</span><br><span style="color:${RENKLER.kirmizi}">KIRMIZI: ${kirmiziTakim || "-"}</span>`; }
+            if(botModuAktif) {
+                let maviCanli = Object.values(oyuncular).filter(p => p.takim === "mavi" && p.hp > 0).length;
+                let kirmiziCanli = Object.values(oyuncular).filter(p => p.takim === "kirmizi" && p.hp > 0).length;
+                const zorlukAyar = AYARLAR.botZorluk[botZorluk];
+                document.getElementById('room-info').innerHTML = `BOT: ${botZorluk.toUpperCase()}<br>MAVİ: ${maviCanli} | KIRMIZI: ${kirmiziCanli}<br>+${zorlukAyar.puan} Puan`;
+            } else {
+                let maviTakim = Object.values(oyuncular).filter(p => p.takim === "mavi" && p.hp > 0).map(p => p.isim || "?").join(", ");
+                let kirmiziTakim = Object.values(oyuncular).filter(p => p.takim === "kirmizi" && p.hp > 0).map(p => p.isim || "?").join(", ");
+                document.getElementById('room-info').innerHTML = 
+                    `<span style="color:${RENKLER.mavi}">MAVİ: ${maviTakim || "-"}</span><br>` +
+                    `<span style="color:${RENKLER.kirmizi}">KIRMIZI: ${kirmiziTakim || "-"}</span>`;
+            }
         }
 
         function hpRegenKontrol() {
-            if (ben.hp <= 0 || ben.hp >= ben.maxHp) { document.getElementById('regen-indicator').style.opacity = '0'; return; }
-            const bonuses = getPlayerBonuses();
-            const regenSuresi = bonuses.fastRegen ? AYARLAR.regenSuresi / 2 : AYARLAR.regenSuresi;
+            if (ben.hp <= 0 || ben.hp >= ben.maxHp) {
+                document.getElementById('regen-indicator').style.opacity = '0';
+                return;
+            }
+            
             let simdi = Date.now();
-            if (simdi - ben.sonHasarZamani >= regenSuresi) {
+            if (simdi - ben.sonHasarZamani >= AYARLAR.regenSuresi) {
                 document.getElementById('regen-indicator').style.opacity = '1';
-                if (simdi - sonRegenZamani >= 1000) { ben.hp = Math.min(ben.maxHp, ben.hp + AYARLAR.regenMiktari); db.ref(odaAdi + "/" + myId + "/hp").set(ben.hp); sonRegenZamani = simdi; bildirimGoster("+HP"); }
-            } else { document.getElementById('regen-indicator').style.opacity = '0'; }
+                if (simdi - sonRegenZamani >= 1000) {
+                    ben.hp = Math.min(ben.maxHp, ben.hp + AYARLAR.regenMiktari);
+                    db.ref(odaAdi + "/" + myId + "/hp").set(ben.hp);
+                    sonRegenZamani = simdi;
+                    bildirimGoster("+HP");
+                }
+            } else {
+                document.getElementById('regen-indicator').style.opacity = '0';
+            }
         }
 
         let lastBotUpdate = 0;
         function botlariYonet() {
             if (!botModuAktif || !oyunBasladi) return;
+
             const zorlukAyar = AYARLAR.botZorluk[botZorluk];
+
             if (Date.now() - lastBotUpdate > 50) {
                 Object.keys(oyuncular).forEach(key => {
                     let p = oyuncular[key];
                     if (p.isBot && p.hp > 0) {
                         let enYakinDusmanKey = null, enYakinDusman = null, minMesafe = 9999;
-                        Object.keys(oyuncular).forEach(targetKey => { let target = oyuncular[targetKey]; if (target.takim !== p.takim && target.hp > 0) { let d = Math.sqrt((p.x - target.x)**2 + (p.y - target.y)**2); if (d < minMesafe) { minMesafe = d; enYakinDusman = target; enYakinDusmanKey = targetKey; } } });
+                        
+                        Object.keys(oyuncular).forEach(targetKey => {
+                            let target = oyuncular[targetKey];
+                            if (target.takim !== p.takim && target.hp > 0) {
+                                let d = Math.sqrt((p.x - target.x)**2 + (p.y - target.y)**2);
+                                if (d < minMesafe) { minMesafe = d; enYakinDusman = target; enYakinDusmanKey = targetKey; }
+                            }
+                        });
+
                         let updates = {};
+                        
                         if (enYakinDusman) {
                             let hiz = zorlukAyar.hiz;
                             if (enYakinDusman.x > p.x + 15) { p.x += hiz; p.yon = 1; p.hareket = true; }
                             else if (enYakinDusman.x < p.x - 15) { p.x -= hiz; p.yon = -1; p.hareket = true; }
                             if (enYakinDusman.y > p.y + 10) { p.y += hiz; p.hareket = true; }
                             else if (enYakinDusman.y < p.y - 10) { p.y -= hiz; p.hareket = true; }
+
                             p.x = Math.max(arena.x + 20, Math.min(arena.x + arena.w - 20, p.x));
                             p.y = Math.max(arena.y + 20, Math.min(arena.y + arena.h - 20, p.y));
-                            if (minMesafe < 60 && !p.saldiriyor && Math.random() < zorlukAyar.saldirisans) {
-                                updates.saldiriyor = true; setTimeout(() => db.ref(odaAdi + "/" + key + "/saldiriyor").set(false), 300);
-                                if (enYakinDusmanKey && oyuncular[enYakinDusmanKey]) { let hedefHp = oyuncular[enYakinDusmanKey].hp || 100; db.ref(odaAdi + "/" + enYakinDusmanKey + "/hp").set(Math.max(0, hedefHp - zorlukAyar.hasar)); db.ref(odaAdi + "/" + enYakinDusmanKey + "/sonHasarZamani").set(Date.now()); playSound('hit'); }
+
+                            if (minMesafe < 60 && !p.saldiriyor && Math.random() < zorlukAyar.saldirisans) { 
+                                updates.saldiriyor = true;
+                                setTimeout(() => db.ref(odaAdi + "/" + key + "/saldiriyor").set(false), 300);
+                                if (enYakinDusmanKey && oyuncular[enYakinDusmanKey]) {
+                                    let hedefHp = oyuncular[enYakinDusmanKey].hp || 100;
+                                    db.ref(odaAdi + "/" + enYakinDusmanKey + "/hp").set(Math.max(0, hedefHp - zorlukAyar.hasar));
+                                    db.ref(odaAdi + "/" + enYakinDusmanKey + "/sonHasarZamani").set(Date.now());
+                                    playSound('hit');
+                                }
                             }
                         } else { p.hareket = false; }
+                        
                         updates.x = p.x; updates.y = p.y; updates.yon = p.yon; updates.hareket = p.hareket;
                         db.ref(odaAdi + "/" + key).update(updates);
                     }
@@ -771,107 +1327,299 @@
 
         function saldir() {
             if (ben.saldiriyor || ben.hp <= 0 || !oyunBasladi) return;
-            ben.saldiriyor = true; playSound('attack'); guncelle();
+            ben.saldiriyor = true;
+            playSound('attack');
+            guncelle();
             setTimeout(() => { ben.saldiriyor = false; guncelle(); }, 300);
+
             const bonuses = getPlayerBonuses();
             const toplamHasar = AYARLAR.oyuncuHasar + bonuses.hasar;
+
             Object.keys(oyuncular).forEach(key => {
                 let rakip = oyuncular[key];
                 if (key !== myId && rakip.hp > 0 && rakip.takim !== ben.takim) {
                     let d = Math.sqrt((rakip.x - ben.x)**2 + (rakip.y - ben.y)**2);
                     let yuzDonuk = (ben.yon === 1 && rakip.x > ben.x) || (ben.yon === -1 && rakip.x < ben.x);
-                    if (d < 70 && yuzDonuk) {
-                        db.ref(odaAdi + "/" + key + "/hp").once('value').then(snapshot => { let mevcutHp = snapshot.val() ?? 100; db.ref(odaAdi + "/" + key + "/hp").set(Math.max(0, mevcutHp - toplamHasar)); db.ref(odaAdi + "/" + key + "/sonHasarZamani").set(Date.now()); });
-                        playSound('hit'); bildirimGoster("HIT! -" + toplamHasar);
-                        if (bonuses.vampir > 0 && ben.hp < ben.maxHp) { ben.hp = Math.min(ben.maxHp, ben.hp + bonuses.vampir); db.ref(odaAdi + "/" + myId + "/hp").set(ben.hp); }
+                    if (d < 70 && yuzDonuk) { 
+                        db.ref(odaAdi + "/" + key + "/hp").once('value').then(snapshot => {
+                            let mevcutHp = snapshot.val() ?? 100;
+                            db.ref(odaAdi + "/" + key + "/hp").set(Math.max(0, mevcutHp - toplamHasar));
+                            db.ref(odaAdi + "/" + key + "/sonHasarZamani").set(Date.now());
+                        });
+                        playSound('hit');
+                        bildirimGoster("HIT! -" + toplamHasar);
+                        
+                        if (bonuses.vampir > 0 && ben.hp < ben.maxHp) {
+                            ben.hp = Math.min(ben.maxHp, ben.hp + bonuses.vampir);
+                            db.ref(odaAdi + "/" + myId + "/hp").set(ben.hp);
+                        }
                     }
                 }
             });
         }
 
-        function guncelle() { db.ref(odaAdi + "/" + myId).update({ x: ben.x, y: ben.y, yon: ben.yon, hareket: ben.hp > 0 ? ben.hareket : false, saldiriyor: ben.hp > 0 ? ben.saldiriyor : false, takim: ben.takim, isim: ben.isim, girisZamani: ben.girisZamani, sonHasarZamani: ben.sonHasarZamani, maxHp: ben.maxHp, equiped: userProfile.equiped || {} }); }
+        function guncelle() {
+            db.ref(odaAdi + "/" + myId).update({
+                x: ben.x, y: ben.y, yon: ben.yon, 
+                hareket: ben.hp > 0 ? ben.hareket : false, 
+                saldiriyor: ben.hp > 0 ? ben.saldiriyor : false, 
+                takim: ben.takim, isim: ben.isim, girisZamani: ben.girisZamani,
+                sonHasarZamani: ben.sonHasarZamani, maxHp: ben.maxHp,
+                equiped: userProfile.equiped || {}
+            });
+        }
 
         function cizArena() {
             const harita = HARITALAR[seciliHarita];
-            ctx.fillStyle = harita.arka; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            for(let i = 0; i < canvas.width; i += 16) { ctx.fillStyle = (Math.floor(i/16) % 3 === 0) ? '#3a2a4a' : '#2a1a3a'; ctx.fillRect(i, 0, 16, arena.y - 10); if(Math.random() > 0.7) { ctx.fillStyle = ['#ff004d', '#29adff', '#ffec27', '#00e436'][Math.floor(Math.random()*4)]; ctx.fillRect(i + 4, arena.y - 25 + Math.sin(Date.now()/500 + i)*2, 6, 6); } }
+            
+            ctx.fillStyle = harita.arka;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            for(let i = 0; i < canvas.width; i += 16) {
+                ctx.fillStyle = (Math.floor(i/16) % 3 === 0) ? '#3a2a4a' : '#2a1a3a';
+                ctx.fillRect(i, 0, 16, arena.y - 10);
+                if(Math.random() > 0.7) {
+                    ctx.fillStyle = ['#ff004d', '#29adff', '#ffec27', '#00e436'][Math.floor(Math.random()*4)];
+                    ctx.fillRect(i + 4, arena.y - 25 + Math.sin(Date.now()/500 + i)*2, 6, 6);
+                }
+            }
+            
             ctx.fillStyle = harita.duvar;
-            for(let x = arena.x - 16; x <= arena.x + arena.w; x += 16) { ctx.fillRect(x, arena.y - 16, 16, 16); ctx.fillRect(x, arena.y + arena.h, 16, 16); }
-            for(let y = arena.y; y <= arena.y + arena.h; y += 16) { ctx.fillRect(arena.x - 16, y, 16, 16); ctx.fillRect(arena.x + arena.w, y, 16, 16); }
-            ctx.fillStyle = harita.zemin; ctx.fillRect(arena.x, arena.y, arena.w, arena.h);
-            for(let x = arena.x; x < arena.x + arena.w; x += 32) { for(let y = arena.y; y < arena.y + arena.h; y += 32) { ctx.fillStyle = harita.detay; ctx.fillRect(x + 8, y + 8, 4, 4); ctx.fillRect(x + 20, y + 16, 4, 4); } }
-            ctx.fillStyle = harita.cizgi; ctx.fillRect(arena.x + arena.w/2 - 2, arena.y, 4, arena.h);
-            ctx.strokeStyle = harita.cizgi; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(arena.x + arena.w/2, arena.y + arena.h/2, Math.min(arena.w, arena.h) * 0.15, 0, Math.PI * 2); ctx.stroke();
-            cizMesale(arena.x + 20, arena.y + 20); cizMesale(arena.x + arena.w - 20, arena.y + 20); cizMesale(arena.x + 20, arena.y + arena.h - 20); cizMesale(arena.x + arena.w - 20, arena.y + arena.h - 20);
-            ctx.fillStyle = '#ffec27'; ctx.font = "10px 'Press Start 2P'"; ctx.textAlign = "center"; ctx.fillText("⚔ " + harita.name + " ⚔", canvas.width/2, arena.y - 25);
-            ctx.fillStyle = 'rgba(41, 173, 255, 0.1)'; ctx.fillRect(arena.x, arena.y, arena.w * 0.3, arena.h);
-            ctx.fillStyle = 'rgba(255, 0, 77, 0.1)'; ctx.fillRect(arena.x + arena.w * 0.7, arena.y, arena.w * 0.3, arena.h);
+            for(let x = arena.x - 16; x <= arena.x + arena.w; x += 16) {
+                ctx.fillRect(x, arena.y - 16, 16, 16);
+                ctx.fillRect(x, arena.y + arena.h, 16, 16);
+            }
+            for(let y = arena.y; y <= arena.y + arena.h; y += 16) {
+                ctx.fillRect(arena.x - 16, y, 16, 16);
+                ctx.fillRect(arena.x + arena.w, y, 16, 16);
+            }
+            
+            ctx.fillStyle = harita.zemin;
+            ctx.fillRect(arena.x, arena.y, arena.w, arena.h);
+            
+            for(let x = arena.x; x < arena.x + arena.w; x += 32) {
+                for(let y = arena.y; y < arena.y + arena.h; y += 32) {
+                    ctx.fillStyle = harita.detay;
+                    ctx.fillRect(x + 8, y + 8, 4, 4);
+                    ctx.fillRect(x + 20, y + 16, 4, 4);
+                }
+            }
+            
+            ctx.fillStyle = harita.cizgi;
+            ctx.fillRect(arena.x + arena.w/2 - 2, arena.y, 4, arena.h);
+            
+            ctx.strokeStyle = harita.cizgi;
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.arc(arena.x + arena.w/2, arena.y + arena.h/2, Math.min(arena.w, arena.h) * 0.15, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            cizMesale(arena.x + 20, arena.y + 20);
+            cizMesale(arena.x + arena.w - 20, arena.y + 20);
+            cizMesale(arena.x + 20, arena.y + arena.h - 20);
+            cizMesale(arena.x + arena.w - 20, arena.y + arena.h - 20);
+            
+            ctx.fillStyle = '#ffec27';
+            ctx.font = "10px 'Press Start 2P'";
+            ctx.textAlign = "center";
+            ctx.fillText("⚔ " + harita.name + " ⚔", canvas.width/2, arena.y - 25);
+            
+            ctx.fillStyle = 'rgba(41, 173, 255, 0.1)';
+            ctx.fillRect(arena.x, arena.y, arena.w * 0.3, arena.h);
+            ctx.fillStyle = 'rgba(255, 0, 77, 0.1)';
+            ctx.fillRect(arena.x + arena.w * 0.7, arena.y, arena.w * 0.3, arena.h);
         }
         
-        function cizMesale(x, y) { ctx.fillStyle = '#5f574f'; ctx.fillRect(x - 2, y, 4, 16); let flicker = Math.sin(Date.now() / 100) * 2; ctx.fillStyle = '#ffa300'; ctx.fillRect(x - 4, y - 8 + flicker, 8, 8); ctx.fillStyle = '#ffec27'; ctx.fillRect(x - 2, y - 10 + flicker, 4, 6); }
+        function cizMesale(x, y) {
+            ctx.fillStyle = '#5f574f';
+            ctx.fillRect(x - 2, y, 4, 16);
+            let flicker = Math.sin(Date.now() / 100) * 2;
+            ctx.fillStyle = '#ffa300';
+            ctx.fillRect(x - 4, y - 8 + flicker, 8, 8);
+            ctx.fillStyle = '#ffec27';
+            ctx.fillRect(x - 2, y - 10 + flicker, 4, 6);
+        }
 
         function oyunDongusu() {
             if (!oyunAktif) return;
+            
             cizArena();
+
             if (ben.hp > 0) {
                 let hareket = false;
                 const bonuses = getPlayerBonuses();
                 let hiz = AYARLAR.oyuncuHiz + bonuses.hiz;
-                if (joystickActive && oyunBasladi) { if (Math.abs(joystickData.x) > 0.2) { ben.x += joystickData.x * hiz; ben.yon = joystickData.x > 0 ? 1 : -1; hareket = true; } if (Math.abs(joystickData.y) > 0.2) { ben.y += joystickData.y * hiz; hareket = true; } }
-                if (oyunBasladi) { if (tuslar['w'] || tuslar['ArrowUp']) { ben.y -= hiz; hareket = true; } if (tuslar['s'] || tuslar['ArrowDown']) { ben.y += hiz; hareket = true; } if (tuslar['a'] || tuslar['ArrowLeft']) { ben.x -= hiz; ben.yon = -1; hareket = true; } if (tuslar['d'] || tuslar['ArrowRight']) { ben.x += hiz; ben.yon = 1; hareket = true; } }
+                
+                if (joystickActive && oyunBasladi) {
+                    if (Math.abs(joystickData.x) > 0.2) {
+                        ben.x += joystickData.x * hiz;
+                        ben.yon = joystickData.x > 0 ? 1 : -1;
+                        hareket = true;
+                    }
+                    if (Math.abs(joystickData.y) > 0.2) {
+                        ben.y += joystickData.y * hiz;
+                        hareket = true;
+                    }
+                }
+                
+                if (oyunBasladi) {
+                    if (tuslar['w'] || tuslar['ArrowUp']) { ben.y -= hiz; hareket = true; }
+                    if (tuslar['s'] || tuslar['ArrowDown']) { ben.y += hiz; hareket = true; }
+                    if (tuslar['a'] || tuslar['ArrowLeft']) { ben.x -= hiz; ben.yon = -1; hareket = true; }
+                    if (tuslar['d'] || tuslar['ArrowRight']) { ben.x += hiz; ben.yon = 1; hareket = true; }
+                }
+                
                 ben.x = Math.max(arena.x + 20, Math.min(arena.x + arena.w - 20, ben.x));
                 ben.y = Math.max(arena.y + 20, Math.min(arena.y + arena.h - 20, ben.y));
-                ben.hareket = hareket; guncelle(); hpRegenKontrol();
-            } else { guncelle(); }
+                ben.hareket = hareket;
+                guncelle(); 
+                hpRegenKontrol();
+            } else {
+                guncelle();
+            }
+
             let barW = Math.max(0, (ben.hp / ben.maxHp) * 100);
             document.getElementById('health-bar').style.width = barW + "%";
             document.getElementById('health-bar').style.background = ben.hp > ben.maxHp * 0.5 ? RENKLER.yesil : RENKLER.kirmizi;
             document.getElementById('health-text').innerText = "HP: " + Math.max(0, Math.ceil(ben.hp)) + "/" + ben.maxHp;
+
             botlariYonet();
+            
             let cizimSirasi = Object.entries(oyuncular).sort((a,b) => (a[1].hp <= 0 ? -1 : 1));
             cizimSirasi.forEach(([key, p]) => cizPixelKarakter(p, key));
+            
             requestAnimationFrame(oyunDongusu);
         }
 
         function cizPixelKarakter(p, key) {
-            let x = Math.floor(p.x); let y = Math.floor(p.y);
+            let x = Math.floor(p.x);
+            let y = Math.floor(p.y);
             let renk = p.takim === "mavi" ? RENKLER.mavi : RENKLER.kirmizi;
             let renkKoyu = p.takim === "mavi" ? '#1d6fa5' : '#7e0026';
+            
             ctx.save();
             if (p.hp <= 0) ctx.globalAlpha = 0.5;
+            
             const bonuses = key === myId ? getPlayerBonuses() : {};
-            if (bonuses.ghost && p.hp > 0) ctx.globalAlpha = bonuses.shadow ? 0.4 : 0.6;
-            let yon = p.yon || 1; let time = Date.now(); let bounce = p.hareket ? Math.sin(time / 100) * 2 : 0; let saldiriOffset = p.saldiriyor ? 10 * yon : 0;
+            if (bonuses.ghost && p.hp > 0) ctx.globalAlpha = 0.6;
+            
+            let yon = p.yon || 1;
+            let time = Date.now();
+            let bounce = p.hareket ? Math.sin(time / 100) * 2 : 0;
+            let saldiriOffset = p.saldiriyor ? 10 * yon : 0;
+            
             let equiped = p.equiped || {};
-            ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.fillRect(x - 10, y + 22, 20, 6);
-            ctx.fillStyle = equiped.bot ? '#ffa300' : renkKoyu;
-            if (p.hp > 0) { let bacakOffset = p.hareket ? Math.sin(time / 80) * 4 : 0; ctx.fillRect(x - 6 + bacakOffset, y + 8 + bounce, 4, 14); ctx.fillRect(x + 2 - bacakOffset, y + 8 + bounce, 4, 14); } else { ctx.fillRect(x - 6, y + 8, 4, 14); ctx.fillRect(x + 2, y + 8, 4, 14); }
-            ctx.fillStyle = equiped.zirh ? '#c2c3c7' : renk; ctx.fillRect(x - 8, y - 8 + bounce, 16, 18);
-            ctx.fillStyle = RENKLER.krem; ctx.fillRect(x - 6, y - 22 + bounce, 12, 14);
-            ctx.fillStyle = equiped.kask ? '#ffcc00' : renkKoyu; ctx.fillRect(x - 8, y - 26 + bounce, 16, 6);
-            if (p.hp > 0) { ctx.fillStyle = RENKLER.siyah; ctx.fillRect(x - 3 + (yon > 0 ? 2 : 0), y - 16 + bounce, 2, 3); ctx.fillRect(x + 3 + (yon > 0 ? 2 : 0), y - 16 + bounce, 2, 3); } else { ctx.fillStyle = RENKLER.kirmizi; ctx.fillRect(x - 4, y - 16, 2, 2); ctx.fillRect(x + 2, y - 16, 2, 2); }
-            ctx.fillStyle = RENKLER.krem; ctx.fillRect(x - 14, y - 6 + bounce, 6, 12); ctx.fillRect(x + 8 + (yon > 0 ? saldiriOffset : 0), y - 6 + bounce, 6, 12);
-            if (p.hp > 0) { let swordColor = RENKLER.acik_gri; let swordLength = 24; if (equiped.silah) { if (equiped.silah.includes('sword8')) { swordColor = '#ff004d'; swordLength = 32; } else if (equiped.silah.includes('sword7')) { swordColor = '#ffa300'; swordLength = 30; } else if (equiped.silah.includes('sword6')) { swordColor = '#00ffff'; swordLength = 28; } else if (equiped.silah.includes('sword5')) { swordColor = '#ffd700'; swordLength = 26; } else { swordColor = '#c0c0c0'; swordLength = 24; } } ctx.fillStyle = swordColor; if (yon > 0) ctx.fillRect(x + 16 + saldiriOffset, y - 16 + bounce, 4, swordLength); else ctx.fillRect(x - 20 + saldiriOffset, y - 16 + bounce, 4, swordLength); if (p.saldiriyor) { ctx.fillStyle = 'rgba(255, 255, 200, 0.6)'; if (yon > 0) ctx.fillRect(x + 20 + saldiriOffset, y - 10 + bounce, 25, 4); else ctx.fillRect(x - 45 + saldiriOffset, y - 10 + bounce, 25, 4); } }
-            ctx.fillStyle = renkKoyu; if (yon > 0) ctx.fillRect(x - 18, y - 4 + bounce, 6, 14); else ctx.fillRect(x + 12, y - 4 + bounce, 6, 14);
+            let hasArmor = equiped.zirh;
+            let hasHelmet = equiped.kask;
+            let hasSword = equiped.silah;
+            let hasBoots = equiped.bot;
+            let hasSpecial = equiped.ozel;
+            
+            ctx.fillStyle = 'rgba(0,0,0,0.4)';
+            ctx.fillRect(x - 10, y + 22, 20, 6);
+            
+            ctx.fillStyle = hasBoots ? '#ffa300' : renkKoyu;
+            if (p.hp > 0) {
+                let bacakOffset = p.hareket ? Math.sin(time / 80) * 4 : 0;
+                ctx.fillRect(x - 6 + bacakOffset, y + 8 + bounce, 4, 14);
+                ctx.fillRect(x + 2 - bacakOffset, y + 8 + bounce, 4, 14);
+            } else {
+                ctx.fillRect(x - 6, y + 8, 4, 14);
+                ctx.fillRect(x + 2, y + 8, 4, 14);
+            }
+            
+            ctx.fillStyle = hasArmor ? '#c2c3c7' : renk;
+            if (hasSpecial === 'special2') ctx.fillStyle = '#5f574f';
+            ctx.fillRect(x - 8, y - 8 + bounce, 16, 18);
+            
+            ctx.fillStyle = RENKLER.krem;
+            ctx.fillRect(x - 6, y - 22 + bounce, 12, 14);
+            
+            ctx.fillStyle = hasHelmet ? '#ffcc00' : renkKoyu;
+            ctx.fillRect(x - 8, y - 26 + bounce, 16, 6);
+            
+            if (p.hp > 0) {
+                ctx.fillStyle = hasSpecial === 'special1' ? '#ff004d' : RENKLER.siyah;
+                ctx.fillRect(x - 3 + (yon > 0 ? 2 : 0), y - 16 + bounce, 2, 3);
+                ctx.fillRect(x + 3 + (yon > 0 ? 2 : 0), y - 16 + bounce, 2, 3);
+            } else {
+                ctx.fillStyle = RENKLER.kirmizi;
+                ctx.fillRect(x - 4, y - 16, 2, 2);
+                ctx.fillRect(x + 2, y - 16, 2, 2);
+            }
+            
+            ctx.fillStyle = RENKLER.krem;
+            ctx.fillRect(x - 14, y - 6 + bounce, 6, 12);
+            ctx.fillRect(x + 8 + (yon > 0 ? saldiriOffset : 0), y - 6 + bounce, 6, 12);
+            
+            if (p.hp > 0) {
+                let swordColor = RENKLER.acik_gri;
+                let swordLength = 24;
+                
+                if (hasSword) {
+                    if (hasSword.includes('sword4')) { swordColor = '#ff004d'; swordLength = 32; }
+                    else if (hasSword.includes('sword3')) { swordColor = '#ffa300'; swordLength = 28; }
+                    else if (hasSword.includes('axe')) { swordColor = '#5f574f'; swordLength = 26; }
+                    else { swordColor = '#ffcc00'; swordLength = 26; }
+                }
+                if (hasSpecial === 'special1') swordColor = '#ff004d';
+                
+                ctx.fillStyle = swordColor;
+                if (yon > 0) {
+                    ctx.fillRect(x + 16 + saldiriOffset, y - 16 + bounce, 4, swordLength);
+                } else {
+                    ctx.fillRect(x - 20 + saldiriOffset, y - 16 + bounce, 4, swordLength);
+                }
+                
+                if (p.saldiriyor) {
+                    ctx.fillStyle = 'rgba(255, 255, 200, 0.6)';
+                    if (yon > 0) ctx.fillRect(x + 20 + saldiriOffset, y - 10 + bounce, 25, 4);
+                    else ctx.fillRect(x - 45 + saldiriOffset, y - 10 + bounce, 25, 4);
+                }
+            }
+            
+            ctx.fillStyle = renkKoyu;
+            if (yon > 0) ctx.fillRect(x - 18, y - 4 + bounce, 6, 14);
+            else ctx.fillRect(x + 12, y - 4 + bounce, 6, 14);
+            
             let maxHp = p.maxHp || 100;
-            if (p.hp > 0) { ctx.fillStyle = RENKLER.siyah; ctx.fillRect(x - 14, y - 36, 28, 8); ctx.fillStyle = p.hp > maxHp * 0.5 ? RENKLER.yesil : RENKLER.kirmizi; ctx.fillRect(x - 13, y - 35, (p.hp / maxHp) * 26, 6); }
-            ctx.fillStyle = RENKLER.beyaz; ctx.font = "8px 'Press Start 2P'"; ctx.textAlign = "center";
-            let isim = p.isim || (p.isBot ? "CPU" : "???"); if (key === myId) isim = ">" + isim + "<";
+            if (p.hp > 0) {
+                ctx.fillStyle = RENKLER.siyah;
+                ctx.fillRect(x - 14, y - 36, 28, 8);
+                ctx.fillStyle = p.hp > maxHp * 0.5 ? RENKLER.yesil : RENKLER.kirmizi;
+                ctx.fillRect(x - 13, y - 35, (p.hp / maxHp) * 26, 6);
+            }
+            
+            ctx.fillStyle = RENKLER.beyaz;
+            ctx.font = "8px 'Press Start 2P'";
+            ctx.textAlign = "center";
+            let isim = p.isim || (p.isBot ? "CPU" : "???");
+            if (key === myId) isim = ">" + isim + "<";
             ctx.fillText(isim, x, y - 42);
+            
             ctx.restore();
         }
 
-        function bildirimGoster(mesaj) { let n = document.getElementById('notification'); n.innerText = mesaj; n.style.opacity = 1; setTimeout(() => n.style.opacity = 0, 500); }
+        function bildirimGoster(mesaj) {
+            let n = document.getElementById('notification');
+            n.innerText = mesaj; n.style.opacity = 1;
+            setTimeout(() => n.style.opacity = 0, 500);
+        }
 
         function kazanmaKontrolu() {
             if (!oyunBasladi) return;
+
             let maviCanli = Object.values(oyuncular).filter(p => p.takim === "mavi" && p.hp > 0).length;
             let kirmiziCanli = Object.values(oyuncular).filter(p => p.takim === "kirmizi" && p.hp > 0).length;
+            
             let maviToplam = Object.values(oyuncular).filter(p => p.takim === "mavi").length;
             let kirmiziToplam = Object.values(oyuncular).filter(p => p.takim === "kirmizi").length;
+            
             if (maviToplam === 0 || kirmiziToplam === 0) return;
+
             let ekran = document.getElementById('gameOverScreen');
-            if (ekran.style.display !== 'none') return;
+            if (ekran.style.display !== 'none') return; 
+
             let kazananTakim = "";
             if (maviCanli === 0 && kirmiziCanli > 0) kazananTakim = "kirmizi";
             else if (kirmiziCanli === 0 && maviCanli > 0) kazananTakim = "mavi";
@@ -882,22 +1630,50 @@
                 let scoreGain = document.getElementById('scoreGain');
                 
                 if (ben.takim === kazananTakim) {
-                    mainText.innerText = "VICTORY!"; mainText.style.color = RENKLER.yesil; subText.innerText = oyuncuIsmi + " KAZANDI!"; playSound('victory');
+                    mainText.innerText = "VICTORY!";
+                    mainText.style.color = RENKLER.yesil; 
+                    subText.innerText = oyuncuIsmi + " KAZANDI!";
+                    playSound('victory');
+                    
                     let kazanilanPuan = 0;
                     if (botModuAktif) {
                         const zorlukAyar = AYARLAR.botZorluk[botZorluk];
                         const kalanLimit = AYARLAR.gunlukBotLimit - (userProfile.botPuanBugun || 0);
                         kazanilanPuan = Math.min(zorlukAyar.puan, kalanLimit);
-                        if (kazanilanPuan > 0) { userProfile.botPuanBugun = (userProfile.botPuanBugun || 0) + kazanilanPuan; userProfile.puan = (userProfile.puan || 0) + kazanilanPuan; scoreGain.innerText = `+${kazanilanPuan} PUAN! (Bot: ${userProfile.botPuanBugun}/10 bugün)`; }
-                        else { scoreGain.innerText = "Günlük bot limiti doldu! (10/10)"; }
-                    } else { kazanilanPuan = AYARLAR.onlinePuan; userProfile.puan = (userProfile.puan || 0) + kazanilanPuan; scoreGain.innerText = `+${kazanilanPuan} PUAN! (Toplam: ${userProfile.puan})`; }
+                        
+                        if (kazanilanPuan > 0) {
+                            userProfile.botPuanBugun = (userProfile.botPuanBugun || 0) + kazanilanPuan;
+                            userProfile.puan = (userProfile.puan || 0) + kazanilanPuan;
+                            scoreGain.innerText = `+${kazanilanPuan} PUAN! (Bot: ${userProfile.botPuanBugun}/10 bugün)`;
+                        } else {
+                            scoreGain.innerText = "Günlük bot limiti doldu! (10/10)";
+                        }
+                    } else {
+                        kazanilanPuan = AYARLAR.onlinePuan;
+                        userProfile.puan = (userProfile.puan || 0) + kazanilanPuan;
+                        scoreGain.innerText = `+${kazanilanPuan} PUAN! (Toplam: ${userProfile.puan})`;
+                    }
+                    
                     saveUserProfile();
-                } else { mainText.innerText = "DEFEAT"; mainText.style.color = RENKLER.kirmizi; subText.innerText = "YENİLDİN..."; scoreGain.innerText = ""; playSound('defeat'); }
+                } else {
+                    mainText.innerText = "DEFEAT";
+                    mainText.style.color = RENKLER.kirmizi; 
+                    subText.innerText = "YENİLDİN...";
+                    scoreGain.innerText = "";
+                    playSound('defeat');
+                }
                 oyunBitti();
             }
         }
 
-        function oyunBitti() { oyunAktif = false; showMobileControls(false); setTimeout(() => { document.getElementById('gameOverScreen').style.display = 'flex'; document.getElementById('ui-layer').style.display = 'none'; }, 1500); }
+        function oyunBitti() {
+            oyunAktif = false;
+            showMobileControls(false);
+            setTimeout(() => {
+                document.getElementById('gameOverScreen').style.display = 'flex';
+                document.getElementById('ui-layer').style.display = 'none';
+            }, 1500); 
+        }
     </script>
 </body>
 </html>
